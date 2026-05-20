@@ -1,0 +1,136 @@
+import { z } from "zod";
+
+export const BenefitCategorySchema = z.enum([
+  "housing",
+  "education",
+  "employment",
+  "health",
+  "family",
+  "youth",
+  "local",
+  "other"
+]);
+
+export const RecommendationStatusSchema = z.enum([
+  "candidate",
+  "needs_more_info",
+  "not_applicable"
+]);
+
+export const UserProfileSchema = z.object({
+  region: z.string().min(1).optional(),
+  ageRange: z.enum(["teen", "twenties", "thirties", "forties", "fifties", "sixties_plus"]).optional(),
+  studentStatus: z.enum(["student", "not_student", "unknown"]).default("unknown"),
+  employmentStatus: z.enum(["employed", "self_employed", "unemployed", "unknown"]).default("unknown"),
+  householdType: z.enum(["single", "couple", "family", "single_parent", "unknown"]).default("unknown"),
+  interests: z.array(BenefitCategorySchema).default([])
+});
+
+export const EvidenceSchema = z.object({
+  field: z.string(),
+  matched: z.boolean(),
+  explanation: z.string()
+});
+
+export const BenefitSummarySchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  provider: z.string().min(1),
+  category: BenefitCategorySchema,
+  summary: z.string().min(1),
+  status: RecommendationStatusSchema,
+  reasons: z.array(z.string()).default([]),
+  missingInfo: z.array(z.string()).default([])
+});
+
+export const ChecklistItemSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  required: z.boolean(),
+  source: z.string().optional()
+});
+
+export const ApplicationStepSchema = z.object({
+  order: z.number().int().positive(),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  requiresUserAction: z.boolean().default(true)
+});
+
+export const BenefitDetailSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  provider: z.string().min(1),
+  category: BenefitCategorySchema,
+  summary: z.string().min(1),
+  target: z.string().min(1),
+  eligibility: z.array(z.string()).default([]),
+  applicationPeriod: z.string().optional(),
+  fee: z.string().optional(),
+  processingTime: z.string().optional(),
+  documents: z.array(ChecklistItemSchema).default([]),
+  applicationMethods: z.array(z.string()).default([]),
+  applicationUrl: z.string().url().optional(),
+  sourceUrl: z.string().url(),
+  lastFetchedAt: z.string().datetime(),
+  evidence: z.array(EvidenceSchema).default([])
+});
+
+export const BenefitRecordSchema = BenefitDetailSchema.extend({
+  searchableText: z.string().default(""),
+  regionTags: z.array(z.string()).default([]),
+  ageRanges: z.array(UserProfileSchema.shape.ageRange.unwrap()).default([]),
+  studentOnly: z.boolean().default(false),
+  employmentStatuses: z.array(UserProfileSchema.shape.employmentStatus.removeDefault()).default([])
+});
+
+export const BenefitSearchRequestSchema = z.object({
+  query: z.string().min(1),
+  profile: UserProfileSchema.default({})
+});
+
+export const BenefitSearchResponseSchema = z.object({
+  query: z.string(),
+  profile: UserProfileSchema,
+  results: z.array(BenefitSummarySchema),
+  generatedAt: z.string().datetime()
+});
+
+export const ChecklistResponseSchema = z.object({
+  benefitId: z.string(),
+  items: z.array(ChecklistItemSchema),
+  caveats: z.array(z.string()).default([])
+});
+
+export const ApplicationGuideResponseSchema = z.object({
+  benefitId: z.string(),
+  steps: z.array(ApplicationStepSchema),
+  safetyNotice: z.string()
+});
+
+export const ChangeLogEntrySchema = z.object({
+  id: z.string(),
+  entityId: z.string(),
+  entityType: z.literal("benefit"),
+  changeType: z.enum(["created", "updated", "unchanged"]),
+  summary: z.string(),
+  createdAt: z.string().datetime()
+});
+
+export const ChangeLogResponseSchema = z.object({
+  entityId: z.string().optional(),
+  entries: z.array(ChangeLogEntrySchema)
+});
+
+export type BenefitCategory = z.infer<typeof BenefitCategorySchema>;
+export type RecommendationStatus = z.infer<typeof RecommendationStatusSchema>;
+export type UserProfile = z.infer<typeof UserProfileSchema>;
+export type BenefitSummary = z.infer<typeof BenefitSummarySchema>;
+export type BenefitDetail = z.infer<typeof BenefitDetailSchema>;
+export type BenefitRecord = z.infer<typeof BenefitRecordSchema>;
+export type BenefitSearchRequest = z.infer<typeof BenefitSearchRequestSchema>;
+export type BenefitSearchResponse = z.infer<typeof BenefitSearchResponseSchema>;
+export type ChecklistResponse = z.infer<typeof ChecklistResponseSchema>;
+export type ApplicationGuideResponse = z.infer<typeof ApplicationGuideResponseSchema>;
+export type ChangeLogEntry = z.infer<typeof ChangeLogEntrySchema>;
+export type ChangeLogResponse = z.infer<typeof ChangeLogResponseSchema>;
