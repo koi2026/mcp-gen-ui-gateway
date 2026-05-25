@@ -3,11 +3,15 @@ import { describe, expect, it } from "vitest";
 import { App } from "./App";
 
 describe("App", () => {
-  it("renders fixture-backed benefit recommendations and safety notice", () => {
+  it("renders fixture-backed public data GenUI mock and safety notice", () => {
     render(<App />);
 
-    expect(screen.getByText("서울 청년 월세 지원")).toBeInTheDocument();
-    expect(screen.getByText("신청 준비 체크리스트")).toBeInTheDocument();
-    expect(screen.getByText(/본인인증/)).toBeInTheDocument();
+    expect(screen.getByText("이 누리집은 대한민국 공식 전자정부 누리집입니다.")).toBeInTheDocument();
+    expect(screen.getByText("자주 찾는 서비스")).toBeInTheDocument();
+    expect(screen.getByText("원스톱 서비스")).toBeInTheDocument();
+    expect(screen.getByText("출처 및 응답 상태")).toBeInTheDocument();
+    expect(screen.getByText("MCP Tool 호출 로그")).toBeInTheDocument();
+    expect(screen.getByText("Gateway 응답 계약")).toBeInTheDocument();
+    expect(screen.getByText(/인증키 미발급 API/)).toBeInTheDocument();
   });
 });
