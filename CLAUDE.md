@@ -11,3 +11,4 @@
 | 2026-05-26 | 정부24 참고 이미지 시각 일치 기준 추가 | `gov-service-ui-design`, `gov-service-genui-orchestrator` | 사용자가 폰트·스타일·레이아웃 동일감 강화를 요청 |
 | 2026-05-26 | 정부24 컴포넌트 레이어 추가 | `apps/demo-ui/src/gov24-components.tsx`, `gov-service-genui-orchestrator` | 실제 plus.gov.kr 조사 기반 GenUI 재사용 컴포넌트 확보 |
 | 2026-05-26 | JSON 아이콘 fallback 기준 추가 | `gov-service-ui-design`, `gov-service-genui-orchestrator` | 로컬 asset 실패 없이 정부24형 아이콘을 안정 표시 |
+| 2026-05-26 | Playwright 임시 스크린샷 삭제 규칙 추가 | `gov-service-genui-orchestrator` | 검증 산출물이 작업 폴더와 커밋에 남지 않도록 관리 |

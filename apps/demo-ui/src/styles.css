@@ -11,6 +11,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body,
@@ -25,6 +26,7 @@ dd {
 
 body {
   min-width: 320px;
+  overflow-x: hidden;
 }
 
 button,
@@ -44,6 +46,7 @@ input:focus-visible {
 }
 
 .g24-shell {
+  overflow-x: hidden;
   min-height: 100vh;
   background: #f4f6f8;
 }
@@ -403,6 +406,8 @@ input:focus-visible {
   align-items: center;
   justify-content: space-between;
   min-height: 50px;
+  min-width: 0;
+  gap: 12px;
   border: 0;
   border-radius: 8px;
   background: #fff;
@@ -412,6 +417,14 @@ input:focus-visible {
   font-weight: 900;
   text-align: left;
   text-decoration: none;
+}
+
+.quick-grid strong,
+.login-icons span,
+.scenario-chip-row button,
+.mini-metrics span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .gov24-icon {
@@ -427,17 +440,17 @@ input:focus-visible {
 .gov24-icon.tile {
   border-radius: 7px;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.82), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 48%),
     var(--icon-bg);
-  box-shadow: inset 0 -5px 0 var(--icon-accent);
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.45);
 }
 
 .gov24-icon.circle {
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95) 0 16%, transparent 17%),
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.78) 0 12%, transparent 13%),
     var(--icon-bg);
-  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.26);
 }
 
 .gov24-icon.plain {
@@ -613,7 +626,9 @@ input:focus-visible {
 }
 
 .home-card {
+  min-width: 0;
   min-height: 260px;
+  overflow: hidden;
   padding: 24px;
 }
 
@@ -623,8 +638,8 @@ input:focus-visible {
 
 .guide-icons {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 10px;
   margin-bottom: 18px;
 }
 
@@ -632,11 +647,15 @@ input:focus-visible {
   display: grid;
   justify-items: center;
   gap: 8px;
+  min-width: 0;
   border: 0;
   background: transparent;
   color: #48515d;
   font-size: 13px;
   font-weight: 900;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .guide-icons button.active {
@@ -660,6 +679,7 @@ input:focus-visible {
   align-items: center;
   justify-content: space-between;
   min-height: 58px;
+  min-width: 0;
   border: 0;
   border-radius: 12px;
   background: #eef2f7;
@@ -667,7 +687,14 @@ input:focus-visible {
   color: #2a3038;
   font-size: 15px;
   font-weight: 900;
+  gap: 12px;
   text-align: left;
+}
+
+.guide-list button span,
+.benefit-list button {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .scenario-chip-row {
@@ -702,6 +729,7 @@ input:focus-visible {
 
 .onestop-service-grid article {
   position: relative;
+  min-width: 0;
   min-height: 78px;
   border-radius: 10px;
   background: #f2f3f5;
@@ -715,6 +743,7 @@ input:focus-visible {
 }
 
 .onestop-service-grid article > div {
+  min-width: 0;
   padding-right: 34px;
 }
 
@@ -723,6 +752,8 @@ input:focus-visible {
   margin-bottom: 4px;
   color: #111820;
   font-weight: 1000;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .onestop-service-grid span {
@@ -730,6 +761,7 @@ input:focus-visible {
   overflow: hidden;
   color: #4b5562;
   font-size: 13px;
+  overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -1063,6 +1095,10 @@ td {
     grid-template-columns: 1fr;
   }
 
+  .guide-icons {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
   .benefit-panel {
     grid-column: auto;
   }
@@ -1132,7 +1168,7 @@ td {
   }
 
   .guide-icons {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .overview-list div {
@@ -1142,5 +1178,15 @@ td {
 
   .detail-section h1 {
     font-size: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .guide-icons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-card {
+    padding: 20px;
   }
 }

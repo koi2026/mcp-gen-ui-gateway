@@ -52,7 +52,8 @@ description: 정부서비스 Gateway, 정부24 유사 UI, 공공데이터포털 
 2. `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 3. `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
 4. 브라우저에서 콘솔 에러와 주요 화면 텍스트 확인
-5. 목표 달성 표로 부족한 부분을 판단하고 다시 수정
+5. Playwright 스크린샷은 검증 직후 확인하고, 커밋 대상이 아닌 임시 PNG는 사용 완료 후 삭제
+6. 목표 달성 표로 부족한 부분을 판단하고 다시 수정
 
 ## Phase 5: 완료 기준
 
