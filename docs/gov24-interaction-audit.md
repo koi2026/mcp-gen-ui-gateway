@@ -16,10 +16,12 @@ This document records the Government24 interaction patterns inspected with Playw
 | Header utility menus | For Foreigners, support, and screen-size controls open dropdown lists | `utility-menu`, `utility-popover` |
 | Primary navigation | All main nav items expose submenu groups | `nav-item has-mega`, `MegaMenu` |
 | Global search | Search pill with assistant visual and search action | `SearchHero` |
+| Integrated search overlay | Search button opens modal with frequent services and empty recent-search state | `Gov24Modal`, `SearchModalContent` |
 | Quick services | Frequent services shown as tiled action buttons | `QuickServicePanel` |
+| Quick service expand modal | Frequent-service expand control opens a full service list | `QuickServiceModalContent` |
 | Disabled carousel controls | First slide disables previous controls with muted visual state | `button:disabled` in `panel-arrows`, `campaign-controls` |
 | Empty recent state | Recent searches or recently viewed services show an empty-state message | `RecentServicePanel`, `empty-state-box` |
-| Login-required state | Protected services prompt login or membership before continuation | `LoginPanel`, empty-state login helper copy |
+| Login-required state | Protected services prompt login or membership before continuation | `LoginPanel`, `LoginRequiredModalContent` |
 | Login prompt | Four shortcut service icons and login CTA | `LoginPanel` |
 | Notice panel | Notice list with more-link action | `NoticePanel` |
 | Banner carousel controls | Pause, previous, next, and page indicator | `CampaignPanel` baseline banner slot |
@@ -42,7 +44,9 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Desktop Playwright clicked `For Foreigners`, `지원`, and `화면크기` utility controls and confirmed menu items.
 - Desktop Playwright confirmed disabled labels: `자주 찾는 서비스 이전 목록`, `이전 배너`, `처음`.
 - Desktop Playwright confirmed empty/login-required copy: `최근에 본 서비스가 없습니다.` and `로그인하면 신청 내역과 관심 서비스를 이어서 확인할 수 있습니다.`
+- Playwright opened the `통합검색`, `펼쳐보기`, and `로그인` controls and confirmed dialog content for search, full quick-service list, and login-required guidance.
 - Mobile Playwright at `390x900` confirmed `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements while a primary menu and utility menu were open.
+- Mobile Playwright confirmed modal dialogs remain within the viewport with zero overflowing elements.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
