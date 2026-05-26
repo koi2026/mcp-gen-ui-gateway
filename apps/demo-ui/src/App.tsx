@@ -4,7 +4,63 @@ import { demoScenarios, type SourceStatus } from "./demo-data";
 import { Gov24Icon, type Gov24IconName } from "./gov24-components";
 import "./styles.css";
 
-const primaryNav = ["민원서비스", "혜택알리미", "생활", "정책정보", "고객센터"];
+const primaryNav = [
+  {
+    label: "민원서비스",
+    active: true,
+    menu: [
+      ["민원 찾기", "필요한 민원과 발급 서비스를 검색하고 신청 화면으로 이동합니다"],
+      ["주제별 보기", "주택, 복지, 세금 등 주제별로 민원을 탐색합니다"],
+      ["행정서식 간편이름", "서식 명칭을 쉬운 이름으로 찾아볼 수 있습니다"],
+      ["사실/진위확인", "증명서와 발급 문서의 진위 여부를 확인합니다"],
+      ["원스톱서비스", "여러 민원을 한 번에 묶어 신청하는 흐름을 안내합니다"],
+      ["기업/단체 서비스", "사업자와 기관 대상 민원 경로를 분리해 제공합니다"],
+      ["돌봄시설 등 위치 찾기", "지역 기반 시설 후보를 지도형 UI로 연결합니다"],
+      ["다운로드파일 진본확인", "정부24 다운로드 문서의 원본 여부를 확인합니다"]
+    ]
+  },
+  {
+    label: "혜택알리미",
+    menu: [
+      ["혜택알리미 홈", "몰라서 놓쳤던 혜택, 이제는 정부가 먼저 챙겨드립니다"],
+      ["나의 혜택", "내가 받을 수 있는 혜택을 한 눈에 확인하세요"],
+      ["관심", "내 상황과 연관된 혜택을 확인해보세요"],
+      ["발견", "아직 몰랐던 숨은 혜택을 찾아드려요"],
+      ["간편찾기", "선택한 상황 조건으로 빠르게 원하는 혜택을 찾아요"],
+      ["전체 혜택", "분야별로 제공되는 모든 혜택을 한곳에서 확인해요"],
+      ["설정", "가족등록, 맞춤안내 조건 등 서비스 이용 환경을 관리해요"]
+    ]
+  },
+  {
+    label: "생활",
+    menu: [
+      ["생활가이드", "이사, 출산, 사망 등 생애 이벤트별 필요한 서비스를 묶습니다"],
+      ["생활안전", "재난, 대기, 안전 공지 등 생활 전 확인할 공공 정보를 모읍니다"]
+    ]
+  },
+  {
+    label: "정책정보",
+    menu: [
+      ["분야별 정책정보", "분야별 정책과 공공 데이터를 한 화면에서 탐색합니다"],
+      ["정부/지자체 조직도", "기관과 부서 정보를 조직도 기준으로 확인합니다"],
+      ["정부/지자체 누리집", "관련 기관 누리집으로 이동할 수 있는 목록을 제공합니다"]
+    ]
+  },
+  {
+    label: "고객센터",
+    menu: [
+      ["공지사항", "서비스 중단, 보안 안내, 주요 공지를 확인합니다"],
+      ["이용안내", "전자정부 서비스 이용 절차와 도움말을 제공합니다"],
+      ["자주 묻는 질문", "반복 문의를 빠르게 확인할 수 있습니다"],
+      ["자료실", "서식과 안내 자료를 탐색합니다"],
+      ["상담예약", "공식 상담 예약 경로로 연결합니다"],
+      ["개선의견", "서비스 개선 의견을 남길 수 있습니다"],
+      ["정부24 소개", "서비스 개요와 운영 정보를 확인합니다"],
+      ["인증센터", "인증서 등록과 복합인증 관리를 안내합니다"],
+      ["보안센터", "보안 프로그램과 개인정보 보호 정책을 제공합니다"]
+    ]
+  }
+];
 const topLinks = [
   { label: "For Foreigners", items: ["한국어", "English", "中文", "Guide"] },
   { label: "어린이", href: "#home" },
@@ -50,6 +106,7 @@ const footerShortcuts = [
 export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
   const [activeUtility, setActiveUtility] = useState<string | null>(null);
+  const [activeNav, setActiveNav] = useState<string | null>(null);
   const activeScenario = demoScenarios.find((scenario) => scenario.id === activeScenarioId) ?? demoScenarios[0];
   const response = useMemo(() => scenarioToGenUIResponse(activeScenario), [activeScenario]);
 
@@ -118,28 +175,20 @@ export function App() {
         </div>
         <nav className="g24-nav" aria-label="주요 서비스">
           <div className="g24-container nav-inner">
-            {primaryNav.map((item, index) => {
-              if (item === "혜택알리미") {
-                return (
-                  <div className="nav-item has-mega" key={item}>
-                    <button type="button">
-                      {item}
-                      <span aria-hidden="true">⌃</span>
-                    </button>
-                    <MegaMenu />
-                  </div>
-                );
-              }
-
-              return (
-                <div className="nav-item" key={item}>
-                  <button className={index === 0 ? "active" : ""} type="button">
-                    {item}
-                    <span aria-hidden="true">⌄</span>
-                  </button>
-                </div>
-              );
-            })}
+            {primaryNav.map((item) => (
+              <div className={`nav-item has-mega ${activeNav === item.label ? "open" : ""}`} key={item.label}>
+                <button
+                  aria-expanded={activeNav === item.label}
+                  className={item.active ? "active" : ""}
+                  onClick={() => setActiveNav(activeNav === item.label ? null : item.label)}
+                  type="button"
+                >
+                  {item.label}
+                  <span aria-hidden="true">{activeNav === item.label ? "⌃" : "⌄"}</span>
+                </button>
+                <MegaMenu columns={item.menu} label={item.label} />
+              </div>
+            ))}
           </div>
         </nav>
       </header>
@@ -188,19 +237,9 @@ export function App() {
   );
 }
 
-function MegaMenu() {
-  const columns = [
-    ["혜택알리미 홈", "몰라서 놓쳤던 혜택, 이제는 정부가 먼저 챙겨드립니다"],
-    ["나의 혜택", "내가 받을 수 있는 혜택을 한 눈에 확인하세요"],
-    ["관심", "내 상황과 연관된 혜택을 확인해보세요"],
-    ["발견", "아직 몰랐던 숨은 혜택을 찾아드려요"],
-    ["간편찾기", "선택한 상황 조건으로 빠르게 원하는 혜택을 찾아요"],
-    ["전체 혜택", "분야별로 제공되는 모든 혜택을 한곳에서 확인해요"],
-    ["설정", "가족등록, 맞춤안내 조건 등 서비스 이용 환경을 관리해요"]
-  ];
-
+function MegaMenu({ columns, label }: { columns: string[][]; label: string }) {
   return (
-    <section className="mega-menu" aria-label="혜택알리미 메뉴">
+    <section className="mega-menu" aria-label={`${label} 메뉴`}>
       <div className="g24-container mega-grid">
         {columns.map(([title, body]) => (
           <a href="#genui-result" key={title}>

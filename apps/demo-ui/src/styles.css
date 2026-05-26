@@ -262,6 +262,10 @@ input:focus-visible {
   background: #dfe8f1;
 }
 
+.has-mega > button.active {
+  background: #fff;
+}
+
 .mega-menu {
   position: fixed;
   z-index: 10;
@@ -275,7 +279,8 @@ input:focus-visible {
 }
 
 .has-mega:hover .mega-menu,
-.has-mega:focus-within .mega-menu {
+.has-mega:focus-within .mega-menu,
+.has-mega.open .mega-menu {
   display: block;
 }
 

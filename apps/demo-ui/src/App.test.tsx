@@ -20,5 +20,11 @@ describe("App", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /For Foreigners/ }));
     expect(screen.getByRole("menuitem", { name: "English" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /민원서비스/ }));
+    expect(screen.getByText("사실/진위확인")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /고객센터/ }));
+    expect(screen.getAllByText("상담예약").length).toBeGreaterThan(0);
   });
 });
