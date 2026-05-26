@@ -29,6 +29,34 @@ export type GenUITable = {
   rows: Record<string, string>[];
 };
 
+export type ServiceResult = {
+  id: string;
+  title: string;
+  description: string;
+  agency: string;
+  methods: string[];
+  fee: string;
+  ctaLabel: string;
+  icon?: string;
+  status: SourceStatus;
+};
+
+export type ApplicationStep = {
+  title: string;
+  description: string;
+  action?: string;
+};
+
+export type ApplicationGuide = {
+  title: string;
+  category: string;
+  eligibility: string;
+  period: string;
+  requiredDocuments: string[];
+  steps: ApplicationStep[];
+  relatedLinks: string[];
+};
+
 export type ToolTrace = {
   tool: string;
   label: string;
@@ -67,6 +95,8 @@ export type DemoScenario = {
   suggestions: SearchSuggestion[];
   services: ServiceAction[];
   metrics: Metric[];
+  serviceResults: ServiceResult[];
+  applicationGuide: ApplicationGuide;
   table: GenUITable;
   sources: PublicDataSource[];
   toolTrace: ToolTrace[];
@@ -116,6 +146,54 @@ export const demoScenarios: DemoScenario[] = [
         status: "ok"
       }
     ],
+    serviceResults: [
+      {
+        id: "outdoor-safety-brief",
+        title: "생활안전 맞춤 안내",
+        description: "재난 RSS, 생활안전 공지, 지역 시설 정보를 한 번에 확인하는 외출 전 안내입니다.",
+        agency: "행정안전부",
+        methods: ["인터넷", "모바일"],
+        fee: "무료",
+        ctaLabel: "안내 보기",
+        icon: "safety",
+        status: "cached"
+      },
+      {
+        id: "air-quality-check",
+        title: "대기오염정보 조회",
+        description: "측정소 기준 미세먼지·초미세먼지 상태를 조회하고 활동 전 확인 항목을 제안합니다.",
+        agency: "한국환경공단",
+        methods: ["인터넷", "OpenAPI"],
+        fee: "무료",
+        ctaLabel: "조회하기",
+        icon: "air",
+        status: "ok"
+      },
+      {
+        id: "public-facility-nearby",
+        title: "공공시설 위치 찾기",
+        description: "공공데이터 표준 위치 정보를 이용해 가까운 공공 편의시설 후보를 보여줍니다.",
+        agency: "공공데이터포털",
+        methods: ["인터넷", "지도"],
+        fee: "무료",
+        ctaLabel: "시설 찾기",
+        icon: "facility",
+        status: "ok"
+      }
+    ],
+    applicationGuide: {
+      title: "외출 전 공공 정보 확인 절차",
+      category: "생활 > 생활안전",
+      eligibility: "누구나 이용 가능",
+      period: "즉시",
+      requiredDocuments: ["없음"],
+      steps: [
+        { title: "지역과 시간대 확인", description: "사용자 질의에서 지역, 이동 시간, 관심 분야를 추출합니다.", action: "조건 확인" },
+        { title: "공공 API 호출", description: "대기, 안전, 시설 API를 병렬 호출하고 실패한 API는 캐시로 대체합니다.", action: "출처 상태 표시" },
+        { title: "GenUI 블록 생성", description: "요약, 민원 결과, 신청 안내, 출처 로그를 정부24형 컴포넌트로 변환합니다.", action: "화면 구성" }
+      ],
+      relatedLinks: ["생활안전", "대기정보", "공공시설"]
+    },
     metrics: [
       { label: "연결된 API", value: "4개", delta: "REST 3 · RSS 1", tone: "blue" },
       { label: "정상 응답", value: "3개", delta: "1개 cached", tone: "green" },
@@ -219,6 +297,54 @@ export const demoScenarios: DemoScenario[] = [
         status: "fallback"
       }
     ],
+    serviceResults: [
+      {
+        id: "activity-support-result",
+        title: "장애인 활동지원 신청 안내",
+        description: "지역·연령 조건을 기준으로 신청 전 확인할 자격과 공식 창구를 정리합니다.",
+        agency: "보건복지부",
+        methods: ["인터넷", "방문"],
+        fee: "무료",
+        ctaLabel: "조건 확인",
+        icon: "welfare",
+        status: "ok"
+      },
+      {
+        id: "health-center-result",
+        title: "건강증진센터 상담",
+        description: "전국건강증진센터 표준데이터에서 부산 지역 상담 가능 지점을 후보화합니다.",
+        agency: "부산광역시",
+        methods: ["전화", "방문"],
+        fee: "기관별 상이",
+        ctaLabel: "시설 보기",
+        icon: "health",
+        status: "ok"
+      },
+      {
+        id: "local-care-result",
+        title: "지역 돌봄 서비스",
+        description: "복지시설 API 실패 시에도 fallback 후보를 유지하고 공식 확인 필요 상태를 표시합니다.",
+        agency: "공공데이터포털",
+        methods: ["인터넷", "방문"],
+        fee: "대상별 상이",
+        ctaLabel: "대체 결과",
+        icon: "benefit",
+        status: "fallback"
+      }
+    ],
+    applicationGuide: {
+      title: "복지 서비스 확인 절차",
+      category: "혜택알리미 > 간편찾기",
+      eligibility: "지역, 연령, 장애 등록 여부 등 조건 확인 필요",
+      period: "기관 심사 기준에 따름",
+      requiredDocuments: ["신분 확인 자료", "장애 등록 확인 자료", "소득·거주 조건 확인 자료"],
+      steps: [
+        { title: "비식별 조건 입력", description: "개인 식별정보 없이 지역, 연령대, 관심 분야만 사용합니다.", action: "조건 입력" },
+        { title: "후보 서비스 매칭", description: "복지 현황과 시설 데이터를 결합해 공식 신청 경로를 좁힙니다.", action: "후보 확인" },
+        { title: "기관 확인 분리", description: "자격 확정 표현은 피하고 주민센터·복지로 확인 항목을 안내합니다.", action: "공식 확인" }
+      ],
+      relatedLinks: ["복지로", "주민센터", "건강증진센터"]
+    },
     metrics: [
       { label: "지역 필터", value: "부산", delta: "행정동 단위 후보", tone: "blue" },
       { label: "복지 데이터", value: "2종", delta: "현황 + 시설", tone: "green" },
@@ -312,6 +438,54 @@ export const demoScenarios: DemoScenario[] = [
         status: "ok"
       }
     ],
+    serviceResults: [
+      {
+        id: "customs-item-result",
+        title: "품목별 수출입실적(GW)",
+        description: "HS Code 기준 수출입 금액과 중량을 조회해 품목별 증감 흐름을 보여줍니다.",
+        agency: "관세청",
+        methods: ["OpenAPI", "XML"],
+        fee: "무료",
+        ctaLabel: "품목 보기",
+        icon: "policy",
+        status: "ok"
+      },
+      {
+        id: "customs-country-result",
+        title: "품목별 국가별 수출입실적(GW)",
+        description: "국가와 품목 축을 결합해 비교 가능한 표와 순위를 구성합니다.",
+        agency: "관세청",
+        methods: ["OpenAPI", "XML"],
+        fee: "무료",
+        ctaLabel: "비교하기",
+        icon: "search",
+        status: "ok"
+      },
+      {
+        id: "customs-region-result",
+        title: "시도별 품목별 수출입실적(GW)",
+        description: "지역 단위 수출입 데이터를 랭킹형 GenUI 컴포넌트로 렌더링합니다.",
+        agency: "관세청",
+        methods: ["OpenAPI", "XML"],
+        fee: "무료",
+        ctaLabel: "지역 보기",
+        icon: "building",
+        status: "ok"
+      }
+    ],
+    applicationGuide: {
+      title: "관세청 멀티 API 분석 절차",
+      category: "정책정보 > 무역 데이터 분석",
+      eligibility: "공개 API 인증키 필요",
+      period: "월간 공표 데이터 기준",
+      requiredDocuments: ["공공데이터포털 활용신청 키", "분석 기간 파라미터"],
+      steps: [
+        { title: "분석 축 선택", description: "품목, 국가, 지역 중 비교 기준을 질의에서 추출합니다.", action: "축 선택" },
+        { title: "API 응답 정규화", description: "관세청 XML 응답을 동일한 기간, 단위, HS Code 필드로 정렬합니다.", action: "정규화" },
+        { title: "표·지표 생성", description: "기간과 단위를 명시한 분석 표, 지표 카드, 출처 로그를 생성합니다.", action: "결과 보기" }
+      ],
+      relatedLinks: ["공공데이터포털", "관세청", "HS Code"]
+    },
     metrics: [
       { label: "관세청 API", value: "3개", delta: "품목·국가·지역", tone: "blue" },
       { label: "정규화 단위", value: "USD", delta: "수출 FOB · 수입 CIF", tone: "green" },

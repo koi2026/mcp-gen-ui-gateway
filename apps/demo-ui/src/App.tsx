@@ -35,6 +35,11 @@ const notices = [
   "매크로 및 유사 프로그램 사용자 이용 제한 안내",
   "[국토교통부] 차세대 부동산종합공부시스템 전환에 따른..."
 ];
+const footerShortcuts = [
+  { title: "국민소통채널", items: ["국민비서 구삐", "상담예약", "개선의견"] },
+  { title: "디지털증명", items: ["전자증명서", "공공 마이데이터", "다운로드파일 진본확인"] },
+  { title: "부가서비스", items: ["무인민원발급", "어디서나민원", "돌봄시설 위치 찾기"] }
+];
 
 export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
@@ -45,6 +50,8 @@ export function App() {
   const suggestions = response.blocks.find((block) => block.type === "search-suggestions");
   const services = response.blocks.find((block) => block.type === "service-actions");
   const metrics = response.blocks.find((block) => block.type === "metric-strip");
+  const results = response.blocks.find((block) => block.type === "service-results");
+  const applicationGuide = response.blocks.find((block) => block.type === "application-guide");
   const table = response.blocks.find((block) => block.type === "data-table");
   const sources = response.blocks.find((block) => block.type === "source-list");
   const diagnostics = response.blocks.find((block) => block.type === "tool-trace");
@@ -137,6 +144,8 @@ export function App() {
         <div className="g24-container detail-grid" id="genui-result">
           <section className="detail-main">
             {summary && <BlockRenderer block={summary} />}
+            {results && <BlockRenderer block={results} />}
+            {applicationGuide && <BlockRenderer block={applicationGuide} />}
             {table && <BlockRenderer block={table} />}
             {sources && <BlockRenderer block={sources} />}
             {notice && <BlockRenderer block={notice} />}
@@ -146,6 +155,7 @@ export function App() {
             {diagnostics && <BlockRenderer block={diagnostics} />}
           </aside>
         </div>
+        <FooterAccordion />
       </section>
     </main>
   );
@@ -374,7 +384,15 @@ function BlockRenderer({ block }: { block: A2UIBlock }) {
     return (
       <article className="detail-section result-summary">
         <p className="breadcrumb">홈 › 민원서비스 › GenUI Gateway</p>
-        <h1>{block.intent}</h1>
+        <div className="detail-heading-row">
+          <h1>{block.intent}</h1>
+          <div className="share-actions" aria-label="공유 및 보조 기능">
+            <button type="button" aria-label="페이스북 공유">f</button>
+            <button type="button" aria-label="X 공유">X</button>
+            <button type="button" aria-label="링크복사">⌁</button>
+            <button type="button" aria-label="프린트 하기">⎙</button>
+          </div>
+        </div>
         <h2>서비스 개요</h2>
         <dl className="overview-list">
           <div>
@@ -390,6 +408,105 @@ function BlockRenderer({ block }: { block: A2UIBlock }) {
             <dd>공공 API와 MCP Tool 응답을 GenUI block으로 변환하여 안내합니다.</dd>
           </div>
         </dl>
+      </article>
+    );
+  }
+
+  if (block.type === "service-results") {
+    return (
+      <article className="detail-section service-results-section">
+        <div className="section-toolbar">
+          <h2>{block.title}</h2>
+          <div className="result-controls" aria-label="검색 결과 표시 제어">
+            <label>
+              <span>표시</span>
+              <select defaultValue="10" aria-label="페이지당 결과 수">
+                <option value="10">10개</option>
+                <option value="30">30개</option>
+                <option value="50">50개</option>
+              </select>
+            </label>
+            <div className="sort-buttons" role="group" aria-label="정렬">
+              <button className="active" type="button">인기순</button>
+              <button type="button">가나다순</button>
+            </div>
+          </div>
+        </div>
+        <div className="service-result-list">
+          {block.results.map((result) => (
+            <article className="service-result-card" key={result.id}>
+              <Gov24Icon label={result.title} name={result.icon} size="md" tone={toneForServiceStatus(result.status)} />
+              <div>
+                <strong>{result.title}</strong>
+                <p>{result.description}</p>
+                <dl>
+                  <div>
+                    <dt>제공기관</dt>
+                    <dd>{result.agency}</dd>
+                  </div>
+                  <div>
+                    <dt>신청방법</dt>
+                    <dd>{result.methods.join(", ")}</dd>
+                  </div>
+                  <div>
+                    <dt>수수료</dt>
+                    <dd>{result.fee}</dd>
+                  </div>
+                </dl>
+              </div>
+              <button type="button">{result.ctaLabel}</button>
+            </article>
+          ))}
+        </div>
+        <div className="pagination-row" aria-label="페이지 이동">
+          <button type="button" disabled>처음</button>
+          <button className="active" type="button">1</button>
+          <button type="button">2</button>
+          <button type="button">다음</button>
+        </div>
+      </article>
+    );
+  }
+
+  if (block.type === "application-guide") {
+    return (
+      <article className="detail-section application-guide-section">
+        <h2>신청 방법 및 절차</h2>
+        <dl className="overview-list compact">
+          <div>
+            <dt>분류</dt>
+            <dd>{block.guide.category}</dd>
+          </div>
+          <div>
+            <dt>신청 자격</dt>
+            <dd>{block.guide.eligibility}</dd>
+          </div>
+          <div>
+            <dt>처리 기간</dt>
+            <dd>{block.guide.period}</dd>
+          </div>
+          <div>
+            <dt>구비 서류</dt>
+            <dd>{block.guide.requiredDocuments.join(", ")}</dd>
+          </div>
+        </dl>
+        <ol className="application-steps">
+          {block.guide.steps.map((step, index) => (
+            <li key={step.title}>
+              <span>{index + 1}</span>
+              <div>
+                <strong>{step.title}</strong>
+                <p>{step.description}</p>
+              </div>
+              {step.action && <button type="button">{step.action}</button>}
+            </li>
+          ))}
+        </ol>
+        <div className="related-link-row">
+          {block.guide.relatedLinks.map((link) => (
+            <button key={link} type="button">{link}</button>
+          ))}
+        </div>
       </article>
     );
   }
@@ -494,6 +611,32 @@ function BlockRenderer({ block }: { block: A2UIBlock }) {
   }
 
   return null;
+}
+
+function FooterAccordion() {
+  return (
+    <footer className="g24-container footer-accordion" aria-label="정부24 하단 바로가기">
+      {footerShortcuts.map((group, index) => (
+        <details key={group.title} open={index === 0}>
+          <summary>{group.title}<span aria-hidden="true">+</span></summary>
+          <div>
+            {group.items.map((item) => (
+              <a href="#genui-result" key={item}>{item}</a>
+            ))}
+          </div>
+        </details>
+      ))}
+      <section className="page-feedback" aria-label="페이지 만족도">
+        <p>이 페이지에 만족하시나요?</p>
+        <div role="group" aria-label="만족도 선택">
+          {["매우만족", "만족", "보통", "불만족"].map((label) => (
+            <button key={label} type="button">{label}</button>
+          ))}
+        </div>
+        <button type="button">평가완료</button>
+      </section>
+    </footer>
+  );
 }
 
 function StatusBadge({ status }: { status: SourceStatus }) {

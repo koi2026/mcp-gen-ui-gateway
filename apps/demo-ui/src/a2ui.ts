@@ -1,10 +1,22 @@
-import type { DemoScenario, GatewayContract, Metric, PublicDataSource, SearchSuggestion, ServiceAction, ToolTrace } from "./demo-data";
+import type {
+  ApplicationGuide,
+  DemoScenario,
+  GatewayContract,
+  Metric,
+  PublicDataSource,
+  SearchSuggestion,
+  ServiceAction,
+  ServiceResult,
+  ToolTrace
+} from "./demo-data";
 
 export type A2UIBlock =
   | { type: "hero-summary"; id: string; query: string; intent: string; answer: string }
   | { type: "search-suggestions"; id: string; suggestions: SearchSuggestion[] }
   | { type: "service-actions"; id: string; services: ServiceAction[] }
   | { type: "metric-strip"; id: string; metrics: Metric[] }
+  | { type: "service-results"; id: string; title: string; results: ServiceResult[] }
+  | { type: "application-guide"; id: string; guide: ApplicationGuide }
   | { type: "data-table"; id: string; title: string; columns: { key: string; label: string }[]; rows: Record<string, string>[] }
   | { type: "source-list"; id: string; sources: PublicDataSource[] }
   | { type: "tool-trace"; id: string; traces: ToolTrace[] }
@@ -31,6 +43,8 @@ export const supportedBlockTypes: A2UIBlock["type"][] = [
   "search-suggestions",
   "service-actions",
   "metric-strip",
+  "service-results",
+  "application-guide",
   "data-table",
   "source-list",
   "tool-trace",
@@ -74,6 +88,17 @@ export function scenarioToGenUIResponse(scenario: DemoScenario): GenUIEnvelope {
       type: "metric-strip",
       id: `${scenario.id}-metrics`,
       metrics: scenario.metrics
+    },
+    {
+      type: "service-results",
+      id: `${scenario.id}-results`,
+      title: "민원 검색 결과",
+      results: scenario.serviceResults
+    },
+    {
+      type: "application-guide",
+      id: `${scenario.id}-application-guide`,
+      guide: scenario.applicationGuide
     },
     {
       type: "data-table",
