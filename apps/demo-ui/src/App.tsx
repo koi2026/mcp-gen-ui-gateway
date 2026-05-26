@@ -212,6 +212,7 @@ export function App() {
 
           <aside className="home-right">
             <LoginPanel />
+            <RecentServicePanel />
             <NoticePanel />
             <CampaignPanel />
           </aside>
@@ -269,10 +270,10 @@ function QuickServicePanel() {
     <section className="quick-panel" aria-label="자주 찾는 서비스">
       <div className="panel-title-row">
         <h2>자주 찾는 서비스</h2>
-        <div className="panel-arrows" aria-hidden="true">
-          <span>‹</span>
-          <span>›</span>
-          <b>펼쳐보기 ⊞</b>
+        <div className="panel-arrows" aria-label="자주 찾는 서비스 목록 제어">
+          <button aria-label="자주 찾는 서비스 이전 목록" disabled type="button">‹</button>
+          <button aria-label="자주 찾는 서비스 다음 목록" type="button">›</button>
+          <button className="expand-control" type="button">펼쳐보기 ⊞</button>
         </div>
       </div>
       <div className="quick-grid">
@@ -282,6 +283,22 @@ function QuickServicePanel() {
             <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
           </button>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function RecentServicePanel() {
+  return (
+    <section className="side-panel empty-state-panel" aria-label="최근에 본 서비스">
+      <div className="panel-title-row">
+        <h2>최근에 본 서비스</h2>
+        <span aria-hidden="true">비회원</span>
+      </div>
+      <div className="empty-state-box">
+        <Gov24Icon label="최근에 본 서비스" name="document" size="md" tone="gray" variant="circle" />
+        <strong>최근에 본 서비스가 없습니다.</strong>
+        <p>로그인하면 신청 내역과 관심 서비스를 이어서 확인할 수 있습니다.</p>
       </div>
     </section>
   );
@@ -325,7 +342,12 @@ function CampaignPanel() {
     <section className="campaign-panel" aria-label="홍보 배너">
       <p>새롭게 만나는 똑똑한 정부서비스</p>
       <strong>어떤 공공 API도<br />한 화면으로</strong>
-      <span aria-hidden="true">● ● ●</span>
+      <div className="campaign-controls" aria-label="홍보 배너 제어">
+        <span>1 / 3</span>
+        <button aria-label="일시정지" type="button">Ⅱ</button>
+        <button aria-label="이전 배너" disabled type="button">‹</button>
+        <button aria-label="다음 배너" type="button">›</button>
+      </div>
     </section>
   );
 }

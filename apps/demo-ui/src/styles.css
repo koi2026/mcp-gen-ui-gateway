@@ -425,7 +425,7 @@ input:focus-visible {
   color: #2f3742;
 }
 
-.panel-arrows span {
+.panel-arrows button {
   display: grid;
   place-items: center;
   width: 34px;
@@ -433,16 +433,27 @@ input:focus-visible {
   border: 1px solid #cfd6df;
   border-radius: 50%;
   background: #fff;
+  color: #2f3742;
   font-size: 24px;
 }
 
-.panel-arrows span:first-child {
+.panel-arrows button:disabled {
   background: #d1d7de;
+  color: #7e8793;
+  cursor: default;
+  opacity: 0.72;
 }
 
-.panel-arrows b {
+.panel-arrows .expand-control {
+  width: auto;
+  height: auto;
   margin-left: 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #2f3742;
   font-size: 13px;
+  font-weight: 900;
 }
 
 .quick-grid {
@@ -622,6 +633,35 @@ input:focus-visible {
   padding: 24px;
 }
 
+.empty-state-panel .panel-title-row span {
+  color: #69717d;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.empty-state-box {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  background: #f5f8fc;
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.empty-state-box strong {
+  color: #222934;
+  font-size: 15px;
+  font-weight: 1000;
+}
+
+.empty-state-box p {
+  color: #637082;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
 .notice-panel ul {
   margin: 0;
   padding: 0;
@@ -645,6 +685,7 @@ input:focus-visible {
 }
 
 .campaign-panel {
+  position: relative;
   min-height: 190px;
   padding: 28px 30px;
   background: linear-gradient(135deg, #03c6f6, #1567ff);
@@ -664,10 +705,40 @@ input:focus-visible {
   letter-spacing: -1px;
 }
 
-.campaign-panel span {
-  display: block;
-  margin-top: 32px;
-  opacity: 0.7;
+.campaign-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.campaign-controls span {
+  min-width: 48px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  color: #1b4b91;
+  font-size: 13px;
+  font-weight: 1000;
+  text-align: center;
+}
+
+.campaign-controls button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1b4b91;
+  font-weight: 1000;
+}
+
+.campaign-controls button:disabled {
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(27, 75, 145, 0.58);
+  cursor: default;
 }
 
 .lower-grid {
