@@ -28,6 +28,10 @@ In team architecture, this role sits after the MCP backend and AI orchestration 
 
 Out of scope: Government24 login automation, identity verification, automatic form submission, resident registration numbers, passwords, certificates, auth tokens, definitive eligibility decisions, scheduled crawling, and hosted HTTP/SSE gateway mode.
 
+## Contribution Workflow
+
+Branch naming, atomic commits, Conventional Commits, and PR review rules are documented in [docs/git-workflow.md](docs/git-workflow.md).
+
 ## Quick Start
 
 ```bash
