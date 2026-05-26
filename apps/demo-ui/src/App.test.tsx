@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
 
@@ -17,5 +17,8 @@ describe("App", () => {
     expect(screen.getByText("Gateway 응답 계약")).toBeInTheDocument();
     expect(screen.getByText(/인증키 미발급 API/)).toBeInTheDocument();
     expect(container.querySelectorAll(".gov24-icon").length).toBeGreaterThan(12);
+
+    fireEvent.click(screen.getByRole("button", { name: /For Foreigners/ }));
+    expect(screen.getByRole("menuitem", { name: "English" })).toBeInTheDocument();
   });
 });

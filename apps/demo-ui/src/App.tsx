@@ -5,7 +5,13 @@ import { Gov24Icon, type Gov24IconName } from "./gov24-components";
 import "./styles.css";
 
 const primaryNav = ["민원서비스", "혜택알리미", "생활", "정책정보", "고객센터"];
-const topLinks = ["For Foreigners", "어린이", "시니어", "지원", "화면크기"];
+const topLinks = [
+  { label: "For Foreigners", items: ["한국어", "English", "中文", "Guide"] },
+  { label: "어린이", href: "#home" },
+  { label: "시니어", href: "#home" },
+  { label: "지원", items: ["인증등록/관리", "복합인증관리", "보안센터", "누리집 안내지도"] },
+  { label: "화면크기", items: ["작게", "보통", "조금 크게", "크게", "초기화"] }
+];
 const quickServices: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "orange" | "purple" }[] = [
   { label: "토지(임야)대장", icon: "document", tone: "orange" },
   { label: "주민등록등본(초본)", icon: "certificate", tone: "orange" },
@@ -43,6 +49,7 @@ const footerShortcuts = [
 
 export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
+  const [activeUtility, setActiveUtility] = useState<string | null>(null);
   const activeScenario = demoScenarios.find((scenario) => scenario.id === activeScenarioId) ?? demoScenarios[0];
   const response = useMemo(() => scenarioToGenUIResponse(activeScenario), [activeScenario]);
 
@@ -78,7 +85,27 @@ export function App() {
           <div className="header-tools" aria-label="상단 부가 메뉴">
             <div className="top-links">
               {topLinks.map((link) => (
-                <button key={link} type="button">{link}</button>
+                link.items ? (
+                  <div className="utility-menu" key={link.label}>
+                    <button
+                      aria-expanded={activeUtility === link.label}
+                      onClick={() => setActiveUtility(activeUtility === link.label ? null : link.label)}
+                      type="button"
+                    >
+                      {link.label}
+                      <span aria-hidden="true">⌄</span>
+                    </button>
+                    {activeUtility === link.label && (
+                      <div className="utility-popover" role="menu">
+                        {link.items.map((item) => (
+                          <button key={item} role="menuitem" type="button">{item}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <a href={link.href} key={link.label}>{link.label}</a>
+                )
               ))}
             </div>
             <div className="account-links">
