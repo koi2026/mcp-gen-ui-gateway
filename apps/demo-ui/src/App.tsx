@@ -107,6 +107,7 @@ export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
   const [activeUtility, setActiveUtility] = useState<string | null>(null);
   const [activeNav, setActiveNav] = useState<string | null>(null);
+  const [activeModal, setActiveModal] = useState<"search" | "quick" | "login" | null>(null);
   const activeScenario = demoScenarios.find((scenario) => scenario.id === activeScenarioId) ?? demoScenarios[0];
   const response = useMemo(() => scenarioToGenUIResponse(activeScenario), [activeScenario]);
 
@@ -167,9 +168,9 @@ export function App() {
             </div>
             <div className="account-links">
               <button type="button">정부24 AI</button>
-              <button type="button">통합검색</button>
-              <button type="button">로그인</button>
-              <button type="button">회원가입</button>
+              <button onClick={() => setActiveModal("search")} type="button">통합검색</button>
+              <button onClick={() => setActiveModal("login")} type="button">로그인</button>
+              <button onClick={() => setActiveModal("login")} type="button">회원가입</button>
             </div>
           </div>
         </div>
@@ -197,7 +198,7 @@ export function App() {
         <div className="g24-container home-grid">
           <section className="home-left">
             <SearchHero query={activeScenario.query} />
-            <QuickServicePanel />
+            <QuickServicePanel onOpenAll={() => setActiveModal("quick")} />
             <section className="lower-grid">
               <LifeGuidePanel suggestions={suggestions} />
               <OneStopPanel
@@ -211,7 +212,7 @@ export function App() {
           </section>
 
           <aside className="home-right">
-            <LoginPanel />
+            <LoginPanel onLogin={() => setActiveModal("login")} />
             <RecentServicePanel />
             <NoticePanel />
             <CampaignPanel />
@@ -234,6 +235,9 @@ export function App() {
         </div>
         <FooterAccordion />
       </section>
+      {activeModal && (
+        <Gov24Modal modal={activeModal} onClose={() => setActiveModal(null)} />
+      )}
     </main>
   );
 }
@@ -265,7 +269,7 @@ function SearchHero({ query }: { query: string }) {
   );
 }
 
-function QuickServicePanel() {
+function QuickServicePanel({ onOpenAll }: { onOpenAll: () => void }) {
   return (
     <section className="quick-panel" aria-label="자주 찾는 서비스">
       <div className="panel-title-row">
@@ -273,7 +277,7 @@ function QuickServicePanel() {
         <div className="panel-arrows" aria-label="자주 찾는 서비스 목록 제어">
           <button aria-label="자주 찾는 서비스 이전 목록" disabled type="button">‹</button>
           <button aria-label="자주 찾는 서비스 다음 목록" type="button">›</button>
-          <button className="expand-control" type="button">펼쳐보기 ⊞</button>
+          <button className="expand-control" onClick={onOpenAll} type="button">펼쳐보기 ⊞</button>
         </div>
       </div>
       <div className="quick-grid">
@@ -304,7 +308,7 @@ function RecentServicePanel() {
   );
 }
 
-function LoginPanel() {
+function LoginPanel({ onLogin }: { onLogin: () => void }) {
   return (
     <section className="login-panel" aria-label="로그인 안내">
       <h2><strong>회원가입</strong>하고 아래 서비스를 편리하게 이용하세요.</h2>
@@ -316,8 +320,90 @@ function LoginPanel() {
           </span>
         ))}
       </div>
-      <button type="button">로그인</button>
+      <button onClick={onLogin} type="button">로그인</button>
     </section>
+  );
+}
+
+function Gov24Modal({
+  modal,
+  onClose
+}: {
+  modal: "search" | "quick" | "login";
+  onClose: () => void;
+}) {
+  const titles = {
+    search: "통합검색",
+    quick: "자주 찾는 서비스 모아보기",
+    login: "안내"
+  };
+
+  return (
+    <div className="modal-backdrop" role="presentation">
+      <section aria-labelledby="g24-modal-title" aria-modal="true" className="g24-modal" role="dialog">
+        <div className="modal-title-row">
+          <h2 id="g24-modal-title">{titles[modal]}</h2>
+          <button aria-label="닫기" onClick={onClose} type="button">×</button>
+        </div>
+        {modal === "search" && <SearchModalContent />}
+        {modal === "quick" && <QuickServiceModalContent />}
+        {modal === "login" && <LoginRequiredModalContent onClose={onClose} />}
+      </section>
+    </div>
+  );
+}
+
+function SearchModalContent() {
+  return (
+    <div className="search-modal-content">
+      <label className="modal-search-box">
+        <input aria-label="통합검색어" placeholder="검색어를 입력해 주세요." />
+        <button type="button">검색</button>
+      </label>
+      <section>
+        <h3>자주 찾는 서비스</h3>
+        <div className="modal-chip-grid">
+          {quickServices.slice(0, 6).map((service, index) => (
+            <button key={service.label} type="button">{index + 1}. {service.label}</button>
+          ))}
+        </div>
+      </section>
+      <section className="modal-empty">
+        <h3>최근 검색어</h3>
+        <p>최근 검색어가 없습니다.</p>
+      </section>
+    </div>
+  );
+}
+
+function QuickServiceModalContent() {
+  return (
+    <div className="quick-modal-grid">
+      {quickServices.concat([
+        { label: "인감증명서", icon: "certificate", tone: "orange" as const },
+        { label: "지적도(임야도)", icon: "document", tone: "orange" as const },
+        { label: "소득금액 증명", icon: "tax", tone: "green" as const },
+        { label: "건강보험 자격득실 확인", icon: "health", tone: "green" as const }
+      ]).map((service) => (
+        <button key={service.label} type="button">
+          <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
+          <span>{service.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function LoginRequiredModalContent({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="login-required-content">
+      <strong>로그인이 필요한 메뉴입니다.</strong>
+      <p>로그인 페이지로 이동하시겠습니까?</p>
+      <div className="modal-actions">
+        <button onClick={onClose} type="button">취소</button>
+        <button onClick={onClose} type="button">확인</button>
+      </div>
+    </div>
   );
 }
 

@@ -629,6 +629,182 @@ input:focus-visible {
   font-weight: 900;
 }
 
+.modal-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 24px;
+}
+
+.g24-modal {
+  width: min(640px, 100%);
+  max-height: min(720px, calc(100vh - 48px));
+  overflow: auto;
+  border: 1px solid #d5dbe4;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(13, 26, 48, 0.24);
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #e2e7ef;
+  padding: 22px 26px;
+}
+
+.modal-title-row h2 {
+  color: #111820;
+  font-size: 24px;
+  font-weight: 1000;
+}
+
+.modal-title-row > button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #f2f4f7;
+  color: #303944;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.search-modal-content,
+.login-required-content {
+  display: grid;
+  gap: 22px;
+  padding: 26px;
+}
+
+.modal-search-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 8px;
+  border: 2px solid #2467e8;
+  border-radius: 999px;
+  padding: 6px;
+}
+
+.modal-search-box input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 0 16px;
+  color: #303944;
+  font-weight: 800;
+}
+
+.modal-search-box button,
+.modal-actions button:last-child {
+  border: 0;
+  border-radius: 999px;
+  background: #2d6cef;
+  color: #fff;
+  font-weight: 1000;
+}
+
+.search-modal-content h3,
+.modal-empty h3 {
+  margin-bottom: 10px;
+  color: #111820;
+  font-size: 17px;
+  font-weight: 1000;
+}
+
+.modal-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.modal-chip-grid button {
+  min-height: 44px;
+  border: 1px solid #d7dde6;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 0 14px;
+  color: #202733;
+  font-weight: 900;
+  text-align: left;
+}
+
+.modal-empty {
+  border-radius: 14px;
+  background: #f5f8fc;
+  padding: 18px;
+  color: #637082;
+  font-weight: 800;
+  text-align: center;
+}
+
+.quick-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 26px;
+}
+
+.quick-modal-grid button {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+  min-height: 54px;
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+  background: #fff;
+  padding: 0 12px;
+  color: #202733;
+  font-weight: 900;
+  text-align: left;
+}
+
+.quick-modal-grid span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.login-required-content {
+  justify-items: center;
+  text-align: center;
+}
+
+.login-required-content strong {
+  color: #111820;
+  font-size: 20px;
+  font-weight: 1000;
+}
+
+.login-required-content p {
+  color: #3f4854;
+  font-weight: 800;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.modal-actions button {
+  min-width: 104px;
+  min-height: 44px;
+  border: 1px solid #d6dde7;
+  border-radius: 8px;
+  background: #fff;
+  color: #2f3742;
+  font-weight: 1000;
+}
+
 .side-panel {
   padding: 24px;
 }
@@ -1653,7 +1829,9 @@ td {
   .onestop-service-grid,
   .benefit-list,
   .login-icons,
-  .mini-metrics {
+  .mini-metrics,
+  .modal-chip-grid,
+  .quick-modal-grid {
     grid-template-columns: 1fr;
   }
 

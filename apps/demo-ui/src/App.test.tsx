@@ -30,5 +30,18 @@ describe("App", () => {
 
     expect(screen.getByRole("button", { name: "자주 찾는 서비스 이전 목록" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "이전 배너" })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "통합검색" }));
+    expect(screen.getByRole("dialog", { name: "통합검색" })).toBeInTheDocument();
+    expect(screen.getByText("최근 검색어가 없습니다.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+
+    fireEvent.click(screen.getByRole("button", { name: /펼쳐보기/ }));
+    expect(screen.getByRole("dialog", { name: "자주 찾는 서비스 모아보기" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+
+    fireEvent.click(screen.getAllByRole("button", { name: "로그인" })[0]);
+    expect(screen.getByRole("dialog", { name: "안내" })).toBeInTheDocument();
+    expect(screen.getByText("로그인이 필요한 메뉴입니다.")).toBeInTheDocument();
   });
 });
