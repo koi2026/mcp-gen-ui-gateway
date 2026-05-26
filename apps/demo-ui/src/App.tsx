@@ -1,12 +1,34 @@
 import { useMemo, useState } from "react";
 import { scenarioToGenUIResponse, type A2UIBlock } from "./a2ui";
 import { demoScenarios, type SourceStatus } from "./demo-data";
+import { Gov24Icon, type Gov24IconName } from "./gov24-components";
 import "./styles.css";
 
 const primaryNav = ["민원서비스", "혜택알리미", "생활", "정책정보", "고객센터"];
 const topLinks = ["For Foreigners", "어린이", "시니어", "지원", "화면크기"];
-const quickServices = ["토지(임야)대장", "주민등록등본(초본)", "자동차등록원부", "건축물대장", "가족관계증명서", "여권 재발급", "지방세 납세증명", "납세증명"];
-const guideItems = ["이사", "보건·복지", "육아", "사망", "입소"];
+const quickServices: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "orange" | "purple" }[] = [
+  { label: "토지(임야)대장", icon: "document", tone: "orange" },
+  { label: "주민등록등본(초본)", icon: "certificate", tone: "orange" },
+  { label: "자동차등록원부", icon: "car", tone: "orange" },
+  { label: "건축물대장", icon: "building", tone: "orange" },
+  { label: "가족관계증명서", icon: "family", tone: "purple" },
+  { label: "여권 재발급", icon: "passport", tone: "green" },
+  { label: "지방세 납세증명", icon: "tax", tone: "orange" },
+  { label: "납세증명", icon: "tax", tone: "orange" }
+];
+const guideItems: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "pink" | "purple" | "gray" }[] = [
+  { label: "이사", icon: "life", tone: "blue" },
+  { label: "보건·복지", icon: "health", tone: "pink" },
+  { label: "육아", icon: "family", tone: "green" },
+  { label: "사망", icon: "welfare", tone: "gray" },
+  { label: "입소", icon: "facility", tone: "purple" }
+];
+const loginServices: { label: string; icon: Gov24IconName }[] = [
+  { label: "민원신청", icon: "civil" },
+  { label: "전자증명", icon: "certificate" },
+  { label: "혜택알리미", icon: "benefit" },
+  { label: "생활정보", icon: "life" }
+];
 const notices = [
   "고유가 피해지원금 안내 · 1670-2626",
   "피싱 문자 및 공공기관 위장 사이트, 웹 주의 안내",
@@ -178,10 +200,10 @@ function QuickServicePanel() {
         </div>
       </div>
       <div className="quick-grid">
-        {quickServices.map((service, index) => (
-          <button key={service} type="button">
-            <strong>{service}</strong>
-            <span className={index === 4 ? "link-icon" : "doc-icon"} aria-hidden="true" />
+        {quickServices.map((service) => (
+          <button key={service.label} type="button">
+            <strong>{service.label}</strong>
+            <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
           </button>
         ))}
       </div>
@@ -194,10 +216,10 @@ function LoginPanel() {
     <section className="login-panel" aria-label="로그인 안내">
       <h2><strong>회원가입</strong>하고 아래 서비스를 편리하게 이용하세요.</h2>
       <div className="login-icons">
-        {["민원신청", "전자증명", "혜택알리미", "생활정보"].map((item) => (
-          <span key={item}>
-            <i aria-hidden="true" />
-            {item}
+        {loginServices.map((item) => (
+          <span key={item.label}>
+            <Gov24Icon label={item.label} name={item.icon} size="md" variant="circle" />
+            {item.label}
           </span>
         ))}
       </div>
@@ -243,9 +265,9 @@ function LifeGuidePanel({ suggestions }: { suggestions: A2UIBlock | undefined })
       </div>
       <div className="guide-icons">
         {guideItems.map((item, index) => (
-          <button className={index === 0 ? "active" : ""} key={item} type="button">
-            <i aria-hidden="true" />
-            {item}
+          <button className={index === 0 ? "active" : ""} key={item.label} type="button">
+            <Gov24Icon label={item.label} name={item.icon} size="lg" tone={item.tone} variant="circle" />
+            {item.label}
           </button>
         ))}
       </div>
@@ -296,8 +318,11 @@ function OneStopPanel({
       <div className="onestop-service-grid">
         {(serviceBlock?.services ?? []).map((service) => (
           <article key={service.id}>
-            <strong>{service.title}</strong>
-            <span>{service.description}</span>
+            <Gov24Icon label={service.title} name={service.icon ?? iconForServiceCategory(service.category)} size="sm" tone={toneForServiceStatus(service.status)} />
+            <div>
+              <strong>{service.title}</strong>
+              <span>{service.description}</span>
+            </div>
           </article>
         ))}
       </div>
@@ -311,6 +336,19 @@ function OneStopPanel({
       </div>
     </section>
   );
+}
+
+function iconForServiceCategory(category: string): Gov24IconName {
+  if (category === "혜택알리미") return "benefit";
+  if (category === "생활") return "life";
+  if (category === "정책정보") return "policy";
+  return "civil";
+}
+
+function toneForServiceStatus(status: SourceStatus): "blue" | "green" | "orange" {
+  if (status === "fallback") return "orange";
+  if (status === "cached") return "green";
+  return "blue";
 }
 
 function BenefitPanel({ services }: { services: A2UIBlock | undefined }) {

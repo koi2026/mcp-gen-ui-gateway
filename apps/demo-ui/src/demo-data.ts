@@ -40,6 +40,7 @@ export type ServiceAction = {
   id: string;
   title: string;
   description: string;
+  icon?: string;
   category: "민원서비스" | "혜택알리미" | "생활" | "정책정보";
   actionLabel: string;
   status: SourceStatus;
@@ -48,6 +49,7 @@ export type ServiceAction = {
 export type SearchSuggestion = {
   label: string;
   query: string;
+  icon?: string;
 };
 
 export type GatewayContract = {
@@ -90,6 +92,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "safety-news",
         title: "생활안전 안내",
         description: "재난 RSS와 생활안전 공지를 묶어 현재 주의할 정보를 보여줍니다.",
+        icon: "safety",
         category: "생활",
         actionLabel: "안전정보 보기",
         status: "cached"
@@ -98,6 +101,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "air-quality-service",
         title: "대기정보 조회",
         description: "측정소 기반 대기오염 API를 정규화해 외출 전 확인 카드로 만듭니다.",
+        icon: "air",
         category: "민원서비스",
         actionLabel: "조회하기",
         status: "ok"
@@ -106,6 +110,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "nearby-public-facility",
         title: "공공시설 찾기",
         description: "표준데이터 위치 정보를 이용해 주변 시설 후보를 안내합니다.",
+        icon: "facility",
         category: "정책정보",
         actionLabel: "후보 보기",
         status: "ok"
@@ -190,6 +195,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "activity-support",
         title: "장애인 활동지원",
         description: "지역·연령·장애 등록 현황을 기반으로 확인해야 할 신청 경로를 제시합니다.",
+        icon: "welfare",
         category: "혜택알리미",
         actionLabel: "조건 확인",
         status: "ok"
@@ -198,6 +204,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "health-counseling",
         title: "건강증진센터 상담",
         description: "공공시설 표준데이터를 이용해 가까운 상담 가능 지점을 안내합니다.",
+        icon: "health",
         category: "생활",
         actionLabel: "시설 보기",
         status: "ok"
@@ -206,6 +213,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "local-care",
         title: "지역 돌봄 서비스",
         description: "복지시설 API 실패 시에도 mock fallback으로 후보 화면을 유지합니다.",
+        icon: "benefit",
         category: "민원서비스",
         actionLabel: "대체 결과",
         status: "fallback"
@@ -280,6 +288,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "customs-item-service",
         title: "품목별 수출입실적",
         description: "HS Code 단위의 수출입 데이터를 분석 카드와 표로 렌더링합니다.",
+        icon: "policy",
         category: "정책정보",
         actionLabel: "품목 보기",
         status: "ok"
@@ -288,6 +297,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "customs-country-service",
         title: "국가별 수출입 비교",
         description: "국가·품목 축을 결합해 비교 가능한 정부 통계 화면을 생성합니다.",
+        icon: "search",
         category: "정책정보",
         actionLabel: "비교하기",
         status: "ok"
@@ -296,6 +306,7 @@ export const demoScenarios: DemoScenario[] = [
         id: "customs-region-service",
         title: "시도별 무역 현황",
         description: "지역 단위 표준 필드로 랭킹형 GenUI를 구성할 수 있습니다.",
+        icon: "building",
         category: "민원서비스",
         actionLabel: "지역 보기",
         status: "ok"

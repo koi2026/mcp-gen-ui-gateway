@@ -414,17 +414,91 @@ input:focus-visible {
   text-decoration: none;
 }
 
-.doc-icon,
-.link-icon {
-  width: 20px;
-  height: 24px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #ff8a4d 0 45%, #6ac8ff 46% 100%);
+.gov24-icon {
+  --icon-bg: #edf4ff;
+  --icon-fg: #115dbd;
+  --icon-accent: #cde4ff;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--icon-fg);
 }
 
-.link-icon {
-  background: linear-gradient(135deg, #8e7bff 0 45%, #fff 46% 100%);
-  box-shadow: inset 0 0 0 2px #9d8cff;
+.gov24-icon.tile {
+  border-radius: 7px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), transparent 42%),
+    var(--icon-bg);
+  box-shadow: inset 0 -5px 0 var(--icon-accent);
+}
+
+.gov24-icon.circle {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95) 0 16%, transparent 17%),
+    var(--icon-bg);
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.gov24-icon.plain {
+  background: transparent;
+}
+
+.gov24-icon.sm {
+  width: 24px;
+  height: 24px;
+}
+
+.gov24-icon.md {
+  width: 38px;
+  height: 38px;
+}
+
+.gov24-icon.lg {
+  width: 48px;
+  height: 48px;
+}
+
+.gov24-icon svg {
+  display: block;
+  width: 76%;
+  height: 76%;
+}
+
+.gov24-icon.blue {
+  --icon-bg: #e7f3ff;
+  --icon-fg: #1769e0;
+  --icon-accent: #b9dcff;
+}
+
+.gov24-icon.green {
+  --icon-bg: #e8f8f3;
+  --icon-fg: #087a63;
+  --icon-accent: #a8ead8;
+}
+
+.gov24-icon.orange {
+  --icon-bg: #fff2e8;
+  --icon-fg: #e0662d;
+  --icon-accent: #70c9f7;
+}
+
+.gov24-icon.pink {
+  --icon-bg: #fff0f4;
+  --icon-fg: #e64a73;
+  --icon-accent: #ffd0dc;
+}
+
+.gov24-icon.purple {
+  --icon-bg: #f2edff;
+  --icon-fg: #7b61ff;
+  --icon-accent: #d8ceff;
+}
+
+.gov24-icon.gray {
+  --icon-bg: #f1f4f8;
+  --icon-fg: #6d7785;
+  --icon-accent: #dce3ec;
 }
 
 .login-panel,
@@ -466,14 +540,6 @@ input:focus-visible {
   align-items: center;
   gap: 10px;
   font-weight: 900;
-}
-
-.login-icons i {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #eef2f7;
-  box-shadow: inset 0 0 0 10px #e6ebf2;
 }
 
 .login-panel > button,
@@ -573,18 +639,11 @@ input:focus-visible {
   font-weight: 900;
 }
 
-.guide-icons button i {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  background: #f1f4f8;
-}
-
 .guide-icons button.active {
   color: #0b66e4;
 }
 
-.guide-icons button.active i {
+.guide-icons button.active .gov24-icon {
   border: 2px solid #0b66e4;
   background: #e7f3ff;
 }
@@ -642,10 +701,21 @@ input:focus-visible {
 }
 
 .onestop-service-grid article {
+  position: relative;
   min-height: 78px;
   border-radius: 10px;
   background: #f2f3f5;
   padding: 14px;
+}
+
+.onestop-service-grid article > .gov24-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.onestop-service-grid article > div {
+  padding-right: 34px;
 }
 
 .onestop-service-grid strong {

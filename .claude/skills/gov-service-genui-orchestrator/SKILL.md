@@ -41,6 +41,7 @@ description: 정부서비스 Gateway, 정부24 유사 UI, 공공데이터포털 
 - renderer는 block type별로 분기한다.
 - 정부서비스형 화면은 검색, 자주 찾는 서비스, 서비스 후보 카드, 지표/표, 출처, diagnostics, 안전고지를 포함한다.
 - 실제 plus.gov.kr 조사에서 확인한 공통 컴포넌트는 `apps/demo-ui/src/gov24-components.tsx`에 재사용 가능하게 추가한다.
+- JSON의 `icon` 필드는 `Gov24Icon`으로 렌더링하고, 알 수 없는 아이콘 키는 라벨/카테고리 기반 fallback을 적용한다.
 - 민감정보 입력, 로그인 자동화, 본인인증, 자동 제출은 구현하지 않는다.
 
 ## Phase 4: 검증 루프
@@ -58,6 +59,7 @@ description: 정부서비스 Gateway, 정부24 유사 UI, 공공데이터포털 
 - 정부24 유사 통합검색과 서비스 카드 흐름이 보인다.
 - 참고 이미지의 홈/상세/메가메뉴 구조와 시각 밀도가 맞는다.
 - 다양한 API mock이 같은 renderer로 그려진다.
+- JSON 기반 아이콘이 외부 asset 없이 정부24 스타일로 표시된다.
 - 출처와 상태가 보인다.
 - fallback/error가 demo에 포함된다.
 - 하네스 문서와 CLAUDE 포인터가 존재한다.
