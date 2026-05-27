@@ -152,6 +152,9 @@ export function App() {
   const openDetailPage = (title: string) => {
     setSelectedServiceTitle(title);
     setActivePage("detail");
+    setActiveModal(null);
+    setActiveNav(null);
+    setActiveUtility(null);
   };
 
   return (
@@ -220,7 +223,7 @@ export function App() {
                   {item.label}
                   <span aria-hidden="true">{activeNav === item.label ? "⌃" : "⌄"}</span>
                 </button>
-                <MegaMenu columns={item.menu} label={item.label} />
+                <MegaMenu columns={item.menu} label={item.label} onOpenDetail={openDetailPage} />
               </div>
             ))}
           </div>
@@ -234,7 +237,7 @@ export function App() {
               <SearchHero onOpenSearch={() => setActiveModal("search")} query={activeScenario.query} />
               <QuickServicePanel onOpenAll={() => setActiveModal("quick")} onOpenDetail={openDetailPage} />
               <section className="lower-grid">
-                <LifeGuidePanel suggestions={suggestions} />
+                <LifeGuidePanel onOpenDetail={openDetailPage} suggestions={suggestions} />
                 <OneStopPanel
                   activeScenarioId={activeScenarioId}
                   metrics={metrics}
@@ -276,24 +279,24 @@ export function App() {
             </div>
           </>
         )}
-        <FooterAccordion />
+        <FooterAccordion onOpenDetail={openDetailPage} />
       </section>
       {activeModal && (
-        <Gov24Modal modal={activeModal} onClose={() => setActiveModal(null)} />
+        <Gov24Modal modal={activeModal} onClose={() => setActiveModal(null)} onOpenDetail={openDetailPage} />
       )}
     </main>
   );
 }
 
-function MegaMenu({ columns, label }: { columns: string[][]; label: string }) {
+function MegaMenu({ columns, label, onOpenDetail }: { columns: string[][]; label: string; onOpenDetail: (title: string) => void }) {
   return (
     <section className="mega-menu" aria-label={`${label} 메뉴`}>
       <div className="g24-container mega-grid">
         {columns.map(([title, body]) => (
-          <a href="#genui-result" key={title}>
+          <button aria-label={title} key={title} onClick={() => onOpenDetail(title)} type="button">
             <strong>{title}</strong>
             <span>{body}</span>
-          </a>
+          </button>
         ))}
       </div>
     </section>
@@ -375,10 +378,12 @@ function LoginPanel({ onLogin }: { onLogin: () => void }) {
 
 function Gov24Modal({
   modal,
-  onClose
+  onClose,
+  onOpenDetail
 }: {
   modal: "search" | "quick" | "login" | "mobileMenu";
   onClose: () => void;
+  onOpenDetail: (title: string) => void;
 }) {
   const titles = {
     search: "통합검색",
@@ -394,16 +399,16 @@ function Gov24Modal({
           <h2 id="g24-modal-title">{titles[modal]}</h2>
           <button aria-label="닫기" onClick={onClose} type="button">×</button>
         </div>
-        {modal === "search" && <SearchModalContent />}
-        {modal === "quick" && <QuickServiceModalContent />}
+        {modal === "search" && <SearchModalContent onOpenDetail={onOpenDetail} />}
+        {modal === "quick" && <QuickServiceModalContent onOpenDetail={onOpenDetail} />}
         {modal === "login" && <LoginRequiredModalContent onClose={onClose} />}
-        {modal === "mobileMenu" && <MobileMenuContent onClose={onClose} />}
+        {modal === "mobileMenu" && <MobileMenuContent onClose={onClose} onOpenDetail={onOpenDetail} />}
       </section>
     </div>
   );
 }
 
-function MobileMenuContent({ onClose }: { onClose: () => void }) {
+function MobileMenuContent({ onClose, onOpenDetail }: { onClose: () => void; onOpenDetail: (title: string) => void }) {
   return (
     <div className="mobile-menu-content">
       <div className="mobile-menu-actions">
@@ -416,10 +421,18 @@ function MobileMenuContent({ onClose }: { onClose: () => void }) {
             <summary>{item.label}<span aria-hidden="true">⌄</span></summary>
             <div>
               {item.menu.map(([title, body]) => (
-                <a href="#genui-result" key={title} onClick={onClose}>
+                <button
+                  aria-label={title}
+                  key={title}
+                  onClick={() => {
+                    onOpenDetail(title);
+                    onClose();
+                  }}
+                  type="button"
+                >
                   <strong>{title}</strong>
                   <span>{body}</span>
-                </a>
+                </button>
               ))}
             </div>
           </details>
@@ -434,7 +447,7 @@ function MobileMenuContent({ onClose }: { onClose: () => void }) {
   );
 }
 
-function SearchModalContent() {
+function SearchModalContent({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   return (
     <div className="search-modal-content">
       <label className="modal-search-box">
@@ -445,7 +458,7 @@ function SearchModalContent() {
         <h3>자주 찾는 서비스</h3>
         <div className="modal-chip-grid">
           {quickServices.slice(0, 6).map((service, index) => (
-            <button key={service.label} type="button">{index + 1}. {service.label}</button>
+            <button key={service.label} onClick={() => onOpenDetail(service.label)} type="button">{index + 1}. {service.label}</button>
           ))}
         </div>
       </section>
@@ -457,11 +470,11 @@ function SearchModalContent() {
   );
 }
 
-function QuickServiceModalContent() {
+function QuickServiceModalContent({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   return (
     <div className="quick-modal-grid">
       {allQuickServices.map((service) => (
-        <button key={service.label} type="button">
+        <button key={service.label} onClick={() => onOpenDetail(service.label)} type="button">
           <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
           <span>{service.label}</span>
         </button>
@@ -518,7 +531,7 @@ function CampaignPanel() {
   );
 }
 
-function LifeGuidePanel({ suggestions }: { suggestions: A2UIBlock | undefined }) {
+function LifeGuidePanel({ onOpenDetail, suggestions }: { onOpenDetail: (title: string) => void; suggestions: A2UIBlock | undefined }) {
   const suggestionBlock = suggestions?.type === "search-suggestions" ? suggestions : undefined;
   const [activeGuide, setActiveGuide] = useState(guideItems[0].label);
   const activeSuggestions = activeGuide === "이사"
@@ -541,7 +554,7 @@ function LifeGuidePanel({ suggestions }: { suggestions: A2UIBlock | undefined })
       </div>
       <div className="guide-list">
         {activeSuggestions.map((label) => (
-          <button key={label} type="button">
+          <button key={label} onClick={() => onOpenDetail(label)} type="button">
             <span>{label}</span>
             <strong>›</strong>
           </button>
@@ -897,7 +910,7 @@ function BlockRenderer({
   return null;
 }
 
-function FooterAccordion() {
+function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   const [infoOpen, setInfoOpen] = useState(false);
 
   return (
@@ -909,7 +922,7 @@ function FooterAccordion() {
             <summary>{group.title}<span aria-hidden="true">+</span></summary>
             <div>
               {group.items.map((item) => (
-                <a href="#genui-result" key={item}>{item}</a>
+                <button key={item} onClick={() => onOpenDetail(item)} type="button">{item}</button>
               ))}
             </div>
           </details>

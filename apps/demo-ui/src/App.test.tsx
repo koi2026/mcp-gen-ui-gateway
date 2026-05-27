@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
 
@@ -38,8 +38,22 @@ describe("App", () => {
     expect(screen.getByRole("button", { name: "재생" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "통합검색" }));
-    expect(screen.getByRole("dialog", { name: "통합검색" })).toBeInTheDocument();
+    const searchDialog = screen.getByRole("dialog", { name: "통합검색" });
+    expect(searchDialog).toBeInTheDocument();
     expect(screen.getByText("최근 검색어가 없습니다.")).toBeInTheDocument();
+    fireEvent.click(within(searchDialog).getByRole("button", { name: /1\. 토지\(임야\)대장/ }));
+    expect(screen.queryByRole("dialog", { name: "통합검색" })).not.toBeInTheDocument();
+    expect(screen.getByText("선택한 서비스")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "토지(임야)대장" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "← 목록으로" }));
+
+    fireEvent.click(screen.getByRole("button", { name: /민원서비스/ }));
+    fireEvent.click(screen.getByRole("button", { name: "민원 찾기" }));
+    expect(screen.getByText("선택한 서비스")).toBeInTheDocument();
+    expect(screen.getAllByText("민원 찾기").length).toBeGreaterThan(1);
+    fireEvent.click(screen.getByRole("button", { name: "← 목록으로" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "통합검색" }));
     fireEvent.click(screen.getByRole("button", { name: "닫기" }));
 
     fireEvent.click(screen.getByRole("button", { name: "검색" }));
@@ -47,8 +61,12 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: "닫기" }));
 
     fireEvent.click(screen.getByRole("button", { name: /펼쳐보기/ }));
-    expect(screen.getByRole("dialog", { name: "자주 찾는 서비스 모아보기" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+    const quickDialog = screen.getByRole("dialog", { name: "자주 찾는 서비스 모아보기" });
+    expect(quickDialog).toBeInTheDocument();
+    fireEvent.click(within(quickDialog).getByRole("button", { name: /대학교 졸업 증명/ }));
+    expect(screen.queryByRole("dialog", { name: "자주 찾는 서비스 모아보기" })).not.toBeInTheDocument();
+    expect(screen.getAllByText("대학교 졸업 증명").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: "← 목록으로" }));
 
     fireEvent.click(screen.getAllByRole("button", { name: "로그인" })[0]);
     expect(screen.getByRole("dialog", { name: "안내" })).toBeInTheDocument();
@@ -56,9 +74,13 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: "닫기" }));
 
     fireEvent.click(screen.getByRole("button", { name: "전체메뉴" }));
-    expect(screen.getByRole("dialog", { name: "전체메뉴" })).toBeInTheDocument();
+    const mobileDialog = screen.getByRole("dialog", { name: "전체메뉴" });
+    expect(mobileDialog).toBeInTheDocument();
     expect(screen.getAllByText("다운로드파일 진본확인").length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+    fireEvent.click(within(mobileDialog).getByRole("button", { name: "사실/진위확인" }));
+    expect(screen.queryByRole("dialog", { name: "전체메뉴" })).not.toBeInTheDocument();
+    expect(screen.getAllByText("사실/진위확인").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: "← 목록으로" }));
 
     fireEvent.click(screen.getByRole("button", { name: /토지\(임야\)대장/ }));
     expect(screen.getByText("선택한 서비스")).toBeInTheDocument();

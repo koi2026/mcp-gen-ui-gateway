@@ -29,7 +29,7 @@ This document records the Government24 interaction patterns inspected with Playw
 | Banner carousel controls | Pause/play, previous, next, and page indicator update visible banner copy | `CampaignPanel` |
 | Life guide categories | Icon tabs switch situation links while preserving selected/non-selected states | `LifeGuidePanel` |
 | One-stop service tabs | Scenario chips switch generated API scenario | `OneStopPanel` |
-| Home to detail navigation | Service cards and result CTAs open the generated service detail page with a back-to-list control | `activePage`, `detail-entry-bar` |
+| Home to detail navigation | Service cards, search modal chips, expanded quick-service items, life-guide links, mobile menu items, footer shortcuts, and result CTAs open the generated service detail page with a back-to-list control | `openDetailPage`, `activePage`, `detail-entry-bar` |
 | Search result list | Result cards, sort buttons, page-size select, pagination, CTA | `service-results` block |
 | Service detail overview | Breadcrumb, title, share/print actions, overview definition list | `hero-summary` block renderer |
 | Page table of contents | Side TOC with active item, hover state, and CTA button | `gateway-contract` block |
@@ -54,11 +54,13 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Mobile Playwright confirmed modal dialogs remain within the viewport with zero overflowing elements.
 - Mobile Playwright opened `전체메뉴`, confirmed full menu dialog content, and confirmed zero overflowing elements.
 - Desktop Playwright identified footer related links, `정부24 안내열기`, social links, policy links, and top navigation action; the demo footer mirrors these as reusable shell controls.
-- Desktop Playwright compared core shell states after tuning: nav `19px/700`, logo `34px/800`, panel title `20px/800`, unselected nav backgrounds remain transparent, hover receives the Government24-like `#eef2f7`, and only the open nav receives `#d6e0eb`.
+- Desktop Playwright compared core shell states after tuning: nav `19px/700`, logo `34px/760`, panel title `20px/720`, unselected nav backgrounds remain transparent, hover receives the Government24-like `#eef2f7`, and only the open nav receives `#d6e0eb`.
 - Desktop Playwright verified action-card states: quick service cards stay white by default and receive `#f8fafc` plus inset border on hover; inactive scenario chips receive `#eef2f7` only on hover; selected chips remain dark blue.
 - Mobile Playwright confirmed card interaction changes preserve `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements.
 - Desktop Playwright verified the main search pill opens the integrated search modal, modal backdrop uses `rgba(0, 0, 0, 0.5)`, modal chips hover to `#eef2f7`, and disabled carousel controls keep opacity `1` with muted gray styling.
 - Desktop Playwright verified service-card detail entry, `목록으로` return, active TOC styling, side CTA presence, and share feedback text `링크가 복사되었습니다.`
+- Desktop Playwright verified common detail entry from the integrated search modal, primary mega menu, quick-service expand modal, mobile full menu, and footer shortcut controls.
+- Desktop and mobile Playwright verified typography after tuning: no `font-weight: 900/1000` or `overflow-wrap: anywhere` remains, desktop detail title resolves to `font-weight: 760`, common card text resolves to `680-720`, and 390px mobile has no horizontal overflow.
 - Desktop Playwright verified quick-service next paging, enabled previous state after paging, life-guide tab content switching, campaign next slide, and pause/play state.
 - Mobile Playwright confirmed these interactive carousel/tab changes preserve zero overflowing elements.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
