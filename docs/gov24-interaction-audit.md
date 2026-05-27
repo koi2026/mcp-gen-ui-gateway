@@ -15,6 +15,7 @@ This document records the Government24 interaction patterns inspected with Playw
 | Official site banner | Static electronic-government notice above header | `g24-official` |
 | Header utility menus | For Foreigners, support, and screen-size controls open dropdown lists | `utility-menu`, `utility-popover` |
 | Primary navigation | All main nav items expose submenu groups | `nav-item has-mega`, `MegaMenu` |
+| Mobile full menu | Mobile header exposes 전체메뉴 drawer with login and full section navigation | `mobile-menu-button`, `MobileMenuContent` |
 | Global search | Search pill with assistant visual and search action | `SearchHero` |
 | Integrated search overlay | Search button opens modal with frequent services and empty recent-search state | `Gov24Modal`, `SearchModalContent` |
 | Quick services | Frequent services shown as tiled action buttons | `QuickServicePanel` |
@@ -47,6 +48,7 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Playwright opened the `통합검색`, `펼쳐보기`, and `로그인` controls and confirmed dialog content for search, full quick-service list, and login-required guidance.
 - Mobile Playwright at `390x900` confirmed `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements while a primary menu and utility menu were open.
 - Mobile Playwright confirmed modal dialogs remain within the viewport with zero overflowing elements.
+- Mobile Playwright opened `전체메뉴`, confirmed full menu dialog content, and confirmed zero overflowing elements.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
