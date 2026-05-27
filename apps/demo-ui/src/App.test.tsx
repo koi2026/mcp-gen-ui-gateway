@@ -108,8 +108,16 @@ describe("App", () => {
     expect(screen.getByText("자주 찾는 서비스")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "정부24 안내열기" }));
-    expect(screen.getByText(/여러 공공 API와 MCP 응답/)).toBeInTheDocument();
+    expect(screen.getByText(/30112 세종특별자치시 도움6로 42/)).toBeInTheDocument();
+    expect(screen.getByText(/1번 주민등록표 등본/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "공공서비스 활용(Open API)" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "인스타그램" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "국민소통채널" }));
+    const communicationDialog = screen.getByRole("dialog", { name: "국민소통채널" });
+    expect(communicationDialog).toBeInTheDocument();
+    expect(within(communicationDialog).getByRole("button", { name: /국민신문고/ })).toBeInTheDocument();
+    fireEvent.click(within(communicationDialog).getByRole("button", { name: "닫기" }));
 
     fireEvent.click(screen.getByRole("button", { name: "디지털증명" }));
     const footerDialog = screen.getByRole("dialog", { name: "디지털증명" });
