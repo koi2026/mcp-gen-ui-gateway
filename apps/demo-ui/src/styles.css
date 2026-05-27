@@ -1,6 +1,6 @@
 :root {
-  color: #111418;
-  background: #f4f6f8;
+  color: #1e2124;
+  background: #f5f7fa;
   font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", system-ui, sans-serif;
   line-height: 1.45;
 }
@@ -48,7 +48,7 @@ input:focus-visible {
 .g24-shell {
   overflow-x: hidden;
   min-height: 100vh;
-  background: #f4f6f8;
+  background: #f5f7fa;
 }
 
 .g24-container {
@@ -127,9 +127,9 @@ input:focus-visible {
 }
 
 .g24-logo strong {
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: -1.8px;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
 }
 
 .g24-logo i {
@@ -154,7 +154,7 @@ input:focus-visible {
   padding: 0 14px;
   color: #202733;
   font-size: 14px;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .top-links,
@@ -170,7 +170,7 @@ input:focus-visible {
   border: 0;
   background: transparent;
   color: #1f232a;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -223,6 +223,7 @@ input:focus-visible {
 
 .account-links button {
   font-size: 18px;
+  font-weight: 800;
 }
 
 .g24-nav {
@@ -251,13 +252,20 @@ input:focus-visible {
   border: 0;
   background: transparent;
   padding: 0 20px;
-  color: #333942;
-  font-size: 21px;
-  font-weight: 900;
+  color: #464c53;
+  font-size: 19px;
+  font-weight: 700;
 }
 
 .nav-inner button.active {
   color: #003c7e;
+}
+
+.has-mega > button:hover,
+.has-mega > button:focus-visible,
+.nav-item.open > button {
+  background: #dfe8f1;
+  color: #202733;
 }
 
 .nav-inner button.active::after {
@@ -268,14 +276,6 @@ input:focus-visible {
   bottom: -1px;
   height: 4px;
   background: #063f7d;
-}
-
-.has-mega > button {
-  background: #dfe8f1;
-}
-
-.has-mega > button.active {
-  background: #fff;
 }
 
 .mega-menu {
@@ -319,9 +319,9 @@ input:focus-visible {
 .mega-grid strong {
   margin-bottom: 28px;
   color: #141922;
-  font-size: 21px;
-  font-weight: 1000;
-  letter-spacing: -0.5px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .mega-grid a:first-child strong {
@@ -386,7 +386,7 @@ input:focus-visible {
     radial-gradient(circle at 35% 28%, #fff 0 16%, transparent 17%),
     linear-gradient(135deg, #ccfff0, #80d7ff);
   color: #0b6f95;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .search-pill input {
@@ -394,8 +394,8 @@ input:focus-visible {
   border: 0;
   outline: 0;
   color: #7c8592;
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 21px;
+  font-weight: 700;
 }
 
 .search-pill button {
@@ -425,9 +425,9 @@ input:focus-visible {
 
 .panel-title-row h2 {
   color: #151a20;
-  font-size: 21px;
-  font-weight: 1000;
-  letter-spacing: -0.5px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .panel-arrows {
@@ -488,7 +488,7 @@ input:focus-visible {
   padding: 0 16px;
   color: #171b22;
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 800;
   text-align: left;
   text-decoration: none;
 }
@@ -606,9 +606,9 @@ input:focus-visible {
   margin-bottom: 24px;
   color: #111820;
   font-size: 20px;
-  font-weight: 1000;
+  font-weight: 800;
   line-height: 1.45;
-  letter-spacing: -0.4px;
+  letter-spacing: 0;
 }
 
 .login-panel h2 strong {
@@ -626,7 +626,7 @@ input:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .login-panel > button,
@@ -638,7 +638,7 @@ input:focus-visible {
   background: #2d6cef;
   color: #fff;
   font-size: 17px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .modal-backdrop {
@@ -941,7 +941,7 @@ input:focus-visible {
 .empty-state-box strong {
   color: #222934;
   font-size: 15px;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .empty-state-box p {
@@ -961,7 +961,7 @@ input:focus-visible {
   overflow: hidden;
   color: #1e232b;
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.9;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -984,7 +984,7 @@ input:focus-visible {
 .campaign-panel p {
   margin-bottom: 4px;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .campaign-panel strong {
@@ -1008,7 +1008,7 @@ input:focus-visible {
   padding: 4px 10px;
   color: #1b4b91;
   font-size: 13px;
-  font-weight: 1000;
+  font-weight: 800;
   text-align: center;
 }
 
@@ -1021,7 +1021,7 @@ input:focus-visible {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
   color: #1b4b91;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .campaign-controls button:disabled {
@@ -1063,7 +1063,7 @@ input:focus-visible {
   background: transparent;
   color: #48515d;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1.25;
   overflow-wrap: anywhere;
   text-align: center;
@@ -1097,7 +1097,7 @@ input:focus-visible {
   padding: 0 18px;
   color: #2a3038;
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 800;
   gap: 12px;
   text-align: left;
 }
@@ -1123,7 +1123,7 @@ input:focus-visible {
   padding: 0 16px;
   color: #343b45;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .scenario-chip-row button.active {
