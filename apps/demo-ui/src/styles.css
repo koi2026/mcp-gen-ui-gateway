@@ -1292,9 +1292,48 @@ input:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 920px) 300px;
   gap: 64px;
-  margin-top: 44px;
+  margin-top: 24px;
   padding-top: 42px;
   border-top: 1px solid #d8dee7;
+}
+
+.detail-entry-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #d5dce5;
+  border-radius: 14px;
+  background: #fff;
+  padding: 16px 18px;
+}
+
+.detail-entry-bar button {
+  min-height: 38px;
+  border: 1px solid #d7dde6;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0 14px;
+  color: #343b45;
+  font-weight: 800;
+}
+
+.detail-entry-bar button:hover,
+.detail-entry-bar button:focus-visible {
+  border-color: #b9c6d6;
+  background: #eef2f7;
+}
+
+.detail-entry-bar span {
+  color: #657082;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.detail-entry-bar strong {
+  color: #111820;
+  font-size: 18px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .detail-main {
@@ -1354,7 +1393,26 @@ input:focus-visible {
   border-radius: 50%;
   background: #f2f4f7;
   color: #222831;
-  font-weight: 900;
+  font-weight: 800;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.share-actions button:hover,
+.share-actions button:focus-visible {
+  background: #e6edf5;
+  color: #063f7d;
+}
+
+.share-feedback {
+  display: inline-flex;
+  width: fit-content;
+  margin: -26px 0 28px;
+  border-radius: 999px;
+  background: #eef2f7;
+  padding: 6px 12px;
+  color: #063f7d;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .detail-section h2 {
@@ -1464,7 +1522,16 @@ input:focus-visible {
   padding: 0 14px;
   color: #343b45;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 800;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.sort-buttons button:not(.active):hover,
+.sort-buttons button:not(.active):focus-visible,
+.related-link-row button:hover,
+.related-link-row button:focus-visible {
+  border-color: #b9c6d6;
+  background: #eef2f7;
 }
 
 .sort-buttons button.active {
@@ -1545,7 +1612,15 @@ input:focus-visible {
   border-radius: 8px;
   background: #2d6cef;
   color: #fff;
-  font-weight: 1000;
+  font-weight: 800;
+  transition: background-color 0.15s ease;
+}
+
+.service-result-card > button:hover,
+.service-result-card > button:focus-visible,
+.contract-card > button:hover,
+.contract-card > button:focus-visible {
+  background: #064fb2;
 }
 
 .pagination-row {
@@ -1562,7 +1637,14 @@ input:focus-visible {
   border-radius: 50%;
   background: #fff;
   color: #2f3742;
-  font-weight: 900;
+  font-weight: 800;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.pagination-row button:not(:disabled):not(.active):hover,
+.pagination-row button:not(:disabled):not(.active):focus-visible {
+  border-color: #b9c6d6;
+  background: #eef2f7;
 }
 
 .pagination-row button.active {
@@ -1756,10 +1838,17 @@ td {
   font-size: 15px;
   font-weight: 800;
   text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.contract-card a:first-child {
+.contract-card a.active {
   background: #eef2f7;
+  color: #063f7d;
+}
+
+.contract-card a:not(.active):hover,
+.contract-card a:not(.active):focus-visible {
+  background: #f4f7fb;
   color: #063f7d;
 }
 
