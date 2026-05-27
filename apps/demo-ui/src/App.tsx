@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { scenarioToGenUIResponse, type A2UIBlock } from "./a2ui";
 import { demoScenarios, type SourceStatus } from "./demo-data";
 import { Gov24Icon, type Gov24IconName } from "./gov24-components";
@@ -8,14 +8,14 @@ const primaryNav = [
   {
     label: "민원서비스",
     menu: [
-      ["민원 찾기", "필요한 민원과 발급 서비스를 검색하고 신청 화면으로 이동합니다"],
-      ["주제별 보기", "주택, 복지, 세금 등 주제별로 민원을 탐색합니다"],
-      ["행정서식 간편이름", "서식 명칭을 쉬운 이름으로 찾아볼 수 있습니다"],
-      ["사실/진위확인", "증명서와 발급 문서의 진위 여부를 확인합니다"],
-      ["원스톱서비스", "여러 민원을 한 번에 묶어 신청하는 흐름을 안내합니다"],
-      ["기업/단체 서비스", "사업자와 기관 대상 민원 경로를 분리해 제공합니다"],
-      ["돌봄시설 등 위치 찾기", "지역 기반 시설 후보를 지도형 UI로 연결합니다"],
-      ["다운로드파일 진본확인", "정부24 다운로드 문서의 원본 여부를 확인합니다"]
+      ["민원 찾기", "신청 · 조회 · 발급 기능 서비스 이용 및 정보를 확인할 수 있어요"],
+      ["주제별 보기", "서비스를 주제별로 분류하여 쉽게 찾을 수 있어요"],
+      ["행정서식 간편이름", "행정서식 명칭 중 혼동되는 명칭에 대하여 간편이름(약칭·약호)을 확인할 수 있어요"],
+      ["사실/진위확인", "서비스 이용 사실관계 확인 및 발급한 증명서의 진위를 확인할 수 있어요"],
+      ["원스톱서비스", "서비스를 통합하여 한 번에 신청하거나 유사 서비스를 확인할 수 있어요"],
+      ["기업/단체 서비스", "정부24에서 직접 이용 가능한 모든 서비스를 확인할 수 있어요"],
+      ["돌봄시설 등 위치 찾기", "영·유아/초등 돌봄 및 청소년 지원센터 등 시설의 위치를 찾을 수 있어요"],
+      ["다운로드파일 진본확인", "정부24의 발급증명서 뷰어를 통해 다운로드한 파일의 진본을 검증합니다"]
     ]
   },
   {
@@ -64,8 +64,15 @@ const topLinks = [
   { label: "For Foreigners", items: ["한국어", "English", "中文", "Guide"] },
   { label: "어린이", href: "#home" },
   { label: "시니어", href: "#home" },
-  { label: "지원", items: ["인증등록/관리", "복합인증관리", "보안센터", "누리집 안내지도"] },
-  { label: "화면크기", items: ["작게", "보통", "조금 크게", "크게", "초기화"] }
+  { label: "지원", items: ["인증등록/관리", "복합인증관리", "보안센터", "누리집 안내지도"] }
+];
+const screenSizeOptions = [
+  { label: "작게", value: 0.94 },
+  { label: "보통", value: 1 },
+  { label: "조금 크게", value: 1.06 },
+  { label: "크게", value: 1.12 },
+  { label: "가장 크게", value: 1.18 },
+  { label: "초기화", value: 1 }
 ];
 const quickServices: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "orange" | "purple" }[] = [
   { label: "토지(임야)대장", icon: "document", tone: "orange" },
@@ -82,25 +89,28 @@ const extraQuickServices: typeof quickServices = [
   { label: "지적도(임야도)", icon: "document", tone: "orange" },
   { label: "소득금액 증명", icon: "tax", tone: "green" },
   { label: "건강보험 자격득실 확인", icon: "health", tone: "green" },
-  { label: "농업경영체 등록 확인서", icon: "document", tone: "green" },
+  { label: "농업경영체 등록 확인서 교부", icon: "document", tone: "green" },
   { label: "운전경력 증명", icon: "car", tone: "orange" },
   { label: "사업자등록 증명", icon: "certificate", tone: "orange" },
   { label: "대학교 졸업 증명", icon: "education", tone: "blue" }
 ];
 const allQuickServices = quickServices.concat(extraQuickServices);
+const mobileShortcutServices = ["국민비서 구삐", "주민등록증 모바일 확인 서비스", "전자증명서·공공마이데이터", "기업 공공 마이데이터"];
 const guideItems: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "pink" | "purple" | "gray" }[] = [
+  { label: "결혼", icon: "benefit", tone: "pink" },
+  { label: "임신•출산", icon: "family", tone: "green" },
   { label: "이사", icon: "life", tone: "blue" },
-  { label: "보건·복지", icon: "health", tone: "pink" },
-  { label: "육아", icon: "family", tone: "green" },
+  { label: "육아", icon: "family", tone: "purple" },
   { label: "사망", icon: "welfare", tone: "gray" },
-  { label: "입소", icon: "facility", tone: "purple" }
+  { label: "보건•복지", icon: "health", tone: "pink" }
 ];
 const guideSituations: Record<string, string[]> = {
+  "결혼": ["누군가와 결혼할 때", "외국인과 결혼할 때"],
+  "임신•출산": ["아이를 갖고자 할 때", "임신에 어려움을 겪을 때", "아이가 태어났을 때"],
   "이사": ["이사를 할 때", "셀프등기를 하려고 할 때"],
-  "보건·복지": ["생활안전 공지를 확인할 때", "복지 지원을 비교할 때"],
-  "육아": ["아이를 양육할 때", "어린이집을 알아볼 때", "육아휴직을 하려고 할 때"],
-  "사망": ["상속 절차를 확인할 때", "사망신고 후 필요한 민원을 볼 때"],
-  "입소": ["돌봄시설 위치를 찾을 때", "입소 자격과 구비서류를 확인할 때"]
+  "육아": ["아이를 양육할 때", "아이를 어린이집에 보내려고 할 때", "육아휴직을 하려고 할 때"],
+  "사망": ["누군가가 돌아가셨을 때(유족이 있는 경우)", "상속을 할 때"],
+  "보건•복지": ["치매가 의심될 때", "돌봄이 필요할 때(노인)", "암 진단을 받았을 때"]
 };
 const campaignSlides = [
   { kicker: "새롭게 만나는 똑똑한 정부서비스", title: "어떤 공공 API도\n한 화면으로" },
@@ -121,7 +131,7 @@ const notices = [
 ];
 const footerShortcuts = [
   { title: "국민소통채널", items: ["국민비서 구삐", "상담예약", "개선의견"] },
-  { title: "디지털증명", items: ["전자증명서", "공공 마이데이터", "다운로드파일 진본확인"] },
+  { title: "디지털증명", items: ["전자증명서", "공공 마이데이터", "모바일 신분증"] },
   { title: "부가서비스", items: ["무인민원발급", "어디서나민원", "돌봄시설 위치 찾기"] }
 ];
 const footerPolicies = ["개인정보처리방침", "이용약관", "보안센터", "웹 접근성 품질인증"];
@@ -134,6 +144,8 @@ export function App() {
   const [activeUtility, setActiveUtility] = useState<string | null>(null);
   const [activeNav, setActiveNav] = useState<string | null>(null);
   const [activeModal, setActiveModal] = useState<"search" | "quick" | "login" | "mobileMenu" | null>(null);
+  const [fontScale, setFontScale] = useState(1);
+  const [activeScreenSize, setActiveScreenSize] = useState("보통");
   const activeScenario = demoScenarios.find((scenario) => scenario.id === activeScenarioId) ?? demoScenarios[0];
   const response = useMemo(() => scenarioToGenUIResponse(activeScenario), [activeScenario]);
 
@@ -158,7 +170,7 @@ export function App() {
   };
 
   return (
-    <main className="g24-shell">
+    <main className="g24-shell" style={{ "--g24-font-scale": fontScale } as CSSProperties}>
       <section className="g24-official" aria-label="공식 전자정부 안내">
         <div className="g24-container">
           <span className="korea-mark" aria-hidden="true" />
@@ -202,6 +214,36 @@ export function App() {
                   <a href={link.href} key={link.label}>{link.label}</a>
                 )
               ))}
+              <div className="utility-menu screen-size-menu">
+                <button
+                  aria-expanded={activeUtility === "화면크기"}
+                  onClick={() => setActiveUtility(activeUtility === "화면크기" ? null : "화면크기")}
+                  type="button"
+                >
+                  화면크기
+                  <span aria-hidden="true">⌄</span>
+                </button>
+                {activeUtility === "화면크기" && (
+                  <div className="utility-popover screen-size-popover" role="menu">
+                    {screenSizeOptions.map((item) => (
+                      <button
+                        aria-pressed={activeScreenSize === item.label}
+                        className={activeScreenSize === item.label ? "active" : ""}
+                        key={item.label}
+                        onClick={() => {
+                          setFontScale(item.value);
+                          setActiveScreenSize(item.label === "초기화" ? "보통" : item.label);
+                        }}
+                        role="menuitem"
+                        type="button"
+                      >
+                        <span aria-hidden="true">가</span>
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="account-links">
               <button type="button">정부24 AI</button>
@@ -394,7 +436,7 @@ function Gov24Modal({
 
   return (
     <div className="modal-backdrop" role="presentation">
-      <section aria-labelledby="g24-modal-title" aria-modal="true" className="g24-modal" role="dialog">
+      <section aria-labelledby="g24-modal-title" aria-modal="true" className={`g24-modal ${modal}-modal`} role="dialog">
         <div className="modal-title-row">
           <h2 id="g24-modal-title">{titles[modal]}</h2>
           <button aria-label="닫기" onClick={onClose} type="button">×</button>
@@ -415,11 +457,11 @@ function MobileMenuContent({ onClose, onOpenDetail }: { onClose: () => void; onO
         <button type="button">정부24 AI</button>
         <button type="button">로그인</button>
       </div>
-      <div className="mobile-menu-section-grid">
-        {primaryNav.map((item, index) => (
-          <details key={item.label} open={index === 0}>
-            <summary>{item.label}<span aria-hidden="true">⌄</span></summary>
-            <div>
+      <nav className="mobile-menu-section-grid" aria-label="전체메뉴 주요 서비스">
+        {primaryNav.map((item) => (
+          <section className="mobile-menu-section" key={item.label}>
+            <h3>{item.label}</h3>
+            <div className="mobile-menu-link-grid">
               {item.menu.map(([title, body]) => (
                 <button
                   aria-label={title}
@@ -435,9 +477,26 @@ function MobileMenuContent({ onClose, onOpenDetail }: { onClose: () => void; onO
                 </button>
               ))}
             </div>
-          </details>
+          </section>
         ))}
-      </div>
+      </nav>
+      <section className="mobile-shortcut-section" aria-label="서비스 바로가기">
+        <h3>서비스 바로가기</h3>
+        <div className="mobile-menu-link-grid compact">
+          {mobileShortcutServices.map((service) => (
+            <button
+              key={service}
+              onClick={() => {
+                onOpenDetail(service);
+                onClose();
+              }}
+              type="button"
+            >
+              <strong>{service}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
       <div className="mobile-utility-row">
         {topLinks.map((link) => (
           <button key={link.label} type="button">{link.label}</button>
@@ -450,22 +509,28 @@ function MobileMenuContent({ onClose, onOpenDetail }: { onClose: () => void; onO
 function SearchModalContent({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   return (
     <div className="search-modal-content">
+      <p className="search-modal-lede">모든 정부 서비스, 이제 한 곳에서 찾아보세요</p>
       <label className="modal-search-box">
         <input aria-label="통합검색어" placeholder="검색어를 입력해 주세요." />
         <button type="button">검색</button>
       </label>
-      <section>
-        <h3>자주 찾는 서비스</h3>
-        <div className="modal-chip-grid">
-          {quickServices.slice(0, 6).map((service, index) => (
-            <button key={service.label} onClick={() => onOpenDetail(service.label)} type="button">{index + 1}. {service.label}</button>
-          ))}
-        </div>
-      </section>
-      <section className="modal-empty">
-        <h3>최근 검색어</h3>
-        <p>최근 검색어가 없습니다.</p>
-      </section>
+      <div className="search-modal-columns">
+        <section>
+          <h3>자주 찾는 서비스</h3>
+          <div className="modal-ranked-list">
+            {allQuickServices.slice(0, 10).map((service, index) => (
+              <button key={service.label} onClick={() => onOpenDetail(service.label)} type="button">
+                <span>{index + 1}</span>
+                <strong>{service.label}</strong>
+              </button>
+            ))}
+          </div>
+        </section>
+        <section className="modal-empty">
+          <h3>최근 검색어</h3>
+          <p>최근 검색어가 없습니다.</p>
+        </section>
+      </div>
     </div>
   );
 }
@@ -531,12 +596,9 @@ function CampaignPanel() {
   );
 }
 
-function LifeGuidePanel({ onOpenDetail, suggestions }: { onOpenDetail: (title: string) => void; suggestions: A2UIBlock | undefined }) {
-  const suggestionBlock = suggestions?.type === "search-suggestions" ? suggestions : undefined;
+function LifeGuidePanel({ onOpenDetail, suggestions: _suggestions }: { onOpenDetail: (title: string) => void; suggestions: A2UIBlock | undefined }) {
   const [activeGuide, setActiveGuide] = useState(guideItems[0].label);
-  const activeSuggestions = activeGuide === "이사"
-    ? (suggestionBlock?.suggestions ?? []).map((suggestion) => suggestion.label).slice(0, 2)
-    : guideSituations[activeGuide] ?? [];
+  const activeSuggestions = guideSituations[activeGuide] ?? [];
 
   return (
     <section className="home-card life-guide">
@@ -912,21 +974,47 @@ function BlockRenderer({
 
 function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   const [infoOpen, setInfoOpen] = useState(false);
+  const [activeFooter, setActiveFooter] = useState<string | null>(null);
+  const activeFooterGroup = footerShortcuts.find((group) => group.title === activeFooter);
 
   return (
     <footer className="g24-site-footer" aria-label="정부24 하단">
       <a className="top-button" href="#home">위로 이동<br />Top</a>
       <div className="g24-container footer-accordion" aria-label="정부24 하단 바로가기">
-        {footerShortcuts.map((group, index) => (
-          <details key={group.title} open={index === 0}>
-            <summary>{group.title}<span aria-hidden="true">+</span></summary>
-            <div>
-              {group.items.map((item) => (
-                <button key={item} onClick={() => onOpenDetail(item)} type="button">{item}</button>
+        {footerShortcuts.map((group) => (
+          <button
+            aria-expanded={activeFooter === group.title}
+            className={activeFooter === group.title ? "active" : ""}
+            key={group.title}
+            onClick={() => setActiveFooter(activeFooter === group.title ? null : group.title)}
+            type="button"
+          >
+            {group.title}
+          </button>
+        ))}
+        {activeFooterGroup && (
+          <section className="footer-shortcut-dialog" role="dialog" aria-label={activeFooterGroup.title}>
+            <div className="footer-dialog-title-row">
+              <h2>{activeFooterGroup.title}</h2>
+              <button aria-label="닫기" onClick={() => setActiveFooter(null)} type="button">×</button>
+            </div>
+            <div className="footer-dialog-links">
+              {activeFooterGroup.items.map((item) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    onOpenDetail(item);
+                    setActiveFooter(null);
+                  }}
+                  type="button"
+                >
+                  <strong>{item}</strong>
+                  <span>{footerShortcutDescription(item)}</span>
+                </button>
               ))}
             </div>
-          </details>
-        ))}
+          </section>
+        )}
         <section className="page-feedback" aria-label="페이지 만족도">
           <p>이 페이지에 만족하시나요?</p>
           <div role="group" aria-label="만족도 선택">
@@ -980,6 +1068,22 @@ function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => vo
       </div>
     </footer>
   );
+}
+
+function footerShortcutDescription(label: string) {
+  const descriptions: Record<string, string> = {
+    "국민비서 구삐": "생활 알림과 민원 안내",
+    "상담예약": "상담 일정 예약",
+    "개선의견": "서비스 개선 의견 접수",
+    "전자증명서": "모든 정부 전자증명서를 발급",
+    "공공 마이데이터": "행정/공공기관에 있는 내 정보",
+    "모바일 신분증": "스마트폰에 안전하게 저장·이용",
+    "무인민원발급": "무인 발급기 위치와 이용 안내",
+    "어디서나민원": "방문 수령 민원 신청",
+    "돌봄시설 위치 찾기": "주변 돌봄시설 위치 검색"
+  };
+
+  return descriptions[label] ?? "관련 서비스 바로가기";
 }
 
 function StatusBadge({ status }: { status: SourceStatus }) {

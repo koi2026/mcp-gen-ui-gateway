@@ -14,14 +14,16 @@ This document records the Government24 interaction patterns inspected with Playw
 | --- | --- | --- |
 | Official site banner | Static electronic-government notice above header | `g24-official` |
 | Header utility menus | For Foreigners, support, and screen-size controls open dropdown lists | `utility-menu`, `utility-popover` |
+| Screen-size control | Screen-size menu exposes small, normal, larger, largest, and reset states and applies a page-scale variable | `screen-size-menu`, `--g24-font-scale` |
 | Primary navigation | All main nav items expose submenu groups | `nav-item has-mega`, `MegaMenu` |
-| Mobile full menu | Mobile header exposes 전체메뉴 drawer with login and full section navigation | `mobile-menu-button`, `MobileMenuContent` |
+| Mobile full menu | Mobile header exposes 전체메뉴 drawer with login, expanded two-column section navigation, shortcut services, and utility links | `mobile-menu-button`, `MobileMenuContent` |
 | Global search | Search pill with assistant visual and search action | `SearchHero` |
-| Integrated search overlay | Search button opens modal with frequent services and empty recent-search state | `Gov24Modal`, `SearchModalContent` |
-| Quick services | Frequent services shown as tiled action buttons | `QuickServicePanel` |
+| Integrated search overlay | Search button opens modal with a headline, ranked frequent services, and empty recent-search state | `Gov24Modal`, `SearchModalContent` |
+| Quick services | Frequent services shown as tiled action buttons; labels stay on one line and long names are ellipsized like Government24 | `QuickServicePanel` |
 | Quick service carousel | Previous/next controls page through frequent service sets with disabled boundary buttons | `QuickServicePanel` |
 | Quick service expand modal | Frequent-service expand control opens a full service list | `QuickServiceModalContent` |
 | Disabled carousel controls | First slide disables previous controls with muted visual state | `button:disabled` in `panel-arrows`, `campaign-controls` |
+| Footer shortcut dialogs | Footer shortcut groups open a floating dialog above the footer with title, links, and close control | `footer-shortcut-dialog` |
 | Empty recent state | Recent searches or recently viewed services show an empty-state message | `RecentServicePanel`, `empty-state-box` |
 | Login-required state | Protected services prompt login or membership before continuation | `LoginPanel`, `LoginRequiredModalContent` |
 | Login prompt | Four shortcut service icons and login CTA | `LoginPanel` |
@@ -63,6 +65,12 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Desktop and mobile Playwright verified typography after tuning: no `font-weight: 900/1000` or `overflow-wrap: anywhere` remains, desktop detail title resolves to `font-weight: 760`, common card text resolves to `680-720`, and 390px mobile has no horizontal overflow.
 - Desktop Playwright verified quick-service next paging, enabled previous state after paging, life-guide tab content switching, campaign next slide, and pause/play state.
 - Mobile Playwright confirmed these interactive carousel/tab changes preserve zero overflowing elements.
+- 2026-05-27 Playwright rechecked `https://plus.gov.kr/` search overlay: confirmed the current layer uses `모든 정부 서비스, 이제 한 곳에서 찾아보세요`, a 10-item ranked frequent-service list, and an empty recent-search column; the demo search modal now mirrors this structure.
+- 2026-05-27 Playwright rechecked the mobile `전체메뉴`: confirmed the current menu keeps all primary sections expanded, uses compact two-column menu buttons at 390px, includes `서비스 바로가기`, and keeps utility controls below; the demo mobile menu now mirrors this state.
+- 2026-05-27 Playwright rechecked Government24 screen-size and footer shortcut interactions: screen size opens a six-option menu with an active state, and footer shortcuts open a floating dialog above the footer. The demo now applies a `--g24-font-scale` state and uses matching footer shortcut dialogs.
+- 2026-05-27 Playwright compared quick-service labels: `주민등록등본(초본)` stays on one line, while longer labels such as `농업경영체 등록 확인서 교부` render as a single-line ellipsis. The demo now uses the same no-wrap ellipsis treatment while preserving the full accessible label.
+- 2026-05-27 Playwright compared the current Government24 primary mega menu: `민원서비스` uses four 270px columns at x=113/423/733/1043, a 134px first row, a 109px second row, and title/description copy aligned to the top of each item. The demo mega menu now mirrors those dimensions and text wrapping rules.
+- 2026-05-27 Playwright rechecked the current Government24 life-guide carousel: desktop exposes six category buttons in order `결혼`, `임신•출산`, `이사`, `육아`, `사망`, `보건•복지`; selected category text is blue and inactive categories remain neutral. The demo now mirrors the six categories and category-specific situation links.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
