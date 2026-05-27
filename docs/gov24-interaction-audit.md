@@ -28,9 +28,10 @@ This document records the Government24 interaction patterns inspected with Playw
 | Banner carousel controls | Pause, previous, next, and page indicator | `CampaignPanel` baseline banner slot |
 | Life guide categories | Icon tabs plus situation links | `LifeGuidePanel` |
 | One-stop service tabs | Scenario chips switch generated API scenario | `OneStopPanel` |
+| Home to detail navigation | Service cards and result CTAs open the generated service detail page with a back-to-list control | `activePage`, `detail-entry-bar` |
 | Search result list | Result cards, sort buttons, page-size select, pagination, CTA | `service-results` block |
 | Service detail overview | Breadcrumb, title, share/print actions, overview definition list | `hero-summary` block renderer |
-| Page table of contents | Side TOC with CTA button | `gateway-contract` block |
+| Page table of contents | Side TOC with active item, hover state, and CTA button | `gateway-contract` block |
 | Application procedure | Category, eligibility, period, documents, ordered steps | `application-guide` block |
 | Source transparency | Provider, dataset, format, rows, status badge | `source-list` block |
 | Developer trace | Tool-call details in expandable diagnostics | `tool-trace` block |
@@ -56,6 +57,7 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Desktop Playwright verified action-card states: quick service cards stay white by default and receive `#f8fafc` plus inset border on hover; inactive scenario chips receive `#eef2f7` only on hover; selected chips remain dark blue.
 - Mobile Playwright confirmed card interaction changes preserve `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements.
 - Desktop Playwright verified the main search pill opens the integrated search modal, modal backdrop uses `rgba(0, 0, 0, 0.5)`, modal chips hover to `#eef2f7`, and disabled carousel controls keep opacity `1` with muted gray styling.
+- Desktop Playwright verified service-card detail entry, `목록으로` return, active TOC styling, side CTA presence, and share feedback text `링크가 복사되었습니다.`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
