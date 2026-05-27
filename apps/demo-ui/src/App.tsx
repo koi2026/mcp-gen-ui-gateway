@@ -975,6 +975,8 @@ function BlockRenderer({
 function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => void }) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [activeFooter, setActiveFooter] = useState<string | null>(null);
+  const [feedbackRating, setFeedbackRating] = useState<string | null>(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const activeFooterGroup = footerShortcuts.find((group) => group.title === activeFooter);
 
   return (
@@ -1019,10 +1021,28 @@ function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => vo
           <p>이 페이지에 만족하시나요?</p>
           <div role="group" aria-label="만족도 선택">
             {["매우만족", "만족", "보통", "불만족"].map((label) => (
-              <button key={label} type="button">{label}</button>
+              <button
+                aria-pressed={feedbackRating === label}
+                className={feedbackRating === label ? "active" : ""}
+                key={label}
+                onClick={() => {
+                  setFeedbackRating(label);
+                  setFeedbackSubmitted(false);
+                }}
+                type="button"
+              >
+                {label}
+              </button>
             ))}
           </div>
-          <button type="button">평가완료</button>
+          <button
+            disabled={!feedbackRating}
+            onClick={() => setFeedbackSubmitted(true)}
+            type="button"
+          >
+            평가완료
+          </button>
+          {feedbackSubmitted && <span role="status">{feedbackRating} 의견이 접수되었습니다.</span>}
         </section>
       </div>
       <div className="g24-container footer-info">
@@ -1041,7 +1061,7 @@ function FooterAccordion({ onOpenDetail }: { onOpenDetail: (title: string) => vo
           </button>
           <div className="footer-social" aria-label="소셜 바로가기">
             {socialLinks.map((label) => (
-              <a href="#home" key={label}>{label.slice(0, 2)}</a>
+              <a aria-label={label} href="#home" key={label}>{label.slice(0, 2)}</a>
             ))}
           </div>
         </div>

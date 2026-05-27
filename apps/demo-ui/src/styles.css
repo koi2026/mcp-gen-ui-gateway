@@ -2245,11 +2245,37 @@ td {
   font-weight: 700;
 }
 
+.page-feedback div button:hover,
+.page-feedback div button:focus-visible {
+  background: #eef4ff;
+  border-color: #9eb8ef;
+  color: #063f7d;
+}
+
+.page-feedback div button.active {
+  border-color: #063f7d;
+  background: #063f7d;
+  color: #fff;
+}
+
 .page-feedback > button {
   border-color: #2d6cef;
   border-radius: 8px;
   background: #2d6cef;
   color: #fff;
+}
+
+.page-feedback > button:disabled {
+  border-color: #cfd6df;
+  background: #eef2f7;
+  color: #7d8794;
+  cursor: default;
+}
+
+.page-feedback > span {
+  color: #0b5cad;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .footer-info {

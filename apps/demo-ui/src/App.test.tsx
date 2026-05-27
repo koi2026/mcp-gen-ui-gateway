@@ -109,10 +109,17 @@ describe("App", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "정부24 안내열기" }));
     expect(screen.getByText(/여러 공공 API와 MCP 응답/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "인스타그램" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "디지털증명" }));
     const footerDialog = screen.getByRole("dialog", { name: "디지털증명" });
     expect(footerDialog).toBeInTheDocument();
     expect(within(footerDialog).getByRole("button", { name: /모바일 신분증/ })).toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: "평가완료" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "만족" }));
+    expect(screen.getByRole("button", { name: "만족" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByRole("button", { name: "평가완료" }));
+    expect(screen.getByRole("status")).toHaveTextContent("만족 의견이 접수되었습니다.");
   });
 });
