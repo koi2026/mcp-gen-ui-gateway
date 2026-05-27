@@ -7,7 +7,6 @@ import "./styles.css";
 const primaryNav = [
   {
     label: "민원서비스",
-    active: true,
     menu: [
       ["민원 찾기", "필요한 민원과 발급 서비스를 검색하고 신청 화면으로 이동합니다"],
       ["주제별 보기", "주택, 복지, 세금 등 주제별로 민원을 탐색합니다"],
@@ -185,7 +184,6 @@ export function App() {
               <div className={`nav-item has-mega ${activeNav === item.label ? "open" : ""}`} key={item.label}>
                 <button
                   aria-expanded={activeNav === item.label}
-                  className={item.active ? "active" : ""}
                   onClick={() => setActiveNav(activeNav === item.label ? null : item.label)}
                   type="button"
                 >
@@ -368,8 +366,8 @@ function MobileMenuContent({ onClose }: { onClose: () => void }) {
         <button type="button">로그인</button>
       </div>
       <div className="mobile-menu-section-grid">
-        {primaryNav.map((item) => (
-          <details key={item.label} open={item.active}>
+        {primaryNav.map((item, index) => (
+          <details key={item.label} open={index === 0}>
             <summary>{item.label}<span aria-hidden="true">⌄</span></summary>
             <div>
               {item.menu.map(([title, body]) => (

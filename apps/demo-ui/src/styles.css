@@ -255,6 +255,7 @@ input:focus-visible {
   color: #464c53;
   font-size: 19px;
   font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .nav-inner button.active {
@@ -262,10 +263,14 @@ input:focus-visible {
 }
 
 .has-mega > button:hover,
-.has-mega > button:focus-visible,
+.has-mega > button:focus-visible {
+  background: #eef2f7;
+  color: #464c53;
+}
+
 .nav-item.open > button {
-  background: #dfe8f1;
-  color: #202733;
+  background: #d6e0eb;
+  color: #1e2124;
 }
 
 .nav-inner button.active::after {
