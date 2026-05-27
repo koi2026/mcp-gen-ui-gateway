@@ -41,7 +41,7 @@ This document records the Government24 interaction patterns inspected with Playw
 | Footer accordion | Shortcut groups with expandable content | `FooterAccordion` |
 | Footer information toggle | Government24 guide button expands site/operator information | `footer-info-toggle`, `footer-agency-info` |
 | Footer policy/social links | Policy links, social shortcuts, and top navigation action | `footer-policy-row`, `footer-social`, `top-button` |
-| Satisfaction feedback | Rating buttons and completion CTA | `page-feedback` |
+| Satisfaction feedback | Rating buttons expose inactive, selected, disabled-submit, and completed states | `page-feedback` |
 
 ## Verification Evidence
 
@@ -71,6 +71,7 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - 2026-05-27 Playwright compared quick-service labels: `주민등록등본(초본)` stays on one line, while longer labels such as `농업경영체 등록 확인서 교부` render as a single-line ellipsis. The demo now uses the same no-wrap ellipsis treatment while preserving the full accessible label.
 - 2026-05-27 Playwright compared the current Government24 primary mega menu: `민원서비스` uses four 270px columns at x=113/423/733/1043, a 134px first row, a 109px second row, and title/description copy aligned to the top of each item. The demo mega menu now mirrors those dimensions and text wrapping rules.
 - 2026-05-27 Playwright rechecked the current Government24 life-guide carousel: desktop exposes six category buttons in order `결혼`, `임신•출산`, `이사`, `육아`, `사망`, `보건•복지`; selected category text is blue and inactive categories remain neutral. The demo now mirrors the six categories and category-specific situation links.
+- 2026-05-27 Playwright captured the current Government24 footer structure: shortcut buttons, `정부24 안내열기`, social links, policy links, and top action remain distinct interactive targets. The demo now gives social links full accessible names and adds complete inactive/selected/submitted states to satisfaction feedback controls.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
