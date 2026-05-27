@@ -107,7 +107,7 @@ export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
   const [activeUtility, setActiveUtility] = useState<string | null>(null);
   const [activeNav, setActiveNav] = useState<string | null>(null);
-  const [activeModal, setActiveModal] = useState<"search" | "quick" | "login" | null>(null);
+  const [activeModal, setActiveModal] = useState<"search" | "quick" | "login" | "mobileMenu" | null>(null);
   const activeScenario = demoScenarios.find((scenario) => scenario.id === activeScenarioId) ?? demoScenarios[0];
   const response = useMemo(() => scenarioToGenUIResponse(activeScenario), [activeScenario]);
 
@@ -140,6 +140,9 @@ export function App() {
             <strong>정부24</strong>
             <i aria-hidden="true">+</i>
           </a>
+          <button className="mobile-menu-button" onClick={() => setActiveModal("mobileMenu")} type="button">
+            전체메뉴
+          </button>
           <div className="header-tools" aria-label="상단 부가 메뉴">
             <div className="top-links">
               {topLinks.map((link) => (
@@ -329,13 +332,14 @@ function Gov24Modal({
   modal,
   onClose
 }: {
-  modal: "search" | "quick" | "login";
+  modal: "search" | "quick" | "login" | "mobileMenu";
   onClose: () => void;
 }) {
   const titles = {
     search: "통합검색",
     quick: "자주 찾는 서비스 모아보기",
-    login: "안내"
+    login: "안내",
+    mobileMenu: "전체메뉴"
   };
 
   return (
@@ -348,7 +352,39 @@ function Gov24Modal({
         {modal === "search" && <SearchModalContent />}
         {modal === "quick" && <QuickServiceModalContent />}
         {modal === "login" && <LoginRequiredModalContent onClose={onClose} />}
+        {modal === "mobileMenu" && <MobileMenuContent onClose={onClose} />}
       </section>
+    </div>
+  );
+}
+
+function MobileMenuContent({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="mobile-menu-content">
+      <div className="mobile-menu-actions">
+        <button type="button">정부24 AI</button>
+        <button type="button">로그인</button>
+      </div>
+      <div className="mobile-menu-section-grid">
+        {primaryNav.map((item) => (
+          <details key={item.label} open={item.active}>
+            <summary>{item.label}<span aria-hidden="true">⌄</span></summary>
+            <div>
+              {item.menu.map(([title, body]) => (
+                <a href="#genui-result" key={title} onClick={onClose}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </a>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+      <div className="mobile-utility-row">
+        {topLinks.map((link) => (
+          <button key={link.label} type="button">{link.label}</button>
+        ))}
+      </div>
     </div>
   );
 }

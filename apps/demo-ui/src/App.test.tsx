@@ -43,5 +43,10 @@ describe("App", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "로그인" })[0]);
     expect(screen.getByRole("dialog", { name: "안내" })).toBeInTheDocument();
     expect(screen.getByText("로그인이 필요한 메뉴입니다.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "전체메뉴" }));
+    expect(screen.getByRole("dialog", { name: "전체메뉴" })).toBeInTheDocument();
+    expect(screen.getAllByText("다운로드파일 진본확인").length).toBeGreaterThan(0);
   });
 });
