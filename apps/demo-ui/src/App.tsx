@@ -537,13 +537,13 @@ function OneStopPanel({
       </div>
       <div className="onestop-service-grid">
         {(serviceBlock?.services ?? []).map((service) => (
-          <article key={service.id}>
+          <button key={service.id} type="button">
             <Gov24Icon label={service.title} name={service.icon ?? iconForServiceCategory(service.category)} size="sm" tone={toneForServiceStatus(service.status)} />
             <div>
               <strong>{service.title}</strong>
               <span>{service.description}</span>
             </div>
-          </article>
+          </button>
         ))}
       </div>
       <div className="mini-metrics">
