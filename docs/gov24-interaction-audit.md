@@ -53,6 +53,8 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Mobile Playwright opened `전체메뉴`, confirmed full menu dialog content, and confirmed zero overflowing elements.
 - Desktop Playwright identified footer related links, `정부24 안내열기`, social links, policy links, and top navigation action; the demo footer mirrors these as reusable shell controls.
 - Desktop Playwright compared core shell states after tuning: nav `19px/700`, logo `34px/800`, panel title `20px/800`, unselected nav backgrounds remain transparent, hover receives the Government24-like `#eef2f7`, and only the open nav receives `#d6e0eb`.
+- Desktop Playwright verified action-card states: quick service cards stay white by default and receive `#f8fafc` plus inset border on hover; inactive scenario chips receive `#eef2f7` only on hover; selected chips remain dark blue.
+- Mobile Playwright confirmed card interaction changes preserve `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
