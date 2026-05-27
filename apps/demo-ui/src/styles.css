@@ -462,10 +462,10 @@ input:focus-visible {
 }
 
 .panel-arrows button:disabled {
-  background: #d1d7de;
-  color: #7e8793;
+  border-color: #d5dce5;
+  background: #d6dce3;
+  color: #7f8995;
   cursor: default;
-  opacity: 0.72;
 }
 
 .panel-arrows .expand-control {
@@ -674,7 +674,7 @@ input:focus-visible {
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.5);
   padding: 24px;
 }
 
@@ -700,7 +700,7 @@ input:focus-visible {
 .modal-title-row h2 {
   color: #111820;
   font-size: 24px;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .modal-title-row > button {
@@ -714,6 +714,13 @@ input:focus-visible {
   color: #303944;
   font-size: 26px;
   line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.modal-title-row > button:hover,
+.modal-title-row > button:focus-visible {
+  background: #e6edf5;
+  color: #1e2124;
 }
 
 .search-modal-content,
@@ -747,7 +754,14 @@ input:focus-visible {
   border-radius: 999px;
   background: #2d6cef;
   color: #fff;
-  font-weight: 1000;
+  font-weight: 800;
+}
+
+.modal-search-box button:hover,
+.modal-search-box button:focus-visible,
+.modal-actions button:last-child:hover,
+.modal-actions button:last-child:focus-visible {
+  background: #064fb2;
 }
 
 .search-modal-content h3,
@@ -755,7 +769,7 @@ input:focus-visible {
   margin-bottom: 10px;
   color: #111820;
   font-size: 17px;
-  font-weight: 1000;
+  font-weight: 800;
 }
 
 .modal-chip-grid {
@@ -771,8 +785,15 @@ input:focus-visible {
   background: #f8fafc;
   padding: 0 14px;
   color: #202733;
-  font-weight: 900;
+  font-weight: 800;
   text-align: left;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.modal-chip-grid button:hover,
+.modal-chip-grid button:focus-visible {
+  border-color: #c5d1df;
+  background: #eef2f7;
 }
 
 .modal-empty {
@@ -802,8 +823,15 @@ input:focus-visible {
   background: #fff;
   padding: 0 12px;
   color: #202733;
-  font-weight: 900;
+  font-weight: 800;
   text-align: left;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.quick-modal-grid button:hover,
+.quick-modal-grid button:focus-visible {
+  border-color: #c5d1df;
+  background: #f8fafc;
 }
 
 .quick-modal-grid span {

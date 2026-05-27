@@ -38,6 +38,10 @@ describe("App", () => {
     expect(screen.getByText("최근 검색어가 없습니다.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "닫기" }));
 
+    fireEvent.click(screen.getByRole("button", { name: "검색" }));
+    expect(screen.getByRole("dialog", { name: "통합검색" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+
     fireEvent.click(screen.getByRole("button", { name: /펼쳐보기/ }));
     expect(screen.getByRole("dialog", { name: "자주 찾는 서비스 모아보기" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "닫기" }));

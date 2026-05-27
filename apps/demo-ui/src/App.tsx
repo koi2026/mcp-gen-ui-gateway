@@ -200,7 +200,7 @@ export function App() {
       <section className="g24-main" id="home">
         <div className="g24-container home-grid">
           <section className="home-left">
-            <SearchHero query={activeScenario.query} />
+            <SearchHero onOpenSearch={() => setActiveModal("search")} query={activeScenario.query} />
             <QuickServicePanel onOpenAll={() => setActiveModal("quick")} />
             <section className="lower-grid">
               <LifeGuidePanel suggestions={suggestions} />
@@ -260,13 +260,13 @@ function MegaMenu({ columns, label }: { columns: string[][]; label: string }) {
   );
 }
 
-function SearchHero({ query }: { query: string }) {
+function SearchHero({ onOpenSearch, query }: { onOpenSearch: () => void; query: string }) {
   return (
     <section className="g24-search" aria-label="통합검색">
       <label className="search-pill">
         <span className="assistant-badge" aria-hidden="true">AI</span>
         <input value={query} readOnly aria-label="검색어" />
-        <button type="button" aria-label="검색">⌕</button>
+        <button onClick={onOpenSearch} type="button" aria-label="검색">⌕</button>
       </label>
     </section>
   );
