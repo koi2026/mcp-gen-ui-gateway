@@ -19,14 +19,15 @@ This document records the Government24 interaction patterns inspected with Playw
 | Global search | Search pill with assistant visual and search action | `SearchHero` |
 | Integrated search overlay | Search button opens modal with frequent services and empty recent-search state | `Gov24Modal`, `SearchModalContent` |
 | Quick services | Frequent services shown as tiled action buttons | `QuickServicePanel` |
+| Quick service carousel | Previous/next controls page through frequent service sets with disabled boundary buttons | `QuickServicePanel` |
 | Quick service expand modal | Frequent-service expand control opens a full service list | `QuickServiceModalContent` |
 | Disabled carousel controls | First slide disables previous controls with muted visual state | `button:disabled` in `panel-arrows`, `campaign-controls` |
 | Empty recent state | Recent searches or recently viewed services show an empty-state message | `RecentServicePanel`, `empty-state-box` |
 | Login-required state | Protected services prompt login or membership before continuation | `LoginPanel`, `LoginRequiredModalContent` |
 | Login prompt | Four shortcut service icons and login CTA | `LoginPanel` |
 | Notice panel | Notice list with more-link action | `NoticePanel` |
-| Banner carousel controls | Pause, previous, next, and page indicator | `CampaignPanel` baseline banner slot |
-| Life guide categories | Icon tabs plus situation links | `LifeGuidePanel` |
+| Banner carousel controls | Pause/play, previous, next, and page indicator update visible banner copy | `CampaignPanel` |
+| Life guide categories | Icon tabs switch situation links while preserving selected/non-selected states | `LifeGuidePanel` |
 | One-stop service tabs | Scenario chips switch generated API scenario | `OneStopPanel` |
 | Home to detail navigation | Service cards and result CTAs open the generated service detail page with a back-to-list control | `activePage`, `detail-entry-bar` |
 | Search result list | Result cards, sort buttons, page-size select, pagination, CTA | `service-results` block |
@@ -58,6 +59,8 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Mobile Playwright confirmed card interaction changes preserve `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements.
 - Desktop Playwright verified the main search pill opens the integrated search modal, modal backdrop uses `rgba(0, 0, 0, 0.5)`, modal chips hover to `#eef2f7`, and disabled carousel controls keep opacity `1` with muted gray styling.
 - Desktop Playwright verified service-card detail entry, `목록으로` return, active TOC styling, side CTA presence, and share feedback text `링크가 복사되었습니다.`
+- Desktop Playwright verified quick-service next paging, enabled previous state after paging, life-guide tab content switching, campaign next slide, and pause/play state.
+- Mobile Playwright confirmed these interactive carousel/tab changes preserve zero overflowing elements.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
