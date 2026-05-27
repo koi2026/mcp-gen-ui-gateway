@@ -26,6 +26,16 @@ describe("App", () => {
 
     expect(screen.getByRole("button", { name: "자주 찾는 서비스 이전 목록" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "이전 배너" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "자주 찾는 서비스 다음 목록" }));
+    expect(screen.getByText("인감증명서")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "자주 찾는 서비스 이전 목록" }));
+    expect(screen.getByText("토지(임야)대장")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "육아" }));
+    expect(screen.getByText("어린이집을 알아볼 때")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "다음 배너" }));
+    expect(screen.getByText("데이터 출처와 상태까지")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "일시정지" }));
+    expect(screen.getByRole("button", { name: "재생" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "통합검색" }));
     expect(screen.getByRole("dialog", { name: "통합검색" })).toBeInTheDocument();

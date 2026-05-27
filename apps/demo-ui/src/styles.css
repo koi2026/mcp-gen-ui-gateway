@@ -1049,6 +1049,10 @@ input:focus-visible {
   letter-spacing: -1px;
 }
 
+.campaign-panel strong span {
+  display: block;
+}
+
 .campaign-controls {
   display: flex;
   align-items: center;

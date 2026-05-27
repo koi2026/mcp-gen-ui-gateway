@@ -77,12 +77,35 @@ const quickServices: { label: string; icon: Gov24IconName; tone: "blue" | "green
   { label: "지방세 납세증명", icon: "tax", tone: "orange" },
   { label: "납세증명", icon: "tax", tone: "orange" }
 ];
+const extraQuickServices: typeof quickServices = [
+  { label: "인감증명서", icon: "certificate", tone: "orange" },
+  { label: "지적도(임야도)", icon: "document", tone: "orange" },
+  { label: "소득금액 증명", icon: "tax", tone: "green" },
+  { label: "건강보험 자격득실 확인", icon: "health", tone: "green" },
+  { label: "농업경영체 등록 확인서", icon: "document", tone: "green" },
+  { label: "운전경력 증명", icon: "car", tone: "orange" },
+  { label: "사업자등록 증명", icon: "certificate", tone: "orange" },
+  { label: "대학교 졸업 증명", icon: "education", tone: "blue" }
+];
+const allQuickServices = quickServices.concat(extraQuickServices);
 const guideItems: { label: string; icon: Gov24IconName; tone: "blue" | "green" | "pink" | "purple" | "gray" }[] = [
   { label: "이사", icon: "life", tone: "blue" },
   { label: "보건·복지", icon: "health", tone: "pink" },
   { label: "육아", icon: "family", tone: "green" },
   { label: "사망", icon: "welfare", tone: "gray" },
   { label: "입소", icon: "facility", tone: "purple" }
+];
+const guideSituations: Record<string, string[]> = {
+  "이사": ["이사를 할 때", "셀프등기를 하려고 할 때"],
+  "보건·복지": ["생활안전 공지를 확인할 때", "복지 지원을 비교할 때"],
+  "육아": ["아이를 양육할 때", "어린이집을 알아볼 때", "육아휴직을 하려고 할 때"],
+  "사망": ["상속 절차를 확인할 때", "사망신고 후 필요한 민원을 볼 때"],
+  "입소": ["돌봄시설 위치를 찾을 때", "입소 자격과 구비서류를 확인할 때"]
+};
+const campaignSlides = [
+  { kicker: "새롭게 만나는 똑똑한 정부서비스", title: "어떤 공공 API도\n한 화면으로" },
+  { kicker: "실시간 MCP 응답을 정부24처럼", title: "데이터 출처와 상태까지\n투명하게" },
+  { kicker: "시연 가능한 GenUI Gateway", title: "서비스 검색부터 상세까지\n한 흐름으로" }
 ];
 const loginServices: { label: string; icon: Gov24IconName }[] = [
   { label: "민원신청", icon: "civil" },
@@ -290,18 +313,23 @@ function SearchHero({ onOpenSearch, query }: { onOpenSearch: () => void; query: 
 }
 
 function QuickServicePanel({ onOpenAll, onOpenDetail }: { onOpenAll: () => void; onOpenDetail: (title: string) => void }) {
+  const pageSize = 8;
+  const [page, setPage] = useState(0);
+  const maxPage = Math.ceil(allQuickServices.length / pageSize) - 1;
+  const visibleServices = allQuickServices.slice(page * pageSize, page * pageSize + pageSize);
+
   return (
     <section className="quick-panel" aria-label="자주 찾는 서비스">
       <div className="panel-title-row">
         <h2>자주 찾는 서비스</h2>
         <div className="panel-arrows" aria-label="자주 찾는 서비스 목록 제어">
-          <button aria-label="자주 찾는 서비스 이전 목록" disabled type="button">‹</button>
-          <button aria-label="자주 찾는 서비스 다음 목록" type="button">›</button>
+          <button aria-label="자주 찾는 서비스 이전 목록" disabled={page === 0} onClick={() => setPage(Math.max(0, page - 1))} type="button">‹</button>
+          <button aria-label="자주 찾는 서비스 다음 목록" disabled={page === maxPage} onClick={() => setPage(Math.min(maxPage, page + 1))} type="button">›</button>
           <button className="expand-control" onClick={onOpenAll} type="button">펼쳐보기 ⊞</button>
         </div>
       </div>
       <div className="quick-grid">
-        {quickServices.map((service) => (
+        {visibleServices.map((service) => (
           <button key={service.label} onClick={() => onOpenDetail(service.label)} type="button">
             <strong>{service.label}</strong>
             <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
@@ -432,12 +460,7 @@ function SearchModalContent() {
 function QuickServiceModalContent() {
   return (
     <div className="quick-modal-grid">
-      {quickServices.concat([
-        { label: "인감증명서", icon: "certificate", tone: "orange" as const },
-        { label: "지적도(임야도)", icon: "document", tone: "orange" as const },
-        { label: "소득금액 증명", icon: "tax", tone: "green" as const },
-        { label: "건강보험 자격득실 확인", icon: "health", tone: "green" as const }
-      ]).map((service) => (
+      {allQuickServices.map((service) => (
         <button key={service.label} type="button">
           <Gov24Icon label={service.label} name={service.icon} size="sm" tone={service.tone} />
           <span>{service.label}</span>
@@ -477,15 +500,19 @@ function NoticePanel() {
 }
 
 function CampaignPanel() {
+  const [slide, setSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const activeSlide = campaignSlides[slide];
+
   return (
     <section className="campaign-panel" aria-label="홍보 배너">
-      <p>새롭게 만나는 똑똑한 정부서비스</p>
-      <strong>어떤 공공 API도<br />한 화면으로</strong>
+      <p>{activeSlide.kicker}</p>
+      <strong>{activeSlide.title.split("\n").map((line) => <span key={line}>{line}</span>)}</strong>
       <div className="campaign-controls" aria-label="홍보 배너 제어">
-        <span>1 / 3</span>
-        <button aria-label="일시정지" type="button">Ⅱ</button>
-        <button aria-label="이전 배너" disabled type="button">‹</button>
-        <button aria-label="다음 배너" type="button">›</button>
+        <span>{slide + 1} / {campaignSlides.length}</span>
+        <button aria-label={paused ? "재생" : "일시정지"} onClick={() => setPaused(!paused)} type="button">{paused ? "▶" : "Ⅱ"}</button>
+        <button aria-label="이전 배너" disabled={slide === 0} onClick={() => setSlide(Math.max(0, slide - 1))} type="button">‹</button>
+        <button aria-label="다음 배너" disabled={slide === campaignSlides.length - 1} onClick={() => setSlide(Math.min(campaignSlides.length - 1, slide + 1))} type="button">›</button>
       </div>
     </section>
   );
@@ -493,6 +520,10 @@ function CampaignPanel() {
 
 function LifeGuidePanel({ suggestions }: { suggestions: A2UIBlock | undefined }) {
   const suggestionBlock = suggestions?.type === "search-suggestions" ? suggestions : undefined;
+  const [activeGuide, setActiveGuide] = useState(guideItems[0].label);
+  const activeSuggestions = activeGuide === "이사"
+    ? (suggestionBlock?.suggestions ?? []).map((suggestion) => suggestion.label).slice(0, 2)
+    : guideSituations[activeGuide] ?? [];
 
   return (
     <section className="home-card life-guide">
@@ -501,17 +532,17 @@ function LifeGuidePanel({ suggestions }: { suggestions: A2UIBlock | undefined })
         <span aria-hidden="true">›</span>
       </div>
       <div className="guide-icons">
-        {guideItems.map((item, index) => (
-          <button className={index === 0 ? "active" : ""} key={item.label} type="button">
+        {guideItems.map((item) => (
+          <button className={item.label === activeGuide ? "active" : ""} key={item.label} onClick={() => setActiveGuide(item.label)} type="button">
             <Gov24Icon label={item.label} name={item.icon} size="lg" tone={item.tone} variant="circle" />
             {item.label}
           </button>
         ))}
       </div>
       <div className="guide-list">
-        {(suggestionBlock?.suggestions ?? []).slice(0, 2).map((suggestion) => (
-          <button key={suggestion.label} type="button">
-            <span>{suggestion.label}</span>
+        {activeSuggestions.map((label) => (
+          <button key={label} type="button">
+            <span>{label}</span>
             <strong>›</strong>
           </button>
         ))}
