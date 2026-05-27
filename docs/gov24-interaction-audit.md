@@ -35,6 +35,8 @@ This document records the Government24 interaction patterns inspected with Playw
 | Source transparency | Provider, dataset, format, rows, status badge | `source-list` block |
 | Developer trace | Tool-call details in expandable diagnostics | `tool-trace` block |
 | Footer accordion | Shortcut groups with expandable content | `FooterAccordion` |
+| Footer information toggle | Government24 guide button expands site/operator information | `footer-info-toggle`, `footer-agency-info` |
+| Footer policy/social links | Policy links, social shortcuts, and top navigation action | `footer-policy-row`, `footer-social`, `top-button` |
 | Satisfaction feedback | Rating buttons and completion CTA | `page-feedback` |
 
 ## Verification Evidence
@@ -49,6 +51,8 @@ Latest local verification used the Vite dev server at `http://127.0.0.1:5173/`.
 - Mobile Playwright at `390x900` confirmed `documentElement.scrollWidth === body.scrollWidth === 375` and zero overflowing elements while a primary menu and utility menu were open.
 - Mobile Playwright confirmed modal dialogs remain within the viewport with zero overflowing elements.
 - Mobile Playwright opened `전체메뉴`, confirmed full menu dialog content, and confirmed zero overflowing elements.
+- Desktop Playwright identified footer related links, `정부24 안내열기`, social links, policy links, and top navigation action; the demo footer mirrors these as reusable shell controls.
+- Desktop Playwright compared core shell styles after tuning: nav `19px/700`, logo `34px/800`, panel title `20px/800`, unselected nav backgrounds remain transparent, and only the open nav receives `rgb(223, 232, 241)`.
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui typecheck`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui test`
 - `pnpm --filter @mcp-gen-ui-gateway/demo-ui build`
