@@ -12,6 +12,8 @@ describe("App", () => {
     expect(screen.getByText("민원 검색 결과")).toBeInTheDocument();
     expect(screen.getByText("신청 방법 및 절차")).toBeInTheDocument();
     expect(screen.getByText("이 페이지에 만족하시나요?")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /위로 이동/ })).toBeInTheDocument();
+    expect(screen.getByText("개인정보처리방침")).toBeInTheDocument();
     expect(screen.getByText("최근에 본 서비스가 없습니다.")).toBeInTheDocument();
     expect(screen.getByText("출처 및 응답 상태")).toBeInTheDocument();
     expect(screen.getByText("MCP Tool 호출 로그")).toBeInTheDocument();
@@ -48,5 +50,8 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: "전체메뉴" }));
     expect(screen.getByRole("dialog", { name: "전체메뉴" })).toBeInTheDocument();
     expect(screen.getAllByText("다운로드파일 진본확인").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: "정부24 안내열기" }));
+    expect(screen.getByText(/여러 공공 API와 MCP 응답/)).toBeInTheDocument();
   });
 });

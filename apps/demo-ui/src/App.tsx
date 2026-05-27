@@ -102,6 +102,8 @@ const footerShortcuts = [
   { title: "디지털증명", items: ["전자증명서", "공공 마이데이터", "다운로드파일 진본확인"] },
   { title: "부가서비스", items: ["무인민원발급", "어디서나민원", "돌봄시설 위치 찾기"] }
 ];
+const footerPolicies = ["개인정보처리방침", "이용약관", "보안센터", "웹 접근성 품질인증"];
+const socialLinks = ["인스타그램", "엑스", "카카오스토리", "블로그"];
 
 export function App() {
   const [activeScenarioId, setActiveScenarioId] = useState(demoScenarios[0].id);
@@ -824,27 +826,73 @@ function BlockRenderer({ block }: { block: A2UIBlock }) {
 }
 
 function FooterAccordion() {
+  const [infoOpen, setInfoOpen] = useState(false);
+
   return (
-    <footer className="g24-container footer-accordion" aria-label="정부24 하단 바로가기">
-      {footerShortcuts.map((group, index) => (
-        <details key={group.title} open={index === 0}>
-          <summary>{group.title}<span aria-hidden="true">+</span></summary>
-          <div>
-            {group.items.map((item) => (
-              <a href="#genui-result" key={item}>{item}</a>
+    <footer className="g24-site-footer" aria-label="정부24 하단">
+      <a className="top-button" href="#home">위로 이동<br />Top</a>
+      <div className="g24-container footer-accordion" aria-label="정부24 하단 바로가기">
+        {footerShortcuts.map((group, index) => (
+          <details key={group.title} open={index === 0}>
+            <summary>{group.title}<span aria-hidden="true">+</span></summary>
+            <div>
+              {group.items.map((item) => (
+                <a href="#genui-result" key={item}>{item}</a>
+              ))}
+            </div>
+          </details>
+        ))}
+        <section className="page-feedback" aria-label="페이지 만족도">
+          <p>이 페이지에 만족하시나요?</p>
+          <div role="group" aria-label="만족도 선택">
+            {["매우만족", "만족", "보통", "불만족"].map((label) => (
+              <button key={label} type="button">{label}</button>
             ))}
           </div>
-        </details>
-      ))}
-      <section className="page-feedback" aria-label="페이지 만족도">
-        <p>이 페이지에 만족하시나요?</p>
-        <div role="group" aria-label="만족도 선택">
-          {["매우만족", "만족", "보통", "불만족"].map((label) => (
-            <button key={label} type="button">{label}</button>
+          <button type="button">평가완료</button>
+        </section>
+      </div>
+      <div className="g24-container footer-info">
+        <div className="footer-brand-row">
+          <a className="footer-logo" href="#home" aria-label="정부24 홈">
+            <span className="logo-swirl" aria-hidden="true" />
+            <strong>정부24</strong>
+          </a>
+          <button
+            aria-expanded={infoOpen}
+            className="footer-info-toggle"
+            onClick={() => setInfoOpen(!infoOpen)}
+            type="button"
+          >
+            정부24 안내{infoOpen ? "닫기" : "열기"}
+          </button>
+          <div className="footer-social" aria-label="소셜 바로가기">
+            {socialLinks.map((label) => (
+              <a href="#home" key={label}>{label.slice(0, 2)}</a>
+            ))}
+          </div>
+        </div>
+        {infoOpen && (
+          <section className="footer-agency-info" aria-label="정부24 안내">
+            <p>정부24 GenUI Gateway는 여러 공공 API와 MCP 응답을 정부24형 화면 구성으로 변환하는 오픈소스 데모입니다.</p>
+            <dl>
+              <div>
+                <dt>운영</dt>
+                <dd>공공서비스 Gateway 시연 환경</dd>
+              </div>
+              <div>
+                <dt>문의</dt>
+                <dd>프로젝트 README와 MCP Tool 진단 로그를 확인해 주세요.</dd>
+              </div>
+            </dl>
+          </section>
+        )}
+        <div className="footer-policy-row">
+          {footerPolicies.map((policy) => (
+            <a href="#home" key={policy}>{policy}</a>
           ))}
         </div>
-        <button type="button">평가완료</button>
-      </section>
+      </div>
     </footer>
   );
 }
