@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Gov GenUI mark">
+  <rect width="64" height="64" rx="18" fill="#0057b7"/>
+  <path d="M31 14h2v36h-2z" fill="#fff"/>
+  <path d="M14 31h36v2H14z" fill="#fff"/>
+  <path d="M18 18c7 0 11 4 11 11-7 0-11-4-11-11z" fill="#e35533"/>
+  <path d="M46 46c-7 0-11-4-11-11 7 0 11 4 11 11z" fill="#8bd3ff"/>
+</svg>
