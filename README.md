@@ -1,5 +1,9 @@
 # MCP-Gen UI Gateway
 
+[![CI](https://github.com/koi2026/mcp-gen-ui-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/koi2026/mcp-gen-ui-gateway/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![pnpm](https://img.shields.io/badge/pnpm-9-orange.svg)](https://pnpm.io)
+
 Open-source MCP gateway for public-service discovery and GenUI rendering.
 
 The MVP focuses on Korean public-service and Government24-style gateway UX. It exposes deterministic MCP tools, validates domain JSON with Zod, records snapshots and change logs in SQLite, and renders fixture-backed public API/MCP results in a Vite React demo UI.
