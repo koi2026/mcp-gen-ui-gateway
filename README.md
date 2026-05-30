@@ -42,7 +42,7 @@ This is a local `stdio` MCP install. It does not require Vercel, Railway, a publ
 ### 1. Prerequisites
 
 - Claude Desktop installed and signed in.
-- Node.js 20 or 22 LTS.
+- Node.js 24 LTS recommended, or Node.js 22 LTS as the conservative fallback.
 - pnpm 9.x or newer.
 - macOS path examples below assume Claude Desktop's default config path.
 
@@ -53,7 +53,38 @@ node -v
 pnpm -v
 ```
 
-Expected Node examples are `v20.x` or `v22.x`. Avoid unreleased/current majors such as Node 26 for now because the workspace includes native dependencies that may not compile there.
+Expected Node examples are `v24.x` or `v22.x`. Avoid Current majors such as Node 26 for this repository for now.
+
+Node 26 is not a bad Node.js release. It is simply too new for this workspace's native dependency stack to be the default install target. The repository includes native addons such as `better-sqlite3`; when a matching prebuilt binary is not available for a new Node/V8 major, installation falls back to local C++ compilation. That can fail with V8 API mismatch errors even when the application code and pnpm setup are fine.
+
+Use this practical rule:
+
+- First choice: Node 24 LTS.
+- Conservative fallback: Node 22 LTS.
+- Avoid for this branch: Node 26 Current, unless you are intentionally testing native dependency compatibility and are ready to upgrade dependencies, refresh the lockfile, and rerun the full build/test suite.
+
+With `nvm`:
+
+```bash
+nvm install 24
+nvm use 24
+rm -rf node_modules
+pnpm install
+```
+
+If your local environment needs the older LTS line:
+
+```bash
+nvm install 22
+nvm use 22
+rm -rf node_modules
+pnpm install
+```
+
+Background references:
+
+- [Node.js releases](https://nodejs.org/en/about/previous-releases) distinguish Current from LTS lines.
+- [`better-sqlite3` on npm](https://www.npmjs.com/package/better-sqlite3) notes that prebuilt binaries are available for LTS versions.
 
 If `pnpm` is missing:
 
@@ -220,7 +251,7 @@ If Claude does not show the MCP tool:
 
 - Fully quit and reopen Claude Desktop.
 
-If `pnpm install` fails while compiling `better-sqlite3`, check `node -v`. Use Node 20 or 22 LTS, reinstall dependencies, then rebuild:
+If `pnpm install` fails while compiling `better-sqlite3`, check `node -v`. Symptoms such as `prebuild-install warn install No prebuilt binaries found` followed by C++/V8 errors usually mean the current Node major is ahead of the native addon support window. Use Node 24 LTS or Node 22 LTS, reinstall dependencies, then rebuild:
 
 ```bash
 node -v
