@@ -68,12 +68,14 @@
 
 ### STEP 5 — MCP 서버 도구
 `packages/mcp-server/src/index.ts`에 도구 추가:
-- `compose_genui_artifact({ utterance: string })`
+- 전용 Claude Desktop 서버: `pretotype-mcp-gen-ui-gateway`
+- 전용 도구: `render_pretotype_scenario({ utterance: string })`
+- 호환 도구: `compose_genui_artifact({ utterance: string })`
 - 동작: `utterance` 안의 정확한 태그(`[신혼부부]`, `[프리랜서]`, `[박사후연구원]`) → `scenario_*.json` manifest 선택 → 해당 pre-built HTML 파일 읽어 `{ content:[{type:"text", text:"<!doctype html>…"}] }`로 반환.
 - 태그가 없거나, 알 수 없거나, 여러 개면 갭 디스클로저 텍스트 반환(날조 금지).
 
 ### STEP 6 — host prompt
-`docs/host-prompts.md`에 추가: "`compose_genui_artifact`가 html을 반환하면 그 내용을 **그대로** HTML artifact로 렌더하라. 요약·재작성·재디자인 금지. pretotype에서는 자연어 의미 추론 없이 발화의 정확한 `[…]` 태그만 라우팅 근거로 삼는다."
+`docs/host-prompts.md`에 추가: "`render_pretotype_scenario`가 html을 반환하면 그 내용을 **그대로** HTML artifact로 렌더하라. 요약·재작성·재디자인 금지. pretotype에서는 자연어 의미 추론 없이 발화의 정확한 `[…]` 태그만 라우팅 근거로 삼는다."
 
 ## 4. 3 컨텍스트 명세
 

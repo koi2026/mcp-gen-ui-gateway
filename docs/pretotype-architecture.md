@@ -6,7 +6,8 @@ The pretotype uses a real stdio MCP server and a deliberately fake brain.
 
 ```text
 fixed staged prompt with one exact tag
-  -> compose_genui_artifact({ utterance })
+  -> pretotype-mcp-gen-ui-gateway
+  -> render_pretotype_scenario({ utterance })
   -> MCP loads scenarios/scenario_*.json
   -> MCP extracts the exact tag and finds the manifest
   -> MCP reads the manifest's checked-in HTML file

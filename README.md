@@ -49,32 +49,35 @@ pnpm mcp
 
 ## Claude Desktop Pretotype
 
-The June 4 pretotype is a fixed staged demo: Claude sends one tagged utterance to the MCP tool, the server resolves the tag through `scenario_*.json`, and it returns one checked-in self-contained HTML artifact.
+The June 4 pretotype is a fixed staged demo served by the dedicated MCP server `pretotype-mcp-gen-ui-gateway`: Claude sends one tagged utterance, the server resolves the tag through `scenario_*.json`, and it returns one checked-in self-contained HTML artifact.
 
 ```bash
+git clone https://github.com/koi2026/mcp-gen-ui-gateway.git
+cd mcp-gen-ui-gateway
 pnpm install
 pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+pwd
 ```
 
-Add this server to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Add this server to `~/Library/Application Support/Claude/claude_desktop_config.json`. Replace `/ABS/PATH/mcp-gen-ui-gateway` with the path printed by `pwd`.
 
 ```json
 {
   "mcpServers": {
-    "public-portal-pretotype": {
+    "pretotype-mcp-gen-ui-gateway": {
       "command": "node",
       "args": [
-        "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/packages/mcp-server/dist/index.js"
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/mcp-server/dist/pretotype-index.js"
       ],
       "env": {
-        "MCP_GEN_UI_PRETOTYPE_DIST": "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
+        "MCP_GEN_UI_PRETOTYPE_DIST": "/ABS/PATH/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
       }
     }
   }
 }
 ```
 
-Restart Claude Desktop, then ask it to call `compose_genui_artifact` and render the returned HTML verbatim as an Artifact:
+Restart Claude Desktop, then ask it to call `render_pretotype_scenario` and render the returned HTML verbatim as an Artifact:
 
 ```text
 [프리랜서] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.
@@ -95,5 +98,6 @@ pnpm schemas
 - `buildChecklist`: produce application preparation items.
 - `getApplicationGuide`: return step-by-step application guidance.
 - `getChangeLog`: return recorded snapshot and diff events.
+- `render_pretotype_scenario`: pretotype-only tool on `pretotype-mcp-gen-ui-gateway`; returns a self-contained HTML artifact for one exact tag.
 
 The server does not include an LLM. The MCP host is expected to orchestrate natural language, follow-up questions, and tool calls.

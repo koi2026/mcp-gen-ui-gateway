@@ -92,7 +92,9 @@ Supported tag routes:
 - `[프리랜서]` -> `scenarios/scenario_freelancer.json` -> `embedded/freelancer.html`
 - `[박사후연구원]` -> `scenarios/scenario_postdoc.json` -> `embedded/postdoc.html`
 
-`compose_genui_artifact` returns:
+`pretotype-mcp-gen-ui-gateway` exposes `render_pretotype_scenario` for the dedicated pretotype server. The full gateway keeps `compose_genui_artifact` as a compatibility path.
+
+`render_pretotype_scenario` returns:
 
 ```json
 {

@@ -1,6 +1,6 @@
 # Pretotype MCP Artifacts
 
-This folder contains the complete June 4 pretotype payload for Claude Desktop.
+This folder contains the complete June 4 pretotype payload for Claude Desktop and the dedicated MCP server `pretotype-mcp-gen-ui-gateway`.
 
 ## Structure
 
@@ -25,20 +25,21 @@ From the repository root:
 ```bash
 pnpm install
 pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+pwd
 ```
 
-Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`. Replace `/ABS/PATH/mcp-gen-ui-gateway` with the path printed by `pwd`.
 
 ```json
 {
   "mcpServers": {
-    "public-portal-pretotype": {
+    "pretotype-mcp-gen-ui-gateway": {
       "command": "node",
       "args": [
-        "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/packages/mcp-server/dist/index.js"
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/mcp-server/dist/pretotype-index.js"
       ],
       "env": {
-        "MCP_GEN_UI_PRETOTYPE_DIST": "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
+        "MCP_GEN_UI_PRETOTYPE_DIST": "/ABS/PATH/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
       }
     }
   }
@@ -54,10 +55,12 @@ Use this behavior in Claude Desktop:
 ```text
 You render a public portal GenUI pretotype.
 
-If the user includes exactly one of [신혼부부], [프리랜서], or [박사후연구원], call compose_genui_artifact with:
+If the user includes exactly one of [신혼부부], [프리랜서], or [박사후연구원], call render_pretotype_scenario with:
 { "utterance": "<full user utterance>" }
 
-If compose_genui_artifact returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
+`compose_genui_artifact` is available only as a compatibility alias.
+
+If the tool returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
 
 If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
 ```
@@ -82,7 +85,7 @@ MCP tool:
 
 ```json
 {
-  "name": "compose_genui_artifact",
+  "name": "render_pretotype_scenario",
   "arguments": {
     "utterance": "[프리랜서] 대전 유성구로 이사 왔어요..."
   }
