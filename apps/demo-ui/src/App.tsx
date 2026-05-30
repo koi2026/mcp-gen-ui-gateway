@@ -671,6 +671,15 @@ function OneStopPanel({
       </div>
       <div className="onestop-service-grid">
         {(serviceBlock?.services ?? []).map((service) => (
+          service.href ? (
+            <a href={service.href} key={service.id} rel="noopener noreferrer" target="_blank">
+              <Gov24Icon label={service.title} name={service.icon ?? iconForServiceCategory(service.category)} size="sm" tone={toneForServiceStatus(service.status)} />
+              <div>
+                <strong>{service.title}</strong>
+                <span>{service.description}</span>
+              </div>
+            </a>
+          ) : (
           <button key={service.id} onClick={() => onOpenDetail(service.title)} type="button">
             <Gov24Icon label={service.title} name={service.icon ?? iconForServiceCategory(service.category)} size="sm" tone={toneForServiceStatus(service.status)} />
             <div>
@@ -678,6 +687,7 @@ function OneStopPanel({
               <span>{service.description}</span>
             </div>
           </button>
+          )
         ))}
       </div>
       <div className="mini-metrics">
@@ -716,7 +726,11 @@ function BenefitPanel({ onOpenDetail, services }: { onOpenDetail: (title: string
       </div>
       <div className="benefit-list">
         {(serviceBlock?.services ?? []).slice(0, 4).map((service) => (
-          <button key={service.id} onClick={() => onOpenDetail(service.title)} type="button">{service.title}</button>
+          service.href ? (
+            <a href={service.href} key={service.id} rel="noopener noreferrer" target="_blank">{service.title}</a>
+          ) : (
+            <button key={service.id} onClick={() => onOpenDetail(service.title)} type="button">{service.title}</button>
+          )
         ))}
       </div>
     </section>
@@ -822,7 +836,11 @@ function BlockRenderer({
                   </div>
                 </dl>
               </div>
-              <button onClick={() => onOpenDetail?.(result.title)} type="button">{result.ctaLabel}</button>
+              {result.href ? (
+                <a href={result.href} rel="noopener noreferrer" target="_blank">{result.ctaLabel}</a>
+              ) : (
+                <button onClick={() => onOpenDetail?.(result.title)} type="button">{result.ctaLabel}</button>
+              )}
             </article>
           ))}
         </div>
@@ -916,7 +934,11 @@ function BlockRenderer({
             <article className="source-item" key={source.id}>
               <div>
                 <p>{source.provider}</p>
-                <strong>{source.dataset}</strong>
+                {source.href ? (
+                  <a href={source.href} rel="noopener noreferrer" target="_blank"><strong>{source.dataset}</strong></a>
+                ) : (
+                  <strong>{source.dataset}</strong>
+                )}
                 <span>{source.serviceType} · {source.format} · {source.rows.toLocaleString()} rows · 갱신일 {source.lastUpdated}</span>
               </div>
               <StatusBadge status={source.status} />
@@ -940,6 +962,7 @@ function BlockRenderer({
               <div>
                 <strong>{trace.tool}</strong>
                 <span>{trace.label}</span>
+                {trace.note && <small>{trace.note}</small>}
               </div>
               <span>{trace.durationMs}ms</span>
               <StatusBadge status={trace.status} />

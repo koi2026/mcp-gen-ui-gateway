@@ -1,0 +1,84 @@
+{
+  "id": "freelancer",
+  "tag": "[프리랜서]",
+  "label": "프리랜서 5월 이사·종합소득세",
+  "stagedPrompt": "[프리랜서] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.",
+  "routePolicy": "exact-tag-only",
+  "artifact": {
+    "mode": "self-contained-html",
+    "html": "embedded/freelancer.html"
+  },
+  "assets": [
+    {
+      "id": "hero-slides",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 3,
+      "note": "상단 히어로 슬라이드 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "context-photo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 1,
+      "note": "본문 맥락 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "runtime",
+      "kind": "script",
+      "delivery": "inline-source",
+      "format": "javascript",
+      "count": 1,
+      "note": "탭·토글 동작 스크립트는 HTML script 태그 안에 포함"
+    },
+    {
+      "id": "font-stack",
+      "kind": "font",
+      "delivery": "system-font-stack",
+      "format": "css-font-family",
+      "count": 0,
+      "note": "외부 폰트 파일 없이 시스템 한글 폰트 스택 사용"
+    }
+  ],
+  "surface": {
+    "headline": "프리랜서 이사와 5월 세금 마감 동시 관리",
+    "signature": "종합소득세 일정과 주소 변경 작업을 먼저 보여주는 GenUI Surface",
+    "modules": [
+      "deadline-timeline",
+      "tax-action-panel",
+      "business-address-task",
+      "expense-proof-checklist",
+      "work-infra-map",
+      "missed-risk-alert"
+    ]
+  },
+  "officialHandoffs": [
+    {
+      "label": "종합소득세 신고",
+      "domain": "hometax.go.kr",
+      "purpose": "5월 세금 신고 공식 이동"
+    },
+    {
+      "label": "전입신고",
+      "domain": "gov.kr",
+      "purpose": "주민등록 전입 신고 공식 이동"
+    },
+    {
+      "label": "전세 계약 법적 체크",
+      "domain": "law.go.kr",
+      "purpose": "주택임대차보호법 확인"
+    },
+    {
+      "label": "생활·사업 인프라 데이터",
+      "domain": "data.go.kr",
+      "purpose": "대전 유성구 생활권·업무 인프라 근거 데이터 확인"
+    }
+  ],
+  "boundaries": [
+    "세무 신고가 완료된 것으로 표현하지 않음",
+    "로그인, 본인인증, 신청, 제출 자동화 없음",
+    "자연어 의미 추론 없이 정확한 태그만 라우팅"
+  ]
+}

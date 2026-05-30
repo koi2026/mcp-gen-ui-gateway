@@ -1,11 +1,13 @@
 import { createHash, randomUUID } from "node:crypto";
-import Database from "better-sqlite3";
+import { createRequire } from "node:module";
+import type Database from "better-sqlite3";
 import type { BenefitRecord, ChangeLogEntry } from "@mcp-gen-ui-gateway/schema";
 
 export class SnapshotStore {
   private readonly db: Database.Database;
 
   constructor(path = "mcp-gen-ui-gateway.db") {
+    const Database = createRequire(import.meta.url)("better-sqlite3") as typeof import("better-sqlite3");
     this.db = new Database(path);
     this.db.pragma("journal_mode = WAL");
     this.db.exec(`

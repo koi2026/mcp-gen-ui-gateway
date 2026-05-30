@@ -47,6 +47,41 @@ Run the MCP server over stdio:
 pnpm mcp
 ```
 
+## Claude Desktop Pretotype
+
+The June 4 pretotype is a fixed staged demo: Claude sends one tagged utterance to the MCP tool, the server resolves the tag through `scenario_*.json`, and it returns one checked-in self-contained HTML artifact.
+
+```bash
+pnpm install
+pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+```
+
+Add this server to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "public-portal-pretotype": {
+      "command": "node",
+      "args": [
+        "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/packages/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "MCP_GEN_UI_PRETOTYPE_DIST": "/Users/reliqbit_mac/Downloads/Public portal gateway GenUI MCP/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop, then ask it to call `compose_genui_artifact` and render the returned HTML verbatim as an Artifact:
+
+```text
+[프리랜서] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.
+```
+
+Supported tags are `[신혼부부]`, `[프리랜서]`, and `[박사후연구원]`. The pretotype does not infer from free text; the tag is the route. Details are in [apps/demo-ui/public/pretotype/README.md](apps/demo-ui/public/pretotype/README.md).
+
 Export JSON Schemas:
 
 ```bash
