@@ -35,7 +35,7 @@ Branch naming, atomic commits, Conventional Commits, and PR review rules are doc
 
 ## Claude Desktop Pretotype Quick Start
 
-Use this path when you want to run the June 4 pretotype from a cloned repository, before publishing the npm package.
+Use this path when you want to run the fixed Artifact pretotype baseline from a cloned repository, before publishing the npm package.
 
 This is a local `stdio` MCP install. It does not require Vercel, Railway, a public HTTPS URL, or Claude's custom connector URL form. Claude Desktop starts the MCP server from your local checkout.
 
@@ -203,7 +203,7 @@ The artifact links are external official handoff links. Do not claim that login,
 If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
 ```
 
-### 8. Run The Demo Prompt
+### 8. Run The Baseline Prompt
 
 Use one of these exact prompts:
 
@@ -230,7 +230,7 @@ Claude prompt
   -> Claude HTML Artifact
 ```
 
-The successful demo is not a text summary. Claude should open a full HTML Artifact that looks like a Government24-style page for the selected persona.
+The successful baseline run is not a text summary. Claude should open a full HTML Artifact that looks like a Government24-style page for the selected persona.
 
 ### 9. Troubleshooting
 
@@ -291,9 +291,11 @@ If Claude calls the tool but returns a disclosure instead of HTML, the prompt pr
 
 ## Pretotype Scope
 
-This branch includes a deliberately narrow pretotype of the future GenUI Gateway MCP.
+This branch includes the Stage 1 slice of the future GenUI Gateway MCP.
 
-The full product direction is broader than the current demo. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
+The fixed pretotype already exists and remains the Stage 0 baseline. This Stage 1 branch keeps that fixed Artifact route intact while adding official handoff metadata and validation helpers for `pretotype.scenario.v2`.
+
+The full product direction is broader than the fixed Stage 0 baseline. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
 
 ```text
 user context
@@ -304,7 +306,9 @@ user context
   -> public-service surface
 ```
 
-The current pretotype intentionally does not implement that ranking brain yet. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface could feel like before live source orchestration exists.
+The Stage 0 fixed Artifact path intentionally keeps that ranking brain frozen. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface can feel like before live source orchestration exists.
+
+Stage 1 does not add broader context inference or dynamic rendering. It upgrades the manifest layer so reviewers can see source IDs, provider/domain metadata, confidence, login/action hints, and validation issues without changing the Claude Artifact output path.
 
 Current staged prompt:
 
@@ -335,14 +339,20 @@ The scenario JSON files are visible manifests for reviewers. They describe the s
 
 The HTML files are the actual artifact payloads. Each file is self-contained: CSS, runtime JavaScript, photos, and the Government24 logo are embedded inline, so Claude does not need to create or fetch sibling assets.
 
-Pretotype boundaries:
+Stage 0 fixed artifact-route boundaries:
 
 - Exact tag routing only: `[신혼부부]`, `[프리랜서]`, or `[박사후연구원]`.
-- No live public API fetch, no source weighting, and no matrix ranking yet.
+- No live public API fetch, no context weighting, and no dynamic component composition on the fixed artifact route.
 - No login, identity verification, certificate flow, application submission, or tax filing.
 - No eligibility, legal, or tax conclusion is finalized inside the artifact.
 - Official URLs are outbound handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
+
+Stage 1 boundaries:
+
+- Handoff validation is URL-shape and domain validation, not proof that the remote service is currently reachable.
+- The Stage 1 code does not fetch live APIs or rewrite the checked-in HTML files.
+- Stage 2 context weighting and Stage 3 dynamic rendering live on separate follow-up branches.
 
 ## Optional Remote Custom Connector
 
@@ -363,7 +373,7 @@ Name: pretotype-mcp-gen-ui-gateway
 Remote MCP server URL: https://YOUR-DOMAIN.example/mcp
 ```
 
-For the June 4 pretotype, the local Claude Desktop config is the recommended path. Use the remote connector only when you intentionally want an externally reachable MCP server.
+For the fixed Artifact pretotype baseline, the local Claude Desktop config is the recommended path. Use the remote connector only when you intentionally want an externally reachable MCP server.
 
 ## Repository Development
 

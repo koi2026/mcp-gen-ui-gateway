@@ -150,6 +150,20 @@ Response:
 
 The server loads `scenarios/scenario_*.json`, matches the exact tag, reads the manifest's `artifact.html`, and returns that HTML string.
 
+## Stage 1 Handoff Metadata
+
+This branch adds `pretotype.scenario.v2` helpers for official handoff metadata and validation.
+
+Stage 1 keeps `render_pretotype_scenario` unchanged: exact tag in, fixed self-contained HTML out. The new source-handoff layer lets reviewers inspect provider, domain, service type, confidence, login/action hints, source refs, and validation issues without asking Claude to create assets or regenerate the page.
+
+Implemented Stage 1 contract layers:
+
+- `pretotype.scenario.v2`
+- `OfficialHandoffV2`
+- URL/domain validator
+- source ref propagation
+- manual-review diagnostics for broad homepages or mismatched official domains
+
 ## Boundaries
 
 - No live API fetch.
@@ -157,3 +171,4 @@ The server loads `scenarios/scenario_*.json`, matches the exact tag, reads the m
 - No eligibility or legal conclusion is finalized inside the artifact.
 - Official URLs are handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
+- Stage 2 context weighting and Stage 3 dynamic rendering are intentionally absent from this branch.
