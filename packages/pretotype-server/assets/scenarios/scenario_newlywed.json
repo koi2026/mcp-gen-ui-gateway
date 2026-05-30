@@ -1,0 +1,114 @@
+{
+  "id": "newlywed",
+  "tag": "[신혼부부]",
+  "label": "신혼부부 전입·전세 안정",
+  "stagedPrompt": "[신혼부부] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.",
+  "routePolicy": "exact-tag-only",
+  "artifact": {
+    "mode": "self-contained-html",
+    "html": "embedded/newlywed.html"
+  },
+  "assets": [
+    {
+      "id": "hero-slides",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 3,
+      "note": "상단 히어로 슬라이드 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "context-photo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 1,
+      "note": "본문 맥락 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "gov24-logo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "webp",
+      "count": 1,
+      "note": "정부24 공식 로고는 HTML CSS background-image data URL로 포함"
+    },
+    {
+      "id": "runtime",
+      "kind": "script",
+      "delivery": "inline-source",
+      "format": "javascript",
+      "count": 1,
+      "note": "탭·토글 동작 스크립트는 HTML script 태그 안에 포함"
+    },
+    {
+      "id": "font-stack",
+      "kind": "font",
+      "delivery": "system-font-stack",
+      "format": "css-font-family",
+      "count": 0,
+      "note": "외부 폰트 파일 없이 시스템 한글 폰트 스택 사용"
+    }
+  ],
+  "surface": {
+    "headline": "신혼부부 이사 후 전입·전세·생활권 체크",
+    "signature": "체크리스트와 주거 안정 후보를 먼저 보여주는 GenUI Surface",
+    "modules": [
+      "risk-score-panel",
+      "action-bundle",
+      "legal-checklist",
+      "rent-evidence",
+      "housing-candidate-rail",
+      "family-life-map"
+    ]
+  },
+  "officialHandoffs": [
+    {
+      "label": "전입신고",
+      "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
+      "purpose": "주민등록 전입 신고 공식 이동"
+    },
+    {
+      "label": "전세 계약 법적 체크",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
+      "purpose": "주택임대차보호법 확인"
+    },
+    {
+      "label": "확정일자·등기부 확인",
+      "domain": "iros.go.kr",
+      "url": "https://www.iros.go.kr/index.jsp",
+      "purpose": "확정일자와 등기사항증명서 확인 공식 이동"
+    },
+    {
+      "label": "주거급여 신청",
+      "domain": "bokjiro.go.kr",
+      "url": "https://www.bokjiro.go.kr/ssis-park/syp/forcesym/UGT01001L.do",
+      "purpose": "주거급여 신청 안내 공식 이동"
+    },
+    {
+      "label": "소득·자산 자가진단",
+      "domain": "myhome.go.kr",
+      "url": "https://www.myhome.go.kr/hws/portal/dgn/selectSelfDiagnosisView.do",
+      "purpose": "주거복지 자가진단 공식 이동"
+    },
+    {
+      "label": "어린이집 대기 현황",
+      "domain": "info.childcare.go.kr",
+      "url": "https://info.childcare.go.kr/ala/alw/alaWaitList.do",
+      "purpose": "어린이집 입소대기 현황 확인"
+    },
+    {
+      "label": "생활안전지도",
+      "domain": "safemap.go.kr",
+      "url": "https://www.safemap.go.kr/",
+      "purpose": "대전 유성구 생활권 기반시설 확인"
+    }
+  ],
+  "boundaries": [
+    "자격 확정이 아니라 후보 안내만 제공",
+    "로그인, 본인인증, 신청, 제출 자동화 없음",
+    "법령 본문 해석 없이 공식 링크로 handoff"
+  ]
+}

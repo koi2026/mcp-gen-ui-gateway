@@ -1,0 +1,108 @@
+{
+  "id": "freelancer",
+  "tag": "[프리랜서]",
+  "label": "프리랜서 5월 이사·종합소득세",
+  "stagedPrompt": "[프리랜서] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.",
+  "routePolicy": "exact-tag-only",
+  "artifact": {
+    "mode": "self-contained-html",
+    "html": "embedded/freelancer.html"
+  },
+  "assets": [
+    {
+      "id": "hero-slides",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 3,
+      "note": "상단 히어로 슬라이드 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "context-photo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 1,
+      "note": "본문 맥락 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "gov24-logo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "webp",
+      "count": 1,
+      "note": "정부24 공식 로고는 HTML CSS background-image data URL로 포함"
+    },
+    {
+      "id": "runtime",
+      "kind": "script",
+      "delivery": "inline-source",
+      "format": "javascript",
+      "count": 1,
+      "note": "탭·토글 동작 스크립트는 HTML script 태그 안에 포함"
+    },
+    {
+      "id": "font-stack",
+      "kind": "font",
+      "delivery": "system-font-stack",
+      "format": "css-font-family",
+      "count": 0,
+      "note": "외부 폰트 파일 없이 시스템 한글 폰트 스택 사용"
+    }
+  ],
+  "surface": {
+    "headline": "프리랜서 이사와 5월 세금 마감 동시 관리",
+    "signature": "종합소득세 일정과 주소 변경 작업을 먼저 보여주는 GenUI Surface",
+    "modules": [
+      "deadline-timeline",
+      "tax-action-panel",
+      "business-address-task",
+      "expense-proof-checklist",
+      "work-infra-map",
+      "missed-risk-alert"
+    ]
+  },
+  "officialHandoffs": [
+    {
+      "label": "종합소득세 신고",
+      "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=110101",
+      "purpose": "5월 세금 신고 공식 이동"
+    },
+    {
+      "label": "전입신고",
+      "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
+      "purpose": "주민등록 전입 신고 공식 이동"
+    },
+    {
+      "label": "사업자등록 정정",
+      "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=200201",
+      "purpose": "사업장 주소 정정 공식 이동"
+    },
+    {
+      "label": "주거이전 우편물 전송",
+      "domain": "epost.go.kr",
+      "url": "https://service.epost.go.kr/parcel/pr/deliveryChangeInfoReg.do",
+      "purpose": "우편물 주소 이전 신청 공식 이동"
+    },
+    {
+      "label": "전세 계약 법적 체크",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
+      "purpose": "주택임대차보호법 확인"
+    },
+    {
+      "label": "생활·사업 인프라 데이터",
+      "domain": "safemap.go.kr",
+      "url": "https://www.safemap.go.kr/",
+      "purpose": "대전 유성구 생활권·업무 인프라 근거 데이터 확인"
+    }
+  ],
+  "boundaries": [
+    "세무 신고가 완료된 것으로 표현하지 않음",
+    "로그인, 본인인증, 신청, 제출 자동화 없음",
+    "자연어 의미 추론 없이 정확한 태그만 라우팅"
+  ]
+}

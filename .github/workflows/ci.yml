@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, pretotype/genui-demo]
   pull_request:
-    branches: [main]
+    branches: [main, pretotype/genui-demo, 'codex/**', 'fix/**', 'feat/**', 'docs/**']
 
 jobs:
   ci:

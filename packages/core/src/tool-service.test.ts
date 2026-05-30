@@ -1,10 +1,13 @@
 import { mkdtempSync } from "node:fs";
+import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { FixtureBenefitRepository } from "./repository.js";
 import { SnapshotStore } from "./sqlite-store.js";
 import { BenefitToolService } from "./tool-service.js";
+
+const sqliteIt = canLoadBetterSqlite() ? it : it.skip;
 
 describe("BenefitToolService", () => {
   it("groups fixture-backed benefit results by recommendation status", async () => {
@@ -24,7 +27,7 @@ describe("BenefitToolService", () => {
     expect(response.results.map((result) => result.id)).toContain("seoul-youth-rent-support");
   });
 
-  it("records SQLite change logs while serving tool calls", async () => {
+  sqliteIt("records SQLite change logs while serving tool calls", async () => {
     const dir = mkdtempSync(join(tmpdir(), "mcp-gen-ui-gateway-"));
     const store = new SnapshotStore(join(dir, "test.db"));
     const service = new BenefitToolService(new FixtureBenefitRepository(), store);
@@ -36,3 +39,14 @@ describe("BenefitToolService", () => {
     store.close();
   });
 });
+
+function canLoadBetterSqlite() {
+  try {
+    const Database = createRequire(import.meta.url)("better-sqlite3") as typeof import("better-sqlite3");
+    const db = new Database(":memory:");
+    db.close();
+    return true;
+  } catch {
+    return false;
+  }
+}

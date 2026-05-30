@@ -1,0 +1,120 @@
+{
+  "id": "postdoc",
+  "tag": "[박사후연구원]",
+  "label": "박사후연구원 연구·정착 데이터",
+  "stagedPrompt": "[박사후연구원] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.",
+  "routePolicy": "exact-tag-only",
+  "artifact": {
+    "mode": "self-contained-html",
+    "html": "embedded/postdoc.html"
+  },
+  "assets": [
+    {
+      "id": "hero-slides",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 3,
+      "note": "상단 히어로 슬라이드 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "context-photo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "jpeg",
+      "count": 1,
+      "note": "본문 맥락 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "gov24-logo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "webp",
+      "count": 1,
+      "note": "정부24 공식 로고는 HTML CSS background-image data URL로 포함"
+    },
+    {
+      "id": "runtime",
+      "kind": "script",
+      "delivery": "inline-source",
+      "format": "javascript",
+      "count": 1,
+      "note": "탭·토글 동작 스크립트는 HTML script 태그 안에 포함"
+    },
+    {
+      "id": "font-stack",
+      "kind": "font",
+      "delivery": "system-font-stack",
+      "format": "css-font-family",
+      "count": 0,
+      "note": "외부 폰트 파일 없이 시스템 한글 폰트 스택 사용"
+    }
+  ],
+  "surface": {
+    "headline": "박사후연구원 정착과 연구 인프라 확인",
+    "signature": "지역 연구 데이터와 정착 문서 묶음을 먼저 보여주는 GenUI Surface",
+    "modules": [
+      "research-profile-dashboard",
+      "rnd-data-panel",
+      "institution-document-pack",
+      "research-life-map",
+      "lease-basis-mini",
+      "tax-prep-mini"
+    ]
+  },
+  "officialHandoffs": [
+    {
+      "label": "전입신고",
+      "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
+      "purpose": "주민등록 전입 신고 공식 이동"
+    },
+    {
+      "label": "국가R&D 과제·성과",
+      "domain": "ntis.go.kr",
+      "url": "https://www.ntis.go.kr/rndgate/eg/un/ra/mng.do",
+      "purpose": "연구 과제와 성과 데이터 확인"
+    },
+    {
+      "label": "연구장비 공동활용",
+      "domain": "zeus.go.kr",
+      "url": "https://www.zeus.go.kr/",
+      "purpose": "공동 활용 연구시설·장비 검색과 예약 handoff"
+    },
+    {
+      "label": "졸업·학위증명서",
+      "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000042",
+      "purpose": "최종 학위 증명서 발급 안내 공식 이동"
+    },
+    {
+      "label": "건강보험 자격득실 확인서",
+      "domain": "minwon.nhis.or.kr",
+      "url": "https://minwon.nhis.or.kr/",
+      "purpose": "건강보험 자격득실확인서 발급 handoff"
+    },
+    {
+      "label": "소득금액증명원",
+      "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=200040",
+      "purpose": "소득금액증명 발급 handoff"
+    },
+    {
+      "label": "연구윤리 교육",
+      "domain": "cre.nrf.re.kr",
+      "url": "https://cre.nrf.re.kr/",
+      "purpose": "연구윤리 서약·교육 관련 공식 이동"
+    },
+    {
+      "label": "전세 계약 법적 체크",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
+      "purpose": "주택임대차보호법 확인"
+    }
+  ],
+  "boundaries": [
+    "연구기관 채용, 과제 선정, 비자, 세무 자격을 확정하지 않음",
+    "로그인, 본인인증, 신청, 제출 자동화 없음",
+    "박사후연구원 라벨은 pretotype 연출용이며 production persona taxonomy가 아님"
+  ]
+}

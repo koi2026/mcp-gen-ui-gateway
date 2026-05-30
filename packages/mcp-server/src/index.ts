@@ -5,9 +5,7 @@ import { z } from "zod";
 import { BenefitToolService, FixtureBenefitRepository, SnapshotStore } from "@mcp-gen-ui-gateway/core";
 import { BenefitSearchRequestSchema } from "@mcp-gen-ui-gateway/schema";
 
-const repository = new FixtureBenefitRepository();
-const snapshots = new SnapshotStore(process.env.MCP_GEN_UI_DB_PATH ?? "mcp-gen-ui-gateway.db");
-const tools = new BenefitToolService(repository, snapshots);
+let tools: BenefitToolService | undefined;
 
 const server = new McpServer({
   name: "mcp-gen-ui-gateway",
@@ -18,39 +16,48 @@ server.tool(
   "searchBenefits",
   "Find public-benefit candidates from non-identifying user profile conditions.",
   BenefitSearchRequestSchema.shape,
-  async (input) => jsonToolResult(await tools.searchBenefits(input))
+  async (input) => jsonToolResult(await getTools().searchBenefits(input))
 );
 
 server.tool(
   "getBenefitDetail",
   "Return structured detail for a benefit candidate.",
   { id: z.string().min(1) },
-  async ({ id }) => jsonToolResult(await tools.getBenefitDetail(id))
+  async ({ id }) => jsonToolResult(await getTools().getBenefitDetail(id))
 );
 
 server.tool(
   "buildChecklist",
   "Build a preparation checklist for a benefit application.",
   { benefitId: z.string().min(1) },
-  async ({ benefitId }) => jsonToolResult(await tools.buildChecklist(benefitId))
+  async ({ benefitId }) => jsonToolResult(await getTools().buildChecklist(benefitId))
 );
 
 server.tool(
   "getApplicationGuide",
   "Return user-action-only application guidance for a benefit.",
   { benefitId: z.string().min(1) },
-  async ({ benefitId }) => jsonToolResult(await tools.getApplicationGuide(benefitId))
+  async ({ benefitId }) => jsonToolResult(await getTools().getApplicationGuide(benefitId))
 );
 
 server.tool(
   "getChangeLog",
   "Return snapshot and change-log entries for all benefits or one benefit.",
   { entityId: z.string().optional() },
-  async ({ entityId }) => jsonToolResult(await tools.getChangeLog(entityId))
+  async ({ entityId }) => jsonToolResult(await getTools().getChangeLog(entityId))
 );
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
+
+function getTools() {
+  tools ??= new BenefitToolService(
+    new FixtureBenefitRepository(),
+    new SnapshotStore(process.env.MCP_GEN_UI_DB_PATH ?? "mcp-gen-ui-gateway.db")
+  );
+
+  return tools;
+}
 
 function jsonToolResult(value: unknown) {
   return {
