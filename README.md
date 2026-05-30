@@ -313,6 +313,8 @@ Pretotype boundaries:
 - Official URLs are outbound handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
 
+Post-demo development stages are outlined in [docs/pretotype-follow-up-roadmap.md](docs/pretotype-follow-up-roadmap.md).
+
 ## Optional Remote Custom Connector
 
 Claude's custom connector form expects a remote MCP server URL. That is a different deployment path from the local clone/build flow above.
