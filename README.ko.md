@@ -167,7 +167,7 @@ If the tag is missing or ambiguous, ask for exactly one of the three tags.
 [신혼부부] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
 ```
 
-Claude가 신혼부부 페르소나에 맞는 정부24 스타일 HTML Artifact를 열어야 합니다. 자세한 설정은 [docs/claude-desktop-pretotype-connector.ko.md](docs/claude-desktop-pretotype-connector.ko.md)를 참고하세요.
+Claude가 신혼부부 페르소나에 맞는 정부24 스타일 HTML Artifact를 열어야 합니다. 자세한 설정은 [docs/claude-desktop-pretotype-connector.md](docs/claude-desktop-pretotype-connector.md)를 참고하세요.
 
 ---
 
