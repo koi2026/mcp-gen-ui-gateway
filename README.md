@@ -33,28 +33,232 @@ Out of scope: Government24 login automation, identity verification, automatic fo
 
 Branch naming, atomic commits, Conventional Commits, and PR review rules are documented in [docs/git-workflow.md](docs/git-workflow.md).
 
-## Quick Start
+## Claude Desktop Pretotype Quick Start
+
+Use this path when you want to run the June 4 pretotype from a cloned repository, before publishing the npm package.
+
+This is a local `stdio` MCP install. It does not require Vercel, Railway, a public HTTPS URL, or Claude's custom connector URL form. Claude Desktop starts the MCP server from your local checkout.
+
+### 1. Prerequisites
+
+- Claude Desktop installed and signed in.
+- Node.js 20 or 22 LTS.
+- pnpm 9.x or newer.
+- macOS path examples below assume Claude Desktop's default config path.
+
+Check local versions:
+
+```bash
+node -v
+pnpm -v
+```
+
+Expected Node examples are `v20.x` or `v22.x`. Avoid unreleased/current majors such as Node 26 for now because the workspace includes native dependencies that may not compile there.
+
+If `pnpm` is missing:
+
+```bash
+corepack enable
+corepack prepare pnpm@9.15.4 --activate
+```
+
+### 2. Clone This Branch
+
+```bash
+git clone -b pretotype/genui-demo https://github.com/koi2026/mcp-gen-ui-gateway.git
+cd mcp-gen-ui-gateway
+```
+
+### 3. Install And Build Only The Pretotype MCP Server
 
 ```bash
 pnpm install
-pnpm build
-pnpm test
-pnpm dev
+pnpm --filter pretotype-mcp-gen-ui-gateway build
 ```
 
-Run the MCP server over stdio:
+Optional but recommended:
 
 ```bash
-pnpm mcp
+pnpm --filter pretotype-mcp-gen-ui-gateway test
 ```
 
-Run the pretotype MCP server over Streamable HTTP for a remote custom connector:
+The build output must include:
+
+```text
+packages/pretotype-server/dist/pretotype-index.js
+packages/pretotype-server/assets/embedded/newlywed.html
+packages/pretotype-server/assets/embedded/freelancer.html
+packages/pretotype-server/assets/embedded/postdoc.html
+packages/pretotype-server/assets/scenarios/scenario_newlywed.json
+packages/pretotype-server/assets/scenarios/scenario_freelancer.json
+packages/pretotype-server/assets/scenarios/scenario_postdoc.json
+```
+
+### 4. Get Your Absolute Repository Path
+
+Run this from the repository root:
 
 ```bash
-pnpm pretotype:http
+pwd
 ```
 
-## Claude Desktop Pretotype
+Example output:
+
+```text
+/Users/you/projects/mcp-gen-ui-gateway
+```
+
+Use your own output wherever this README says `/ABS/PATH/mcp-gen-ui-gateway`.
+
+### 5. Edit Claude Desktop MCP Config
+
+Open the Claude Desktop config file:
+
+```bash
+mkdir -p "$HOME/Library/Application Support/Claude"
+open -e "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+If the file is empty or does not exist yet, use this full JSON:
+
+```json
+{
+  "mcpServers": {
+    "pretotype-mcp-gen-ui-gateway": {
+      "command": "node",
+      "args": [
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+      ]
+    }
+  }
+}
+```
+
+If your config already has other MCP servers, add only this entry inside the existing `mcpServers` object:
+
+```json
+"pretotype-mcp-gen-ui-gateway": {
+  "command": "node",
+  "args": [
+    "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+  ]
+}
+```
+
+Do not leave `/ABS/PATH/mcp-gen-ui-gateway` in the file. Replace it with the exact `pwd` output from step 4.
+
+No `MCP_GEN_UI_PRETOTYPE_DIST` env var is required for the current pretotype package. The package is self-contained and reads its own `assets/` directory.
+
+### 6. Restart Claude Desktop
+
+Fully quit Claude Desktop and open it again.
+
+On macOS, use `Cmd+Q`, then reopen Claude Desktop. A normal window close is not always enough because MCP servers are loaded at app startup.
+
+### 7. Add The Host Instruction In Claude
+
+Paste this instruction into the Claude chat or project where the MCP server is enabled:
+
+```text
+You render a public portal GenUI pretotype.
+
+If the user includes exactly one of [신혼부부], [프리랜서], or [박사후연구원], call render_pretotype_scenario with:
+{ "utterance": "<full user utterance>" }
+
+If render_pretotype_scenario returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
+
+The artifact links are external official handoff links. Do not claim that login, identity verification, application submission, legal interpretation, or tax filing happened inside the artifact.
+
+If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
+```
+
+### 8. Run The Demo Prompt
+
+Use one of these exact prompts:
+
+```text
+[신혼부부] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
+```
+
+```text
+[프리랜서] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
+```
+
+```text
+[박사후연구원] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
+```
+
+Expected result:
+
+```text
+Claude prompt
+  -> render_pretotype_scenario
+  -> exact context tag route
+  -> scenario_*.json
+  -> embedded/*.html
+  -> Claude HTML Artifact
+```
+
+The successful demo is not a text summary. Claude should open a full HTML Artifact that looks like a Government24-style page for the selected persona.
+
+### 9. Troubleshooting
+
+If Claude does not show the MCP tool:
+
+- Confirm the JSON file is valid. A missing comma can prevent all MCP servers from loading.
+- Confirm the path in `args` exists:
+
+  ```bash
+  ls "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+  ```
+
+- Confirm you ran:
+
+  ```bash
+  pnpm --filter pretotype-mcp-gen-ui-gateway build
+  ```
+
+- Fully quit and reopen Claude Desktop.
+
+If `pnpm install` fails while compiling `better-sqlite3`, check `node -v`. Use Node 20 or 22 LTS, reinstall dependencies, then rebuild:
+
+```bash
+node -v
+rm -rf node_modules
+pnpm install
+pnpm --filter pretotype-mcp-gen-ui-gateway build
+```
+
+If Claude says `node` cannot be found, use the absolute Node path:
+
+```bash
+which node
+```
+
+Then change the config:
+
+```json
+{
+  "mcpServers": {
+    "pretotype-mcp-gen-ui-gateway": {
+      "command": "/ABS/PATH/TO/node",
+      "args": [
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+      ]
+    }
+  }
+}
+```
+
+If Claude calls the tool but returns a disclosure instead of HTML, the prompt probably has no supported tag or has multiple tags. Use exactly one of:
+
+```text
+[신혼부부]
+[프리랜서]
+[박사후연구원]
+```
+
+## Pretotype Scope
 
 This branch includes a deliberately narrow pretotype of the future GenUI Gateway MCP.
 
@@ -109,85 +313,28 @@ Pretotype boundaries:
 - Official URLs are outbound handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
 
-### Claude Custom Connector Setup
+## Optional Remote Custom Connector
 
-Claude's custom connector form expects a remote MCP server URL, not a local `stdio` command. For this pretotype, run the Streamable HTTP endpoint and expose it through HTTPS.
+Claude's custom connector form expects a remote MCP server URL. That is a different deployment path from the local clone/build flow above.
+
+Run the HTTP entrypoint locally:
 
 ```bash
-git clone https://github.com/koi2026/mcp-gen-ui-gateway.git
-cd mcp-gen-ui-gateway
-pnpm install
-pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+pnpm --filter pretotype-mcp-gen-ui-gateway build
 MCP_HTTP_HOST=127.0.0.1 MCP_HTTP_PORT=8787 pnpm pretotype:http
-```
-
-Local checks:
-
-```bash
 curl http://127.0.0.1:8787/health
 ```
 
-Expose `http://127.0.0.1:8787` with a tunnel or deployment that gives you an HTTPS origin. In the custom connector modal, enter:
+Expose `http://127.0.0.1:8787` through a tunnel or deployment that gives you an HTTPS origin. In the custom connector modal, enter:
 
 ```text
 Name: pretotype-mcp-gen-ui-gateway
 Remote MCP server URL: https://YOUR-DOMAIN.example/mcp
 ```
 
-For a deployed process, set `MCP_HTTP_HOST=0.0.0.0` and use the platform-provided `PORT` or `MCP_HTTP_PORT`.
+For the June 4 pretotype, the local Claude Desktop config is the recommended path. Use the remote connector only when you intentionally want an externally reachable MCP server.
 
-### Claude Desktop Local Config
-
-```bash
-git clone https://github.com/koi2026/mcp-gen-ui-gateway.git
-cd mcp-gen-ui-gateway
-pnpm install
-pnpm --filter @mcp-gen-ui-gateway/mcp-server build
-pwd
-```
-
-If you prefer the older local desktop config path, add this server to `~/Library/Application Support/Claude/claude_desktop_config.json`. Replace `/ABS/PATH/mcp-gen-ui-gateway` with the path printed by `pwd`.
-
-```json
-{
-  "mcpServers": {
-    "pretotype-mcp-gen-ui-gateway": {
-      "command": "node",
-      "args": [
-        "/ABS/PATH/mcp-gen-ui-gateway/packages/mcp-server/dist/pretotype-index.js"
-      ],
-      "env": {
-        "MCP_GEN_UI_PRETOTYPE_DIST": "/ABS/PATH/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
-      }
-    }
-  }
-}
-```
-
-Restart Claude Desktop after editing the config.
-
-### Claude Host Prompt
-
-Use this instruction in Claude Desktop so the model does not rebuild the UI itself:
-
-```text
-You render a public portal GenUI pretotype.
-
-If the user includes exactly one of [신혼부부], [프리랜서], or [박사후연구원], call render_pretotype_scenario with:
-{ "utterance": "<full user utterance>" }
-
-If the tool returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
-
-If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
-```
-
-Then test with:
-
-```text
-[프리랜서] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
-```
-
-Details are in [docs/claude-desktop-pretotype-connector.md](docs/claude-desktop-pretotype-connector.md), [apps/demo-ui/public/pretotype/README.md](apps/demo-ui/public/pretotype/README.md), and [docs/pretotype-mcp-usage.md](docs/pretotype-mcp-usage.md).
+## Repository Development
 
 Export JSON Schemas:
 

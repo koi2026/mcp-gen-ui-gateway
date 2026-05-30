@@ -32,17 +32,39 @@ scenarios/
 
 The JSON files are human-readable routing manifests. The HTML files are the actual Claude Artifact payloads. Each HTML file contains its CSS, runtime JavaScript, photos, and Government24 logo inline, so Claude does not need to create, fetch, or attach separate assets.
 
-## Claude Desktop Setup
+## Claude Desktop Setup: Developer Clone/Build
 
-From the repository root:
+Use this path before the npm package is published. Claude Desktop will run the compiled MCP server from your local clone.
+
+Use Node.js 20 or 22 LTS. Avoid current majors such as Node 26 for now because the full workspace includes native dependencies that may not compile there.
+
+### 1. Clone And Enter The Branch
+
+```bash
+git clone -b pretotype/genui-demo https://github.com/koi2026/mcp-gen-ui-gateway.git
+cd mcp-gen-ui-gateway
+```
+
+### 2. Install And Build
 
 ```bash
 pnpm install
-pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+pnpm --filter pretotype-mcp-gen-ui-gateway build
 pwd
 ```
 
-Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`. Replace `/ABS/PATH/mcp-gen-ui-gateway` with the path printed by `pwd`.
+The `pwd` output is your repository root. Use it to replace `/ABS/PATH/mcp-gen-ui-gateway` below.
+
+### 3. Add Claude Desktop Config
+
+Open the config file:
+
+```bash
+mkdir -p "$HOME/Library/Application Support/Claude"
+open -e "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+If this is your first MCP server, use:
 
 ```json
 {
@@ -50,17 +72,24 @@ Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`. R
     "pretotype-mcp-gen-ui-gateway": {
       "command": "node",
       "args": [
-        "/ABS/PATH/mcp-gen-ui-gateway/packages/mcp-server/dist/pretotype-index.js"
-      ],
-      "env": {
-        "MCP_GEN_UI_PRETOTYPE_DIST": "/ABS/PATH/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
-      }
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+      ]
     }
   }
 }
 ```
 
-Restart Claude Desktop after editing the config.
+If the config already has other MCP servers, add only the `pretotype-mcp-gen-ui-gateway` entry inside the existing `mcpServers` object.
+
+The server reads checked-in assets from `packages/pretotype-server/assets`, so no `MCP_GEN_UI_PRETOTYPE_DIST` environment variable is required.
+
+### 4. Restart Claude Desktop
+
+Fully quit Claude Desktop and open it again. MCP servers are loaded during app startup.
+
+### 5. Verify With A Prompt
+
+Paste the Host Prompt below, then run one Test Prompt. Claude should call `render_pretotype_scenario` and open a full HTML Artifact, not a text summary.
 
 ## Host Prompt
 
