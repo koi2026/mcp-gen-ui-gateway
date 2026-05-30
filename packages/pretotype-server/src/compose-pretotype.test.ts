@@ -92,7 +92,7 @@ describe("composeGenuiArtifactText", () => {
 
   it("keeps checked-in artifact dependencies inline so Claude does not need sibling assets", async () => {
     for (const context of Object.keys(taggedUtterances)) {
-      const html = await readFile(new URL(`../../../apps/demo-ui/public/pretotype/embedded/${context}.html`, import.meta.url), "utf8");
+      const html = await readFile(new URL(`../assets/embedded/${context}.html`, import.meta.url), "utf8");
 
       expect(html.match(/<img\b[^>]*\ssrc=["']data:image\//g)).toHaveLength(4);
       expect(html).toContain('--gov24-logo-image: url("data:image/webp;base64,');
@@ -112,9 +112,9 @@ describe("composeGenuiArtifactText", () => {
       /href=["']https:\/\/(?:www\.)?(?:gov\.kr|hometax\.go\.kr|bokjiro\.go\.kr|iros\.go\.kr|epost\.go\.kr|nhis\.or\.kr|nrf\.re\.kr|ntis\.go\.kr|myhome\.go\.kr|info\.childcare\.go\.kr)\/?["']/;
 
     for (const context of Object.keys(taggedUtterances)) {
-      const html = await readFile(new URL(`../../../apps/demo-ui/public/pretotype/embedded/${context}.html`, import.meta.url), "utf8");
+      const html = await readFile(new URL(`../assets/embedded/${context}.html`, import.meta.url), "utf8");
       const scenario = JSON.parse(
-        await readFile(new URL(`../../../apps/demo-ui/public/pretotype/scenarios/scenario_${context}.json`, import.meta.url), "utf8")
+        await readFile(new URL(`../assets/scenarios/scenario_${context}.json`, import.meta.url), "utf8")
       ) as { officialHandoffs?: { url?: unknown }[] };
 
       htmlByContext[context] = html;
@@ -200,9 +200,8 @@ describe("composeGenuiArtifactText", () => {
     const text = await composeGenuiArtifactText({ utterance: "[프리랜서] smoke" });
 
     expect(text).toContain('Pretotype HTML for tag "[프리랜서]" is not available yet.');
-    expect(text).toContain("apps/demo-ui/public/pretotype/embedded");
+    expect(text).toContain("assets/embedded");
     expect(text).not.toContain("shared.css");
-    expect(text).not.toContain("assets/");
   });
 });
 

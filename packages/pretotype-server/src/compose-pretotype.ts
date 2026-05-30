@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const pretotypeContexts = ["newlywed", "freelancer", "postdoc"] as const;
 
@@ -73,7 +74,7 @@ export async function composeGenuiArtifactText({ utterance }: { utterance: strin
     return [
       `Pretotype HTML for tag "${route.tag}" is not available yet.`,
       `Expected file: ${resolvePretotypeFilePath(route.scenario.artifact.html)}`,
-      "Ensure apps/demo-ui/public/pretotype/embedded contains the checked-in self-contained HTML files.",
+      "Ensure the pretotype-server package ships the self-contained HTML under assets/embedded.",
       `Read error: ${message}`
     ].join("\n");
   }
@@ -116,7 +117,14 @@ export function resolvePretotypeRoute(utterance: string, scenarios: PretotypeSce
 }
 
 function resolvePretotypeBasePath() {
-  return process.env.MCP_GEN_UI_PRETOTYPE_DIST ?? path.join(findWorkspaceRoot(), "apps/demo-ui/public/pretotype");
+  return process.env.MCP_GEN_UI_PRETOTYPE_DIST ?? defaultPretotypeAssetsDir();
+}
+
+function defaultPretotypeAssetsDir() {
+  // Resolves to <package>/assets for both `tsx src/*.ts` (dev) and compiled `dist/*.js` (prod),
+  // since src and dist both sit one level below the package root. Keeps the published
+  // package self-contained instead of reaching into a sibling workspace app.
+  return fileURLToPath(new URL("../assets", import.meta.url));
 }
 
 function resolvePretotypeFilePath(relativePath: string) {
@@ -153,18 +161,4 @@ function parsePretotypeScenario(fileName: string, source: string): PretotypeScen
   }
 
   return scenario as PretotypeScenario;
-}
-
-function findWorkspaceRoot() {
-  let current = process.cwd();
-
-  while (current !== path.dirname(current)) {
-    if (path.basename(current) === "mcp-gen-ui-gateway") {
-      return current;
-    }
-
-    current = path.dirname(current);
-  }
-
-  return process.cwd();
 }

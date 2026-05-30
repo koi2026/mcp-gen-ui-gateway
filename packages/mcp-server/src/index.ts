@@ -4,7 +4,6 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { BenefitToolService, FixtureBenefitRepository, SnapshotStore } from "@mcp-gen-ui-gateway/core";
 import { BenefitSearchRequestSchema } from "@mcp-gen-ui-gateway/schema";
-import { composeGenuiArtifactText } from "./compose-pretotype.js";
 
 let tools: BenefitToolService | undefined;
 
@@ -48,15 +47,6 @@ server.tool(
   async ({ entityId }) => jsonToolResult(await getTools().getChangeLog(entityId))
 );
 
-server.tool(
-  "compose_genui_artifact",
-  "Return a self-contained HTML GenUI artifact for a fixed pretotype tag.",
-  {
-    utterance: z.string().min(1)
-  },
-  async (input) => textToolResult(await composeGenuiArtifactText(input))
-);
-
 const transport = new StdioServerTransport();
 await server.connect(transport);
 
@@ -75,17 +65,6 @@ function jsonToolResult(value: unknown) {
       {
         type: "text" as const,
         text: JSON.stringify(value, null, 2)
-      }
-    ]
-  };
-}
-
-function textToolResult(text: string) {
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text
       }
     ]
   };

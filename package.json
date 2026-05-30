@@ -12,8 +12,8 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "mcp": "pnpm --filter @mcp-gen-ui-gateway/mcp-server start",
-    "pretotype:mcp": "pnpm --filter @mcp-gen-ui-gateway/mcp-server pretotype:start",
-    "pretotype:http": "pnpm --filter @mcp-gen-ui-gateway/mcp-server pretotype:http",
+    "pretotype:mcp": "pnpm --filter pretotype-mcp-gen-ui-gateway start",
+    "pretotype:http": "pnpm --filter pretotype-mcp-gen-ui-gateway http",
     "schemas": "pnpm --filter @mcp-gen-ui-gateway/schema export:schema"
   },
   "devDependencies": {
