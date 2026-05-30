@@ -1,0 +1,28 @@
+# Code ownership for automatic PR review requests.
+# See https://docs.github.com/en/repositories/managing-your-repositories-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Order matters: later patterns override earlier ones for matched files.
+
+# Default owners — every PR requests review from a maintainer.
+*                                   @koi2026/maintainers
+
+# Role A — core schema, tool service, MCP server
+/packages/schema/                   @koi2026/role-a
+/packages/core/                     @koi2026/role-a
+/packages/mcp-server/               @koi2026/role-a
+
+# Role B — data, browser-assist boundary, fixtures
+/packages/browser-assist/           @koi2026/role-b
+
+# Role C — renderer, demo UI, pretotype
+/packages/pretotype-server/         @koi2026/role-c
+/apps/demo-ui/                      @koi2026/role-c
+
+# Documentation and ADRs — any maintainer can review
+/docs/                              @koi2026/maintainers
+/README.md                          @koi2026/maintainers
+/CONTRIBUTING.md                    @koi2026/maintainers
+/CHANGELOG.md                       @koi2026/maintainers
+
+# CI and repo config — maintainers only
+/.github/                           @koi2026/maintainers
