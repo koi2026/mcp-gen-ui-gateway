@@ -1,6 +1,6 @@
 # Pretotype Stage-Up Roadmap
 
-Status: Stage 2 branch. The branch `codex/stage-2-context-weighting-matrix` implements context vectors, component candidates, weighting, and ranking trace while preserving the Stage 0 fixed Artifact route.
+Status: Stage 3 branch. The branch `codex/stage-3-dynamic-genui-renderer` implements the `genui.gateway.v1` response and dynamic HTML template renderer while preserving the Stage 0 fixed Artifact route.
 
 This document reviews the intended development direction after the fixed Artifact pretotype and breaks it into staged, contract-safe milestones.
 
@@ -340,7 +340,7 @@ Implementation order:
 
 The Stage 0 pretotype has already shipped as the stable baseline. Keep `render_pretotype_scenario` as the regression fixture while Stage 1-3 continues to rise in capability.
 
-This branch is the Stage 2 contract lane, not a replacement for the fixed Artifact baseline. Stage 3 should stay on its own branch until the `genui.gateway.v1` renderer contract and tests are ready to merge upward.
+This branch is the Stage 3 renderer lane, not a replacement for the fixed Artifact baseline. The dynamic tools should remain explicitly experimental until their contract, screenshots, and source/evidence behavior are hardened enough to merge upward.
 
 The right hardening order remains Stage 1 first:
 
