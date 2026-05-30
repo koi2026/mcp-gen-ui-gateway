@@ -58,26 +58,49 @@
     {
       "label": "전입신고",
       "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
       "purpose": "주민등록 전입 신고 공식 이동"
     },
     {
       "label": "국가R&D 과제·성과",
       "domain": "ntis.go.kr",
+      "url": "https://www.ntis.go.kr/rndgate/eg/un/ra/mng.do",
       "purpose": "연구 과제와 성과 데이터 확인"
     },
     {
-      "label": "연구개발특구",
-      "domain": "innopolis.or.kr",
-      "purpose": "대덕특구 연구·기관 handoff"
+      "label": "연구장비 공동활용",
+      "domain": "zeus.go.kr",
+      "url": "https://www.zeus.go.kr/",
+      "purpose": "공동 활용 연구시설·장비 검색과 예약 handoff"
     },
     {
-      "label": "생활·지역 데이터",
-      "domain": "data.go.kr",
-      "purpose": "대전 유성구 정착 근거 데이터 확인"
+      "label": "졸업·학위증명서",
+      "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000042",
+      "purpose": "최종 학위 증명서 발급 안내 공식 이동"
+    },
+    {
+      "label": "건강보험 자격득실 확인서",
+      "domain": "minwon.nhis.or.kr",
+      "url": "https://minwon.nhis.or.kr/",
+      "purpose": "건강보험 자격득실확인서 발급 handoff"
+    },
+    {
+      "label": "소득금액증명원",
+      "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=200040",
+      "purpose": "소득금액증명 발급 handoff"
+    },
+    {
+      "label": "연구윤리 교육",
+      "domain": "cre.nrf.re.kr",
+      "url": "https://cre.nrf.re.kr/",
+      "purpose": "연구윤리 서약·교육 관련 공식 이동"
     },
     {
       "label": "전세 계약 법적 체크",
-      "domain": "law.go.kr",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
       "purpose": "주택임대차보호법 확인"
     }
   ],

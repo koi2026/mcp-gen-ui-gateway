@@ -58,21 +58,37 @@
     {
       "label": "종합소득세 신고",
       "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=110101",
       "purpose": "5월 세금 신고 공식 이동"
     },
     {
       "label": "전입신고",
       "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
       "purpose": "주민등록 전입 신고 공식 이동"
     },
     {
+      "label": "사업자등록 정정",
+      "domain": "hometax.go.kr",
+      "url": "https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml&menuNo=200201",
+      "purpose": "사업장 주소 정정 공식 이동"
+    },
+    {
+      "label": "주거이전 우편물 전송",
+      "domain": "epost.go.kr",
+      "url": "https://service.epost.go.kr/parcel/pr/deliveryChangeInfoReg.do",
+      "purpose": "우편물 주소 이전 신청 공식 이동"
+    },
+    {
       "label": "전세 계약 법적 체크",
-      "domain": "law.go.kr",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
       "purpose": "주택임대차보호법 확인"
     },
     {
       "label": "생활·사업 인프라 데이터",
-      "domain": "data.go.kr",
+      "domain": "safemap.go.kr",
+      "url": "https://www.safemap.go.kr/",
       "purpose": "대전 유성구 생활권·업무 인프라 근거 데이터 확인"
     }
   ],

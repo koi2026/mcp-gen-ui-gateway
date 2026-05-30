@@ -103,6 +103,37 @@ describe("composeGenuiArtifactText", () => {
     }
   });
 
+  it("keeps checked-in pretotype links actionable and documents URL handoffs", async () => {
+    const htmlByContext: Record<string, string> = {};
+    const broadHomepageHref =
+      /href=["']https:\/\/(?:www\.)?(?:gov\.kr|hometax\.go\.kr|bokjiro\.go\.kr|iros\.go\.kr|epost\.go\.kr|nhis\.or\.kr|nrf\.re\.kr|ntis\.go\.kr|myhome\.go\.kr|info\.childcare\.go\.kr)\/?["']/;
+
+    for (const context of Object.keys(taggedUtterances)) {
+      const html = await readFile(new URL(`../../../apps/demo-ui/public/pretotype/embedded/${context}.html`, import.meta.url), "utf8");
+      const scenario = JSON.parse(
+        await readFile(new URL(`../../../apps/demo-ui/public/pretotype/scenarios/scenario_${context}.json`, import.meta.url), "utf8")
+      ) as { officialHandoffs?: { url?: unknown }[] };
+
+      htmlByContext[context] = html;
+
+      expect(html).not.toMatch(/\shref=["']#["']/);
+      expect(html).not.toMatch(broadHomepageHref);
+      expect(scenario.officialHandoffs?.every((handoff) => typeof handoff.url === "string" && handoff.url.startsWith("https://"))).toBe(true);
+    }
+
+    expect(htmlByContext.newlywed).toContain("selectSelfDiagnosisView.do");
+    expect(htmlByContext.newlywed).toContain("alaWaitList.do");
+    expect(htmlByContext.newlywed).toContain("14일 내 신청·다음날 0시 효력");
+    expect(htmlByContext.freelancer).toContain("menuNo=200201");
+    expect(htmlByContext.freelancer).toContain("deliveryChangeInfoReg.do");
+    expect(htmlByContext.freelancer).toContain("gpsUserView.do");
+    expect(htmlByContext.freelancer).toContain("14일 내 신청·다음날 0시 효력");
+    expect(htmlByContext.postdoc).toContain("www.zeus.go.kr");
+    expect(htmlByContext.postdoc).toContain("minwon.nhis.or.kr");
+    expect(htmlByContext.postdoc).toContain("menuNo=200040");
+    expect(htmlByContext.postdoc).toContain("CappBizCD=13100000042");
+  });
+
   it("renders distinct GenUI surface architecture per context", async () => {
     const expectedModules = {
       newlywed: [

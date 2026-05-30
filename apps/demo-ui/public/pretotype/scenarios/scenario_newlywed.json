@@ -58,17 +58,44 @@
     {
       "label": "전입신고",
       "domain": "gov.kr",
+      "url": "https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13100000016",
       "purpose": "주민등록 전입 신고 공식 이동"
     },
     {
       "label": "전세 계약 법적 체크",
-      "domain": "law.go.kr",
+      "domain": "easylaw.go.kr",
+      "url": "https://www.easylaw.go.kr/CSP/CnpClsMain.laf?csmSeq=629&ccfNo=2&cciNo=1&cnpClsNo=1",
       "purpose": "주택임대차보호법 확인"
     },
     {
-      "label": "생활·주거 데이터",
-      "domain": "data.go.kr",
-      "purpose": "대전 유성구 생활권 근거 데이터 확인"
+      "label": "확정일자·등기부 확인",
+      "domain": "iros.go.kr",
+      "url": "https://www.iros.go.kr/index.jsp",
+      "purpose": "확정일자와 등기사항증명서 확인 공식 이동"
+    },
+    {
+      "label": "주거급여 신청",
+      "domain": "bokjiro.go.kr",
+      "url": "https://www.bokjiro.go.kr/ssis-park/syp/forcesym/UGT01001L.do",
+      "purpose": "주거급여 신청 안내 공식 이동"
+    },
+    {
+      "label": "소득·자산 자가진단",
+      "domain": "myhome.go.kr",
+      "url": "https://www.myhome.go.kr/hws/portal/dgn/selectSelfDiagnosisView.do",
+      "purpose": "주거복지 자가진단 공식 이동"
+    },
+    {
+      "label": "어린이집 대기 현황",
+      "domain": "info.childcare.go.kr",
+      "url": "https://info.childcare.go.kr/ala/alw/alaWaitList.do",
+      "purpose": "어린이집 입소대기 현황 확인"
+    },
+    {
+      "label": "생활안전지도",
+      "domain": "safemap.go.kr",
+      "url": "https://www.safemap.go.kr/",
+      "purpose": "대전 유성구 생활권 기반시설 확인"
     }
   ],
   "boundaries": [

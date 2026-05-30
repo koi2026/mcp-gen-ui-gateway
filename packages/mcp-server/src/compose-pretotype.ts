@@ -33,6 +33,7 @@ export type PretotypeScenario = {
   officialHandoffs: {
     label: string;
     domain: string;
+    url?: string;
     purpose: string;
   }[];
   boundaries: string[];
