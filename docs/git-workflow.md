@@ -112,4 +112,3 @@ git rebase origin/main        # or git merge origin/main
 
 - Delete generated/temporary screenshots after verification; do not commit them.
 - Do not commit Playwright output, build artifacts, or local-only config.
-- Do not include AI attribution lines (`Co-Authored-By: Claude`, `🤖 Generated with Claude Code`) in commits, PR descriptions, or issue comments.

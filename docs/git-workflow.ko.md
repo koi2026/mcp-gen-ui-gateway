@@ -112,4 +112,3 @@ git rebase origin/main        # 또는 git merge origin/main
 
 - 생성된 임시 스크린샷은 확인 후 삭제합니다; 커밋하지 않습니다.
 - Playwright 출력, 빌드 아티팩트, 로컬 전용 설정은 커밋하지 않습니다.
-- 커밋, PR 설명, 이슈 코멘트에 AI 귀속 표시(`Co-Authored-By: Claude`, `🤖 Generated with Claude Code`)를 추가하지 않습니다.

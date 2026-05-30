@@ -243,8 +243,6 @@ pnpm schemas        # Zod 정의에서 JSON Schema 내보내기
 | 아키텍처 | [RFC 템플릿](.github/ISSUE_TEMPLATE/rfc.md) → 채택된 RFC → `docs/adr/` |
 | 코드/문서 | [CONTRIBUTING.ko.md](CONTRIBUTING.ko.md) 및 [docs/git-workflow.ko.md](docs/git-workflow.ko.md) 참고 |
 
-**귀속 정책:** 커밋 메시지, PR 설명, 이슈 코멘트에 AI 귀속 표시(`Co-Authored-By: Claude`, `🤖 Generated with Claude Code` 등)를 추가하지 않습니다.
-
 ---
 
 ## 팀 역할

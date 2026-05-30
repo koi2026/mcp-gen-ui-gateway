@@ -243,8 +243,6 @@ We welcome bug reports, feature proposals, architecture RFCs, code, and document
 | Architecture | [RFC template](.github/ISSUE_TEMPLATE/rfc.md) → accepted RFCs → `docs/adr/` |
 | Code | See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/git-workflow.md](docs/git-workflow.md) |
 
-**Attribution policy:** Do not add AI attribution lines (`Co-Authored-By: Claude`, `🤖 Generated with Claude Code`, etc.) to commits, PRs, or issue comments.
-
 ---
 
 ## Team Roles
