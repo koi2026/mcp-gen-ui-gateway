@@ -152,14 +152,14 @@ The server loads `scenarios/scenario_*.json`, matches the exact tag, reads the m
 
 ## Experimental Stage 1-3 Tools
 
-The June 4 demo tool remains `render_pretotype_scenario`: exact tag in, fixed self-contained HTML out.
+The Stage 0 fixed Artifact tool remains `render_pretotype_scenario`: exact tag in, fixed self-contained HTML out.
 
-This package also includes experimental follow-up tools for the post-demo roadmap:
+This package also includes experimental follow-up tools for the ongoing stage-up roadmap:
 
 - `compose_dynamic_genui_response`: returns `genui.gateway.v1` JSON. It upgrades fixed scenario manifests into sourced handoff metadata, infers a `ContextVector`, ranks component candidates with a weighting trace, and returns renderable blocks with sources/evidence/errors.
 - `render_dynamic_genui_template`: renders the same `GenUIResponse` through a lightweight self-contained HTML template.
 
-These tools are not the demo path. They exist to develop Stage 1-3 without mutating the Stage 0 fixed HTML artifacts.
+These tools are not the fixed Artifact baseline. They exist to develop Stage 1-3 without mutating the Stage 0 fixed HTML artifacts.
 
 Unlike `render_pretotype_scenario`, the experimental dynamic tools may infer a close scenario from context when an exact tag is absent. They still return safe partial or failed envelopes for unsupported context, scenario metadata load failures, unresolved handoff validation, or unknown component mappings.
 

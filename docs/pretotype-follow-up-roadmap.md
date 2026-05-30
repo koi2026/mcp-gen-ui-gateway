@@ -1,16 +1,16 @@
-# Pretotype Follow-Up Roadmap
+# Pretotype Stage-Up Roadmap
 
-Status: Draft plan for post-June-4 work. The branch `codex/pretotype-stage-1-3-ultragoal` implements the first experimental tracer bullet across Stages 1-3 while preserving the Stage 0 fixed Artifact route.
+Status: Active stage-up roadmap after the baseline pretotype shipped. The branch `codex/pretotype-stage-1-3-ultragoal` implements the first experimental tracer bullet across Stages 1-3 while preserving the Stage 0 fixed Artifact route.
 
-This document reviews the intended development direction after the June 4 pretotype and breaks it into staged, contract-safe milestones.
+This document reviews the intended development direction after the fixed Artifact pretotype and breaks it into staged, contract-safe milestones.
 
 ## Executive Review
 
 The proposed direction is sound, with one important sequencing rule:
 
-> Keep the June 4 pretotype narrow until the demo is proven, then expand the contract one layer at a time.
+> Keep the fixed pretotype as the stable Stage 0 baseline, then expand the contract one layer at a time.
 
-The pretotype should not try to become the full product before the demo. Its success criterion is deliberately small:
+The pretotype has already proven the core interaction path. Its success criterion remains deliberately small and should stay useful as a regression fixture:
 
 ```text
 Claude Desktop MCP install
@@ -20,7 +20,7 @@ Claude Desktop MCP install
   -> Claude renders it as an HTML Artifact
 ```
 
-For the demo prompt:
+For the baseline prompt:
 
 ```text
 [신혼부부] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
@@ -39,9 +39,9 @@ Stage 3: dynamic component composition from a versioned GenUI contract
 
 The main architectural risk is JSON contract sprawl. Each stage should introduce one new contract boundary and keep older contracts runnable.
 
-## Stage 0: Demo-Locked Pretotype
+## Stage 0: Baseline Fixed Artifact Pretotype
 
-Goal: make the June 4 demonstration reliable.
+Goal: preserve the repeatable fixed Artifact route.
 
 ### Product Behavior
 
@@ -68,7 +68,7 @@ Goal: make the June 4 demonstration reliable.
 - The three exact tagged prompts open three different HTML Artifacts.
 - Missing or ambiguous tags return a clear disclosure instead of guessing.
 - Artifact links open official handoff destinations only.
-- The demo can be repeated without external network dependency except outbound link clicks.
+- The baseline flow can be repeated without external network dependency except outbound link clicks.
 
 ## Stage 1: Official Handoff Source Update
 
@@ -155,7 +155,7 @@ type OfficialHandoff = {
 - Every handoff has provider, domain, purpose, status, confidence, and last-verified metadata.
 - Broken or broad homepage links are marked `manual-review` or replaced with a narrower official service page.
 - HTML still renders without Claude creating separate assets.
-- The demo behavior remains unchanged for June 4 prompts.
+- The fixed baseline behavior remains unchanged for the three tagged prompts.
 
 ## Stage 2: More Contexts And Weighting Matrix
 
@@ -316,7 +316,7 @@ Rules:
 
 This document originally listed separate branches for each stage. The current tracer-bullet branch implements the stages together behind experimental MCP tools:
 
-- `render_pretotype_scenario` remains the Stage 0 June 4 demo route.
+- `render_pretotype_scenario` remains the Stage 0 fixed Artifact route.
 - `compose_dynamic_genui_response` returns the experimental `genui.gateway.v1` JSON envelope.
 - `render_dynamic_genui_template` renders that envelope as a self-contained HTML template.
 
@@ -338,11 +338,11 @@ Future hardening can still split by stage:
 
 ## Near-Term Recommendation
 
-For the June 4 scenario, keep using only `render_pretotype_scenario` until the Claude Desktop flow is demonstrably repeatable.
+The Stage 0 pretotype has already shipped as the stable baseline. Keep `render_pretotype_scenario` as the regression fixture while Stage 1-3 continues to rise in capability.
 
-The Stage 1-3 tracer bullet on this branch is useful as an experimental contract lane, not as the demo route. Before using it in front of demo users, either hide the dynamic tools behind an explicit experiment flag or run them from a separate experimental server entrypoint.
+The Stage 1-3 tracer bullet on this branch is the active contract lane, not a replacement for the fixed Artifact baseline yet. Before using it in front of external users, either hide the dynamic tools behind an explicit experiment flag or run them from a separate experimental server entrypoint.
 
-The right hardening order after the demo remains Stage 1 first:
+The right hardening order remains Stage 1 first:
 
 - it improves credibility immediately,
 - it addresses the current concern that JSON feels too empty,

@@ -35,7 +35,7 @@ Branch naming, atomic commits, Conventional Commits, and PR review rules are doc
 
 ## Claude Desktop Pretotype Quick Start
 
-Use this path when you want to run the June 4 pretotype from a cloned repository, before publishing the npm package.
+Use this path when you want to run the fixed Artifact pretotype baseline from a cloned repository, before publishing the npm package.
 
 This is a local `stdio` MCP install. It does not require Vercel, Railway, a public HTTPS URL, or Claude's custom connector URL form. Claude Desktop starts the MCP server from your local checkout.
 
@@ -172,7 +172,7 @@ The artifact links are external official handoff links. Do not claim that login,
 If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
 ```
 
-### 8. Run The Demo Prompt
+### 8. Run The Baseline Prompt
 
 Use one of these exact prompts:
 
@@ -199,7 +199,7 @@ Claude prompt
   -> Claude HTML Artifact
 ```
 
-The successful demo is not a text summary. Claude should open a full HTML Artifact that looks like a Government24-style page for the selected persona.
+The successful baseline run is not a text summary. Claude should open a full HTML Artifact that looks like a Government24-style page for the selected persona.
 
 ### 9. Troubleshooting
 
@@ -262,7 +262,9 @@ If Claude calls the tool but returns a disclosure instead of HTML, the prompt pr
 
 This branch includes a deliberately narrow pretotype of the future GenUI Gateway MCP.
 
-The full product direction is broader than the current demo. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
+The fixed pretotype already exists and remains the Stage 0 baseline. This branch now keeps raising the staged Gateway contract from a proven fixed Artifact route toward sourced, ranked, and eventually dynamically rendered GenUI.
+
+The full product direction is broader than the fixed Stage 0 baseline. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
 
 ```text
 user context
@@ -273,9 +275,9 @@ user context
   -> public-service surface
 ```
 
-The June 4 demo path intentionally keeps that ranking brain frozen. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface could feel like before live source orchestration exists.
+The Stage 0 fixed Artifact path intentionally keeps that ranking brain frozen. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface can feel like before live source orchestration exists.
 
-The same package also carries an experimental Stage 1-3 path for post-demo development. Those tools keep the fixed HTML artifacts untouched while adding `pretotype.scenario.v2` handoff metadata, `ContextVector` inference, a weighting/ranking trace, and a `genui.gateway.v1` response that can render through a dynamic HTML template.
+The same package also carries the active Stage 1-3 development path. Those tools keep the fixed HTML artifacts untouched while adding `pretotype.scenario.v2` handoff metadata, `ContextVector` inference, a weighting/ranking trace, and a `genui.gateway.v1` response that can render through a dynamic HTML template.
 
 Current staged prompt:
 
@@ -306,7 +308,7 @@ The scenario JSON files are visible manifests for reviewers. They describe the s
 
 The HTML files are the actual artifact payloads. Each file is self-contained: CSS, runtime JavaScript, photos, and the Government24 logo are embedded inline, so Claude does not need to create or fetch sibling assets.
 
-Fixed June 4 artifact-route boundaries:
+Stage 0 fixed artifact-route boundaries:
 
 - Exact tag routing only: `[신혼부부]`, `[프리랜서]`, or `[박사후연구원]`.
 - No live public API fetch and no dynamic component composition on the fixed artifact route.
@@ -322,7 +324,7 @@ Experimental Stage 1-3 boundaries:
 - Unknown component modules fail closed without borrowing unrelated source references.
 - The dynamic HTML template only renders HTTPS outbound links.
 
-Post-demo development stages are outlined in [docs/pretotype-follow-up-roadmap.md](docs/pretotype-follow-up-roadmap.md).
+The continuing stage-up roadmap is outlined in [docs/pretotype-follow-up-roadmap.md](docs/pretotype-follow-up-roadmap.md).
 
 ## Optional Remote Custom Connector
 
@@ -343,7 +345,7 @@ Name: pretotype-mcp-gen-ui-gateway
 Remote MCP server URL: https://YOUR-DOMAIN.example/mcp
 ```
 
-For the June 4 pretotype, the local Claude Desktop config is the recommended path. Use the remote connector only when you intentionally want an externally reachable MCP server.
+For the fixed Artifact pretotype baseline, the local Claude Desktop config is the recommended path. Use the remote connector only when you intentionally want an externally reachable MCP server.
 
 ## Repository Development
 
@@ -362,6 +364,6 @@ pnpm schemas
 - `getChangeLog`: return recorded snapshot and diff events.
 - `render_pretotype_scenario`: pretotype-only tool on `pretotype-mcp-gen-ui-gateway`; returns a self-contained HTML artifact for one exact tag.
 - `compose_dynamic_genui_response`: experimental Stage 1-3 pretotype tool; returns `genui.gateway.v1` JSON with sourced handoffs, context vector, ranking trace, blocks, evidence, and diagnostics.
-- `render_dynamic_genui_template`: experimental Stage 3 pretotype tool; renders the dynamic `GenUIResponse` through an HTML template without changing the fixed June 4 artifact route.
+- `render_dynamic_genui_template`: experimental Stage 3 pretotype tool; renders the dynamic `GenUIResponse` through an HTML template without changing the Stage 0 fixed artifact route.
 
 The server does not include an LLM. The MCP host is expected to orchestrate natural language, follow-up questions, and tool calls.
