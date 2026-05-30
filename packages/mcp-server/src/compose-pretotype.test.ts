@@ -95,6 +95,9 @@ describe("composeGenuiArtifactText", () => {
       const html = await readFile(new URL(`../../../apps/demo-ui/public/pretotype/embedded/${context}.html`, import.meta.url), "utf8");
 
       expect(html.match(/<img\b[^>]*\ssrc=["']data:image\//g)).toHaveLength(4);
+      expect(html).toContain('--gov24-logo-image: url("data:image/webp;base64,');
+      expect(html).toContain("brand-logo");
+      expect(html).toContain("footer-brand-logo");
       expect(html).not.toMatch(/<link\b/i);
       expect(html).not.toMatch(/<script\b[^>]*\ssrc=/i);
       expect(html).not.toMatch(/@import\s+url/i);

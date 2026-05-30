@@ -1,6 +1,20 @@
 # Pretotype MCP Artifacts
 
-This folder contains the complete June 4 pretotype payload for Claude Desktop and the dedicated MCP server `pretotype-mcp-gen-ui-gateway`.
+This folder contains the complete pretotype payload for Claude Desktop and the dedicated MCP server `pretotype-mcp-gen-ui-gateway`.
+
+## Why Pretotype
+
+The full product should eventually connect public-service sources, classify user context, weight those sources differently, run ranking or matrix-style selection over candidate service components, and render the most important pieces as GenUI.
+
+This folder is intentionally narrower. It freezes the intelligence layer and keeps the delivery channel real: Claude sends a fixed staged prompt with one context tag, the MCP server resolves that tag through JSON, and Claude renders the selected self-contained HTML as an Artifact. The goal is to make the intended GenUI experience visible before live source orchestration and ranking exist.
+
+Fixed staged prompt:
+
+```text
+대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
+```
+
+Supported context tags are `[신혼부부]`, `[프리랜서]`, and `[박사후연구원]`.
 
 ## Structure
 
@@ -16,7 +30,7 @@ scenarios/
   scenario_postdoc.json
 ```
 
-The JSON files are human-readable routing manifests. The HTML files are the actual Claude Artifact payloads. Each HTML file contains its CSS, runtime JavaScript, and JPEG images inline, so Claude does not need to create, fetch, or attach separate assets.
+The JSON files are human-readable routing manifests. The HTML files are the actual Claude Artifact payloads. Each HTML file contains its CSS, runtime JavaScript, photos, and Government24 logo inline, so Claude does not need to create, fetch, or attach separate assets.
 
 ## Claude Desktop Setup
 
@@ -68,15 +82,15 @@ If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼
 ## Test Prompts
 
 ```text
-[신혼부부] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.
+[신혼부부] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
 ```
 
 ```text
-[프리랜서] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.
+[프리랜서] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
 ```
 
 ```text
-[박사후연구원] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.
+[박사후연구원] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.
 ```
 
 ## Contract

@@ -2,7 +2,7 @@
   "id": "freelancer",
   "tag": "[프리랜서]",
   "label": "프리랜서 5월 이사·종합소득세",
-  "stagedPrompt": "[프리랜서] 대전 유성구로 이사 왔어요. 전입신고, 전세 계약 법적 체크, 우리 동네 생활 데이터를 한곳에서 확인하고 싶어요.",
+  "stagedPrompt": "[프리랜서] 대전 유성구로 이사 왔어요. 이사 관련 행정·세무·우리 동네 데이터를 한 곳에서 확인하고 싶어요.",
   "routePolicy": "exact-tag-only",
   "artifact": {
     "mode": "self-contained-html",
@@ -24,6 +24,14 @@
       "format": "jpeg",
       "count": 1,
       "note": "본문 맥락 이미지는 HTML img src data URL로 포함"
+    },
+    {
+      "id": "gov24-logo",
+      "kind": "image",
+      "delivery": "inline-data-url",
+      "format": "webp",
+      "count": 1,
+      "note": "정부24 공식 로고는 HTML CSS background-image data URL로 포함"
     },
     {
       "id": "runtime",

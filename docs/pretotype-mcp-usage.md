@@ -18,7 +18,10 @@ apps/demo-ui/public/pretotype/scenarios/
 packages/mcp-server/src/
   compose-pretotype.ts
   compose-pretotype.test.ts
+  pretotype-server.ts
   index.ts
+  pretotype-index.ts
+  pretotype-http.ts
 ```
 
 The scenario JSON files are the visible routing manifest. The embedded HTML files already contain their CSS, JS, and local images. There are no required sibling `assets/`, `shared.css`, or `toggle.js` files in the repo.
@@ -114,7 +117,22 @@ The returned HTML should not require sibling assets. Images, CSS, and runtime JS
 ## Run
 
 ```bash
-pnpm --filter @mcp-gen-ui-gateway/mcp-server start
+pnpm pretotype:mcp
+```
+
+That starts the `stdio` MCP entrypoint for local Desktop config.
+
+For Claude custom connector demos, start the Streamable HTTP entrypoint:
+
+```bash
+MCP_HTTP_HOST=127.0.0.1 MCP_HTTP_PORT=8787 pnpm pretotype:http
+```
+
+Then expose `/mcp` through an HTTPS origin and enter this in the connector dialog:
+
+```text
+Name: pretotype-mcp-gen-ui-gateway
+Remote MCP server URL: https://YOUR-DOMAIN.example/mcp
 ```
 
 Host prompt rule: render returned HTML verbatim as an HTML Artifact. Do not summarize, rewrite, or rebuild it.

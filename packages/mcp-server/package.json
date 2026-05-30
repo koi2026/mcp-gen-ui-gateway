@@ -4,7 +4,8 @@
   "type": "module",
   "bin": {
     "mcp-gen-ui-gateway": "./dist/index.js",
-    "pretotype-mcp-gen-ui-gateway": "./dist/pretotype-index.js"
+    "pretotype-mcp-gen-ui-gateway": "./dist/pretotype-index.js",
+    "pretotype-mcp-gen-ui-gateway-http": "./dist/pretotype-http.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,7 +20,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
     "start": "tsx src/index.ts",
-    "pretotype:start": "tsx src/pretotype-index.ts"
+    "pretotype:start": "tsx src/pretotype-index.ts",
+    "pretotype:http": "tsx src/pretotype-http.ts"
   },
   "dependencies": {
     "@mcp-gen-ui-gateway/core": "workspace:*",

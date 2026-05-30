@@ -13,6 +13,7 @@
     "typecheck": "pnpm -r typecheck",
     "mcp": "pnpm --filter @mcp-gen-ui-gateway/mcp-server start",
     "pretotype:mcp": "pnpm --filter @mcp-gen-ui-gateway/mcp-server pretotype:start",
+    "pretotype:http": "pnpm --filter @mcp-gen-ui-gateway/mcp-server pretotype:http",
     "schemas": "pnpm --filter @mcp-gen-ui-gateway/schema export:schema"
   },
   "devDependencies": {
