@@ -291,9 +291,9 @@ If Claude calls the tool but returns a disclosure instead of HTML, the prompt pr
 
 ## Pretotype Scope
 
-This branch includes the Stage 1 slice of the future GenUI Gateway MCP.
+This branch includes the Stage 2 slice of the future GenUI Gateway MCP.
 
-The fixed pretotype already exists and remains the Stage 0 baseline. This Stage 1 branch keeps that fixed Artifact route intact while adding official handoff metadata and validation helpers for `pretotype.scenario.v2`.
+The fixed pretotype already exists and remains the Stage 0 baseline. This Stage 2 branch builds on the Stage 1 handoff metadata layer and adds `ContextVector` inference, component candidates, a weighting matrix, and a machine-readable ranking trace.
 
 The full product direction is broader than the fixed Stage 0 baseline. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
 
@@ -308,7 +308,7 @@ user context
 
 The Stage 0 fixed Artifact path intentionally keeps that ranking brain frozen. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface can feel like before live source orchestration exists.
 
-Stage 1 does not add broader context inference or dynamic rendering. It upgrades the manifest layer so reviewers can see source IDs, provider/domain metadata, confidence, login/action hints, and validation issues without changing the Claude Artifact output path.
+Stage 2 does not add the dynamic GenUI renderer yet. It upgrades the decision layer so reviewers can see how context signals map to component priorities without changing the Stage 0 Claude Artifact output path.
 
 Current staged prompt:
 
@@ -352,7 +352,13 @@ Stage 1 boundaries:
 
 - Handoff validation is URL-shape and domain validation, not proof that the remote service is currently reachable.
 - The Stage 1 code does not fetch live APIs or rewrite the checked-in HTML files.
-- Stage 2 context weighting and Stage 3 dynamic rendering live on separate follow-up branches.
+- Stage 3 dynamic rendering lives on a separate follow-up branch.
+
+Stage 2 boundaries:
+
+- Context inference is rule-based and traceable; it is not an LLM classifier.
+- Ranking scores explain component selection but do not make eligibility, legal, tax, or safety conclusions.
+- No source is promoted without source refs from Stage 1 handoff metadata.
 
 ## Optional Remote Custom Connector
 

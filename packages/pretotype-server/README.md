@@ -164,6 +164,20 @@ Implemented Stage 1 contract layers:
 - source ref propagation
 - manual-review diagnostics for broad homepages or mismatched official domains
 
+## Stage 2 Context Weighting
+
+This branch adds the Stage 2 context and ranking layer on top of Stage 1.
+
+Stage 2 introduces `ContextVector`, `ComponentCandidate`, and `gateway.ranking.v1`. It can classify broader prompt signals such as household, work status, housing status, urgency, and risk focus, then score visible modules against official handoff source refs.
+
+Implemented Stage 2 contract layers:
+
+- `ContextVector`
+- component candidate profiles
+- weighting matrix
+- source-backed ranking trace
+- unmapped module diagnostics
+
 ## Boundaries
 
 - No live API fetch.
@@ -171,4 +185,4 @@ Implemented Stage 1 contract layers:
 - No eligibility or legal conclusion is finalized inside the artifact.
 - Official URLs are handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
-- Stage 2 context weighting and Stage 3 dynamic rendering are intentionally absent from this branch.
+- Stage 3 dynamic rendering is intentionally absent from this branch.
