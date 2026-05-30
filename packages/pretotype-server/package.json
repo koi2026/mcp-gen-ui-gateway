@@ -1,0 +1,49 @@
+{
+  "name": "pretotype-mcp-gen-ui-gateway",
+  "version": "0.1.0",
+  "description": "Throwaway pretotype MCP server: routes a fixed staged prompt's context tag to a pre-built self-contained Government24-style GenUI HTML artifact for Claude to render verbatim.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "pretotype-mcp-gen-ui-gateway": "./dist/pretotype-index.js",
+    "pretotype-mcp-gen-ui-gateway-http": "./dist/pretotype-http.js"
+  },
+  "files": [
+    "dist",
+    "assets",
+    "README.md"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "genui",
+    "government24",
+    "gov24",
+    "pretotype",
+    "claude"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koi2026/mcp-gen-ui-gateway.git",
+    "directory": "packages/pretotype-server"
+  },
+  "homepage": "https://github.com/koi2026/mcp-gen-ui-gateway/tree/main/packages/pretotype-server#readme",
+  "bugs": {
+    "url": "https://github.com/koi2026/mcp-gen-ui-gateway/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "start": "tsx src/pretotype-index.ts",
+    "http": "tsx src/pretotype-http.ts",
+    "prepublishOnly": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}
