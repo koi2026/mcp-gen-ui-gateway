@@ -178,6 +178,21 @@ Implemented Stage 2 contract layers:
 - source-backed ranking trace
 - unmapped module diagnostics
 
+## Stage 3 Dynamic GenUI Renderer
+
+This branch adds the Stage 3 response and rendering layer on top of Stage 2.
+
+Stage 3 introduces `genui.gateway.v1`, `compose_dynamic_genui_response`, and `render_dynamic_genui_template`. The fixed `render_pretotype_scenario` route still returns the original self-contained persona HTML, while the dynamic path returns sourced blocks, evidence, errors, diagnostics, and a lightweight self-contained HTML rendering of the same response.
+
+Implemented Stage 3 contract layers:
+
+- `genui.gateway.v1`
+- `GenUIResponse`
+- block/source/evidence/error separation
+- partial and failed response states
+- dynamic self-contained HTML template renderer
+- HTTPS-only outbound links with escaped dynamic text
+
 ## Boundaries
 
 - No live API fetch.
@@ -185,4 +200,4 @@ Implemented Stage 2 contract layers:
 - No eligibility or legal conclusion is finalized inside the artifact.
 - Official URLs are handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
-- Stage 3 dynamic rendering is intentionally absent from this branch.
+- Dynamic Stage 3 tools are additive and do not mutate the Stage 0 fixed HTML artifacts.

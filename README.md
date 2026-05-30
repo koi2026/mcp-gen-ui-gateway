@@ -291,9 +291,9 @@ If Claude calls the tool but returns a disclosure instead of HTML, the prompt pr
 
 ## Pretotype Scope
 
-This branch includes the Stage 2 slice of the future GenUI Gateway MCP.
+This branch includes the Stage 3 slice of the future GenUI Gateway MCP.
 
-The fixed pretotype already exists and remains the Stage 0 baseline. This Stage 2 branch builds on the Stage 1 handoff metadata layer and adds `ContextVector` inference, component candidates, a weighting matrix, and a machine-readable ranking trace.
+The fixed pretotype already exists and remains the Stage 0 baseline. This Stage 3 branch builds on Stage 1 handoff metadata and Stage 2 context ranking, then adds a `genui.gateway.v1` response and dynamic HTML template renderer.
 
 The full product direction is broader than the fixed Stage 0 baseline. In the complete product, the Gateway MCP will connect multiple public-service sources, classify the user's context, apply different weights to sources and components, run ranking or matrix-style selection over the available evidence, and render only the highest-value components through GenUI. In other words, the intended full range is:
 
@@ -308,7 +308,7 @@ user context
 
 The Stage 0 fixed Artifact path intentionally keeps that ranking brain frozen. Its purpose is to make the final interaction easy to understand inside Claude Desktop: one fixed staged prompt plus one explicit context tag routes to one of three prebuilt, self-contained HTML artifacts. This proves the MCP-to-Claude-Artifact delivery path and shows what a generated public-service GenUI surface can feel like before live source orchestration exists.
 
-Stage 2 does not add the dynamic GenUI renderer yet. It upgrades the decision layer so reviewers can see how context signals map to component priorities without changing the Stage 0 Claude Artifact output path.
+Stage 3 adds the first dynamic GenUI rendering path while keeping `render_pretotype_scenario` unchanged as the Stage 0 regression baseline.
 
 Current staged prompt:
 
@@ -352,13 +352,18 @@ Stage 1 boundaries:
 
 - Handoff validation is URL-shape and domain validation, not proof that the remote service is currently reachable.
 - The Stage 1 code does not fetch live APIs or rewrite the checked-in HTML files.
-- Stage 3 dynamic rendering lives on a separate follow-up branch.
 
 Stage 2 boundaries:
 
 - Context inference is rule-based and traceable; it is not an LLM classifier.
 - Ranking scores explain component selection but do not make eligibility, legal, tax, or safety conclusions.
 - No source is promoted without source refs from Stage 1 handoff metadata.
+
+Stage 3 boundaries:
+
+- `compose_dynamic_genui_response` returns a versioned JSON envelope, not a definitive public-service decision.
+- `render_dynamic_genui_template` renders only HTTPS outbound links and escapes dynamic text.
+- The dynamic renderer is additive; the Stage 0 fixed HTML artifacts remain regression fixtures.
 
 ## Optional Remote Custom Connector
 
@@ -397,5 +402,7 @@ pnpm schemas
 - `getApplicationGuide`: return step-by-step application guidance.
 - `getChangeLog`: return recorded snapshot and diff events.
 - `render_pretotype_scenario`: pretotype-only tool on `pretotype-mcp-gen-ui-gateway`; returns a self-contained HTML artifact for one exact tag.
+- `compose_dynamic_genui_response`: experimental Stage 3 tool; returns `genui.gateway.v1` JSON with sourced handoffs, context vector, ranking trace, blocks, evidence, and diagnostics.
+- `render_dynamic_genui_template`: experimental Stage 3 tool; renders the dynamic `GenUIResponse` through an HTML template without changing the Stage 0 fixed artifact route.
 
 The server does not include an LLM. The MCP host is expected to orchestrate natural language, follow-up questions, and tool calls.
