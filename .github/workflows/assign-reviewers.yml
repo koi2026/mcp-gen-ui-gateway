@@ -1,0 +1,45 @@
+name: Assign Reviewers by Role Label
+
+on:
+  pull_request:
+    types: [opened, labeled]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const ROLE_MAP = {
+              'role:A': '71c1nw00n',
+              'role:B': 'ReliOptic',
+              'role:C': 'orca-svg',
+            };
+
+            const pr = context.payload.pull_request;
+            const labels = pr.labels.map(l => l.name);
+            const author = pr.user.login;
+
+            const reviewers = [...new Set(
+              labels
+                .filter(l => ROLE_MAP[l])
+                .map(l => ROLE_MAP[l])
+                .filter(u => u.toLowerCase() !== author.toLowerCase())
+            )];
+
+            if (reviewers.length === 0) {
+              core.info('No role: labels matched — nothing to assign.');
+              return;
+            }
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              reviewers,
+            });
+
+            core.info(`Requested review from: ${reviewers.join(', ')}`);
