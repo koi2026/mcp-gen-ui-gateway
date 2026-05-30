@@ -1,6 +1,6 @@
 # Pretotype Follow-Up Roadmap
 
-Status: Draft plan for post-June-4 work.
+Status: Draft plan for post-June-4 work. The branch `codex/pretotype-stage-1-3-ultragoal` implements the first experimental tracer bullet across Stages 1-3 while preserving the Stage 0 fixed Artifact route.
 
 This document reviews the intended development direction after the June 4 pretotype and breaks it into staged, contract-safe milestones.
 
@@ -314,6 +314,14 @@ Rules:
 
 ## Recommended Branch Sequence
 
+This document originally listed separate branches for each stage. The current tracer-bullet branch implements the stages together behind experimental MCP tools:
+
+- `render_pretotype_scenario` remains the Stage 0 June 4 demo route.
+- `compose_dynamic_genui_response` returns the experimental `genui.gateway.v1` JSON envelope.
+- `render_dynamic_genui_template` renders that envelope as a self-contained HTML template.
+
+Future hardening can still split by stage:
+
 1. `codex/stage-1-handoff-source-contract`
    - Add `pretotype.scenario.v2` examples.
    - Add link/handoff validator tests.
@@ -330,9 +338,11 @@ Rules:
 
 ## Near-Term Recommendation
 
-Do not start Stage 2 or Stage 3 before the June 4 scenario is demonstrably repeatable in Claude Desktop.
+For the June 4 scenario, keep using only `render_pretotype_scenario` until the Claude Desktop flow is demonstrably repeatable.
 
-The right next implementation after the demo is Stage 1:
+The Stage 1-3 tracer bullet on this branch is useful as an experimental contract lane, not as the demo route. Before using it in front of demo users, either hide the dynamic tools behind an explicit experiment flag or run them from a separate experimental server entrypoint.
+
+The right hardening order after the demo remains Stage 1 first:
 
 - it improves credibility immediately,
 - it addresses the current concern that JSON feels too empty,
