@@ -29,6 +29,48 @@ In team architecture, this role sits after the MCP backend and AI orchestration 
 
 Out of scope: Government24 login automation, identity verification, automatic form submission, resident registration numbers, passwords, certificates, auth tokens, definitive eligibility decisions, scheduled crawling, and production-hosted multi-tenant gateway operations.
 
+## Version Ladder
+
+The product grows one capability per version. Versions 0.5 and 0.6 share the same GenUI renderer — only the data source changes. Full roadmap and task board live in [docs/STATUS.md](docs/STATUS.md); the domain glossary is [CONTEXT.md](CONTEXT.md).
+
+| Version | New capability | Orchestration | Connectors | Track |
+|---------|----------------|---------------|------------|-------|
+| **0** | Fixed public-service Artifacts (3 context tags) | — | pretotype | pretotype (frozen) |
+| **0.5** | korean-law `action_plan` 5-step killer UX as a GenUI Artifact | Claude as glue (host; contract B: `kind` + markdown) | korean-law + pretotype-genui (2) | pretotype expansion |
+| **0.6** | Federation — the gateway becomes an MCP client to korean-law-mcp | inside the gateway | gateway (1) | gateway track |
+| **G-1–4** | Ranking Pipeline scoring, multi-source, deploy | gateway | 1 | gateway track (ADR-0003) |
+
+"Frozen" means the Stage 0 artifacts themselves are immutable (regression baseline); the pretotype *family* still grows additively (0.5, 0.6). **Federation** is what earns the "Gateway" name: one connector reuses downstream MCP servers (korean-law-mcp first) instead of re-implementing their APIs. It overcomes the host limitation that sibling connectors cannot call one another.
+
+### 0.5 vs 0.6 architecture
+
+Both versions render through the **same GenUI renderer**. The only differences are *who fetches the data* and *how many connectors the user wires*.
+
+**0.5 — host-orchestrated (Claude is the glue), two connectors:**
+
+```text
+Claude Desktop
+  ├─(connector)─▶ korean-law-mcp      → legal answer (text/markdown)
+  └─(connector)─▶ pretotype-genui     → GenUI HTML → Artifact
+                     ▲
+   Claude calls korean-law-mcp, then passes its output (kind + markdown)
+   into the genui renderer. The gateway never fetches downstream itself.
+```
+
+**0.6 — federation (the gateway is itself an MCP client), one connector:**
+
+```text
+Claude Desktop ──(1 connector)──▶ mcp-gen-ui-gateway
+                                    │  (gateway is itself an MCP client)
+                                    ├─▶ korean-law-mcp (npx stdio, 법제처 OC key)
+                                    ├─▶ gov24 / data.go.kr (future)
+                                    ▼
+                          route → downstream call → Ranking Pipeline scoring (G-2)
+                                    → GenUI HTML → Artifact
+```
+
+In 0.6 the gateway fans out to downstream MCP servers internally, so the user wires a single connector. The `Ranking Pipeline scoring` step is the **G-2** addition layered on top of federation; 0.6 itself adds only the MCP-client federation layer, and reuses the 0.5 renderer unchanged.
+
 ## Contribution Workflow
 
 Branch naming, atomic commits, Conventional Commits, and PR review rules are documented in [docs/git-workflow.md](docs/git-workflow.md).
