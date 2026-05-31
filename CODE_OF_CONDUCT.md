@@ -1,8 +1,10 @@
 # Contributor Covenant Code of Conduct
 
+> Korean version: [한국어 행동 강령](CODE_OF_CONDUCT.ko.md)
+
 ## Our Pledge
 
-We as members, contributors, and leaders pledge to make participation in our
+We as members, contributors, and leaders of the **mcp-gen-ui-gateway** project pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
 size, visible or invisible disability, ethnicity, sex characteristics, gender
 identity and expression, level of experience, education, socio-economic status,
@@ -10,7 +12,7 @@ nationality, personal appearance, race, religion, or sexual identity
 and orientation.
 
 We pledge to act and interact in ways that contribute to an open, welcoming,
-diverse, inclusive, and healthy community.
+diverse, inclusive, and healthy community — whether discussing MCP protocol design, GenUI rendering, or Korean public service data.
 
 ## Our Standards
 
@@ -60,7 +62,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-.
+**kevin030601@gmail.com**.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
