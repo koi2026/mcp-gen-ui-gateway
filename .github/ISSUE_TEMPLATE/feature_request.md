@@ -16,27 +16,30 @@ A clear and concise description of what you want to happen.
 
 ## Affected package / stage
 
-<!-- Which part of the system does this involve? -->
-- [ ] Schema (`packages/schema`) — new Zod types, contract version bump
-- [ ] Core (`packages/core`) — Matrix scoring, context-vector algorithm
-- [ ] MCP server (`packages/mcp-server`) — new tool, transport change
-- [ ] Browser assist (`packages/browser-assist`) — handoff protocol, scraping
-- [ ] Pretotype server (`packages/pretotype-server`) — demo-only change
-- [ ] Demo UI (`apps/demo-ui`) — GenUI renderer, KRDS component
-- [ ] CI / tooling / docs
+<!-- Check all that apply. Use pretotype/demo language only when the feature is explicitly about a separate demo branch or package. -->
 
-## Persona / use case context
+- [ ] Schema (`packages/schema`) — new contract, type, or JSON Schema export
+- [ ] Core (`packages/core`) — benefit ranking, recommendation logic, fixture repository, snapshot/change log
+- [ ] MCP server (`packages/mcp-server`) — new tool, tool input/output, stdio runtime
+- [ ] Browser assist (`packages/browser-assist`) — optional source handoff or browser boundary
+- [ ] Demo UI (`apps/demo-ui`) — GenUI rendering or Gov24-style component
+- [ ] Docs / CI / repository workflow
 
-<!-- Optional: which demo persona does this affect? -->
-- [ ] 취업준비생 (job seeker)
-- [ ] 육아 중인 부모 (parent with young child)
-- [ ] 프리랜서 (freelancer)
-- [ ] All personas / Not persona-specific
+## User context / use case
+
+<!-- Prefer durable public-service use cases over fixed demo personas. -->
+
+- [ ] Benefit discovery / eligibility exploration
+- [ ] Checklist or application guide
+- [ ] Local public data / regional context
+- [ ] Official source handoff / evidence
+- [ ] Renderer or visual presentation
+- [ ] Other:
 
 ## Alternatives considered
 
-Other approaches you have considered, and why you prefer the proposed solution.
+Other approaches you considered, and why you prefer the proposed solution.
 
 ## Additional context
 
-Any other context, mockups, or references.
+Any other context, mockups, references, or links.

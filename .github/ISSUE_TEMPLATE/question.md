@@ -12,23 +12,23 @@ Ask your question here. Be as specific as possible.
 
 ## Context
 
-<!-- What are you trying to accomplish? Any relevant code snippets or config? -->
+<!-- What are you trying to accomplish? Include relevant commands, config, code snippets, or links. -->
 
 ## What I've already tried
 
-<!-- What have you read or attempted? Helps us give a precise answer. -->
+<!-- This helps maintainers answer precisely. -->
 
 - [ ] Checked the [README](../../README.md)
 - [ ] Checked [CONTRIBUTING.md](../../CONTRIBUTING.md)
-- [ ] Searched existing issues
+- [ ] Searched existing issues and PRs
 
 ## Related area
 
-<!-- Optional: which part of the system is this about? -->
 - [ ] MCP protocol / tool usage
-- [ ] GenUI Matrix scoring algorithm
 - [ ] Schema / contract versioning
-- [ ] Demo personas / scenario data
-- [ ] Architecture / design decisions
+- [ ] Core benefit recommendation flow
+- [ ] Official source handoff / evidence boundary
+- [ ] Demo UI / GenUI rendering
+- [ ] Architecture / design decision
 - [ ] Setup / development environment
 - [ ] Other
