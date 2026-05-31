@@ -89,7 +89,7 @@ Fully quit Claude Desktop and open it again. MCP servers are loaded during app s
 
 ### 5. Verify With A Prompt
 
-Paste the Host Prompt below, then run one Test Prompt. Claude should call `render_pretotype_scenario` and open a full HTML Artifact, not a text summary.
+Paste the Host Prompt below, then run one Test Prompt. Claude should call `render_pretotype_scenario` and open the embedded `text/html;profile=mcp-app` resource as a full HTML Artifact, not a text summary or a regenerated chat UI.
 
 ## Host Prompt
 
@@ -103,7 +103,7 @@ If the user includes exactly one of [신혼부부], [프리랜서], or [박사�
 
 `compose_genui_artifact` is available only as a compatibility alias.
 
-If the tool returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
+If the tool returns an embedded `text/html;profile=mcp-app` resource, render that returned self-contained HTML resource verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
 
 If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼부부], [프리랜서], or [박사후연구원]. Do not invent a scenario.
 ```
@@ -141,14 +141,37 @@ Response:
 {
   "content": [
     {
+      "type": "resource",
+      "resource": {
+        "uri": "ui://pretotype/stage0/freelancer.html",
+        "mimeType": "text/html;profile=mcp-app",
+        "text": "<!DOCTYPE html>..."
+      },
+      "_meta": {
+        "mcp-gen-ui-gateway/stage": "0",
+        "mcp-gen-ui-gateway/expectedRender": "prepared-html-artifact"
+      }
+    },
+    {
       "type": "text",
-      "text": "<!DOCTYPE html>..."
+      "text": "Stage 0 pretotype prepared HTML resource returned..."
     }
-  ]
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "context": "freelancer",
+    "routePolicy": "exact-tag-only",
+    "artifact": {
+      "mode": "self-contained-html",
+      "uri": "ui://pretotype/stage0/freelancer.html",
+      "mimeType": "text/html;profile=mcp-app"
+    },
+    "expectedRender": "prepared-html-artifact"
+  }
 }
 ```
 
-The server loads `scenarios/scenario_*.json`, matches the exact tag, reads the manifest's `artifact.html`, and returns that HTML string.
+The server loads `scenarios/scenario_*.json`, matches the exact tag, reads the manifest's `artifact.html`, and returns that HTML as the primary embedded resource. The short text block is only a fallback/instruction for clients that do not render embedded resources.
 
 ## Stage 1 Handoff Metadata
 
@@ -201,3 +224,16 @@ Implemented Stage 3 contract layers:
 - Official URLs are handoff links only.
 - Missing, unsupported, or multiple tags return a disclosure instead of fabricated content.
 - Dynamic Stage 3 tools are additive and do not mutate the Stage 0 fixed HTML artifacts.
+
+
+## Manual Claude Verification Checklist
+
+Use this checklist when validating the Stage 0 connector in Claude Desktop:
+
+1. Build the current checkout: `pnpm --filter pretotype-mcp-gen-ui-gateway build`.
+2. Confirm `claude_desktop_config.json` points at this checkout's `packages/pretotype-server/dist/pretotype-index.js`; stale clone paths can make Claude list an older server.
+3. Fully restart Claude Desktop.
+4. Run one supported tagged prompt.
+5. Check `~/Library/Logs/Claude/mcp.log` or `mcp-server-pretotype-mcp-gen-ui-gateway.log` for `tools/list` followed by `tools/call` for `render_pretotype_scenario`.
+6. Confirm the result includes a `ui://pretotype/stage0/{context}.html` resource with `mimeType: text/html;profile=mcp-app`.
+7. The successful user-visible result is the prepared Government24-style HTML Artifact. A Claude-generated checklist/dashboard in the normal chat response is a failed Stage 0 delivery path.

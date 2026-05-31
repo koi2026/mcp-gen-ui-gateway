@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { composeGenuiArtifactText } from "./compose-pretotype.js";
+import { composeGenuiArtifactDelivery, type PretotypeArtifactDelivery } from "./compose-pretotype.js";
 import { composeDynamicGenuiResponse, renderDynamicGenuiHtml } from "./genui-response.js";
 
 export const pretotypeMcpServerName = "pretotype-mcp-gen-ui-gateway";
@@ -27,16 +28,16 @@ export function createPretotypeMcpServer() {
 
   server.tool(
     "render_pretotype_scenario",
-    "Pretotype connector tool. When the user prompt includes exactly one supported context tag, return the matching self-contained public-portal HTML for Claude to render verbatim as an Artifact.",
+    "Stage 0 pretotype connector. For exactly one supported context tag, call this tool and render its first embedded text/html resource verbatim as the prepared Claude HTML Artifact. Do not redesign or summarize it.",
     pretotypeInputShape,
-    async (input) => textToolResult(await composeGenuiArtifactText(input))
+    async (input) => composePretotypeScenarioToolResult(input)
   );
 
   server.tool(
     "compose_genui_artifact",
-    "Compatibility alias for render_pretotype_scenario. Prefer render_pretotype_scenario for Claude Desktop connector demos.",
+    "Compatibility alias for render_pretotype_scenario. Returns the same embedded text/html Stage 0 resource; prefer render_pretotype_scenario for Claude Desktop connector demos.",
     pretotypeInputShape,
-    async (input) => textToolResult(await composeGenuiArtifactText(input))
+    async (input) => composePretotypeScenarioToolResult(input)
   );
 
   server.tool(
@@ -56,7 +57,66 @@ export function createPretotypeMcpServer() {
   return server;
 }
 
-function textToolResult(text: string) {
+export async function composePretotypeScenarioToolResult(input: { utterance: string }): Promise<CallToolResult> {
+  return pretotypeArtifactToolResult(await composeGenuiArtifactDelivery(input));
+}
+
+function pretotypeArtifactToolResult(delivery: PretotypeArtifactDelivery): CallToolResult {
+  if (delivery.status !== "ok") {
+    return {
+      content: [
+        {
+          type: "text",
+          text: delivery.message
+        }
+      ],
+      structuredContent: {
+        status: "error",
+        expectedRender: "none",
+        routePolicy: "exact-tag-only"
+      }
+    };
+  }
+
+  return {
+    content: [
+      {
+        type: "resource",
+        resource: {
+          uri: delivery.uri,
+          mimeType: delivery.mimeType,
+          text: delivery.html
+        },
+        _meta: {
+          "mcp-gen-ui-gateway/stage": "0",
+          "mcp-gen-ui-gateway/context": delivery.context,
+          "mcp-gen-ui-gateway/expectedRender": "prepared-html-artifact"
+        }
+      },
+      {
+        type: "text",
+        text: [
+          `Stage 0 pretotype prepared HTML resource returned for ${delivery.tag}.`,
+          `Render ${delivery.uri} as the Claude HTML Artifact verbatim; do not summarize, redesign, or rebuild it.`
+        ].join(" ")
+      }
+    ],
+    structuredContent: {
+      status: "ok",
+      context: delivery.context,
+      tag: delivery.tag,
+      routePolicy: delivery.routePolicy,
+      artifact: {
+        mode: delivery.artifactMode,
+        uri: delivery.uri,
+        mimeType: delivery.mimeType
+      },
+      expectedRender: "prepared-html-artifact"
+    }
+  };
+}
+
+function textToolResult(text: string): CallToolResult {
   return {
     content: [
       {

@@ -2,7 +2,8 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { composeGenuiArtifactText, loadPretotypeScenarios } from "./compose-pretotype.js";
+import { composeGenuiArtifactDelivery, composeGenuiArtifactText, loadPretotypeScenarios, pretotypeHtmlResourceMimeType } from "./compose-pretotype.js";
+import { composePretotypeScenarioToolResult } from "./pretotype-server.js";
 
 describe("composeGenuiArtifactText", () => {
   const previousDist = process.env.MCP_GEN_UI_PRETOTYPE_DIST;
@@ -58,6 +59,70 @@ describe("composeGenuiArtifactText", () => {
         expect(html).toContain(domain);
       }
     }
+  });
+
+  it("returns the Stage 0 surface as the primary embedded HTML resource for MCP hosts", async () => {
+    const result = await composePretotypeScenarioToolResult({ utterance: taggedUtterances.newlywed });
+
+    expect(result.content[0]).toMatchObject({
+      type: "resource",
+      resource: {
+        uri: "ui://pretotype/stage0/newlywed.html",
+        mimeType: pretotypeHtmlResourceMimeType
+      },
+      _meta: {
+        "mcp-gen-ui-gateway/stage": "0",
+        "mcp-gen-ui-gateway/context": "newlywed",
+        "mcp-gen-ui-gateway/expectedRender": "prepared-html-artifact"
+      }
+    });
+
+    const resource = result.content[0];
+    expect(resource.type).toBe("resource");
+    if (resource.type !== "resource") {
+      throw new Error("Expected the first tool result content block to be the embedded HTML resource.");
+    }
+
+    expect(resource.resource.text).toMatch(/^<!DOCTYPE html>/);
+    expect(result.content[1]).toMatchObject({
+      type: "text",
+      text: expect.stringContaining("Render ui://pretotype/stage0/newlywed.html as the Claude HTML Artifact verbatim")
+    });
+    expect(result.content[1]).not.toMatchObject({
+      text: expect.stringContaining("<!DOCTYPE html>")
+    });
+    expect(result.structuredContent).toMatchObject({
+      status: "ok",
+      context: "newlywed",
+      tag: "[신혼부부]",
+      routePolicy: "exact-tag-only",
+      artifact: {
+        mode: "self-contained-html",
+        uri: "ui://pretotype/stage0/newlywed.html",
+        mimeType: pretotypeHtmlResourceMimeType
+      },
+      expectedRender: "prepared-html-artifact"
+    });
+  });
+
+  it("exposes the same exact-tag delivery metadata without changing the legacy HTML text helper", async () => {
+    const delivery = await composeGenuiArtifactDelivery({ utterance: taggedUtterances.freelancer });
+    const html = await composeGenuiArtifactText({ utterance: taggedUtterances.freelancer });
+
+    expect(delivery).toMatchObject({
+      status: "ok",
+      context: "freelancer",
+      tag: "[프리랜서]",
+      routePolicy: "exact-tag-only",
+      artifactMode: "self-contained-html",
+      uri: "ui://pretotype/stage0/freelancer.html",
+      mimeType: pretotypeHtmlResourceMimeType
+    });
+    expect(delivery.status).toBe("ok");
+    if (delivery.status !== "ok") {
+      throw new Error("Expected exact-tag delivery to resolve.");
+    }
+    expect(delivery.html).toBe(html);
   });
 
   it("loads human-readable scenario metadata as the routing table", async () => {
@@ -180,11 +245,18 @@ describe("composeGenuiArtifactText", () => {
 
   it("discloses supported tags without fabricating unknown scenarios", async () => {
     const text = await composeGenuiArtifactText({ utterance: "[학생] test" });
+    const result = await composePretotypeScenarioToolResult({ utterance: "[학생] test" });
 
     expect(text).toContain("Unsupported pretotype tag.");
     expect(text).toContain("Supported tags: [신혼부부], [프리랜서], [박사후연구원].");
     expect(text).toContain("Pretotype only routes fixed staged prompts by exact tag.");
     expect(text).toContain("No scenario was fabricated.");
+    expect(result.content).toEqual([{ type: "text", text }]);
+    expect(result.structuredContent).toMatchObject({
+      status: "error",
+      expectedRender: "none",
+      routePolicy: "exact-tag-only"
+    });
   });
 
   it("does not choose a surface when multiple fixed tags are present", async () => {
