@@ -97,16 +97,28 @@ Supported tag routes:
 
 `pretotype-mcp-gen-ui-gateway` exposes `render_pretotype_scenario` for the dedicated pretotype server. The full gateway keeps `compose_genui_artifact` as a compatibility path.
 
-`render_pretotype_scenario` returns:
+`render_pretotype_scenario` returns the prepared HTML as the primary embedded resource, not as a bare text blob:
 
 ```json
 {
   "content": [
     {
+      "type": "resource",
+      "resource": {
+        "uri": "ui://pretotype/stage0/newlywed.html",
+        "mimeType": "text/html;profile=mcp-app",
+        "text": "<!DOCTYPE html>..."
+      }
+    },
+    {
       "type": "text",
-      "text": "<!DOCTYPE html>..."
+      "text": "Stage 0 pretotype prepared HTML resource returned..."
     }
-  ]
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "expectedRender": "prepared-html-artifact"
+  }
 }
 ```
 
@@ -135,12 +147,12 @@ Name: pretotype-mcp-gen-ui-gateway
 Remote MCP server URL: https://YOUR-DOMAIN.example/mcp
 ```
 
-Host prompt rule: render returned HTML verbatim as an HTML Artifact. Do not summarize, rewrite, or rebuild it.
+Host prompt rule: call `render_pretotype_scenario`, then render the returned embedded `text/html;profile=mcp-app` resource verbatim as an HTML Artifact. Do not summarize, rewrite, regenerate, or rebuild it.
 
 ## Verify
 
 ```bash
-pnpm --filter @mcp-gen-ui-gateway/mcp-server typecheck
-pnpm --filter @mcp-gen-ui-gateway/mcp-server test
+pnpm --filter pretotype-mcp-gen-ui-gateway typecheck
+pnpm --filter pretotype-mcp-gen-ui-gateway test
 pnpm --filter @mcp-gen-ui-gateway/demo-ui build
 ```

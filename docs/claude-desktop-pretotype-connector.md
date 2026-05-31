@@ -38,7 +38,7 @@ From the repository root:
 
 ```bash
 pnpm install
-pnpm --filter @mcp-gen-ui-gateway/mcp-server build
+pnpm --filter pretotype-mcp-gen-ui-gateway build
 pwd
 ```
 
@@ -95,11 +95,8 @@ Add:
     "pretotype-mcp-gen-ui-gateway": {
       "command": "node",
       "args": [
-        "/ABS/PATH/mcp-gen-ui-gateway/packages/mcp-server/dist/pretotype-index.js"
-      ],
-      "env": {
-        "MCP_GEN_UI_PRETOTYPE_DIST": "/ABS/PATH/mcp-gen-ui-gateway/apps/demo-ui/public/pretotype"
-      }
+        "/ABS/PATH/mcp-gen-ui-gateway/packages/pretotype-server/dist/pretotype-index.js"
+      ]
     }
   }
 }
@@ -119,7 +116,7 @@ You render a public portal GenUI pretotype.
 If the user includes exactly one of [신혼부부], [프리랜서], or [박사후연구원], call render_pretotype_scenario with:
 { "utterance": "<full user utterance>" }
 
-If render_pretotype_scenario returns HTML, render that returned self-contained HTML verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
+If `render_pretotype_scenario` returns an embedded `text/html;profile=mcp-app` resource, render that returned self-contained HTML resource verbatim as a Claude HTML Artifact. Do not summarize it, rewrite it, redesign it, extract only parts of it, recreate it with another layout, or create separate assets.
 
 The artifact links are external official handoff links. Do not claim that login, identity verification, application submission, legal interpretation, or tax filing happened inside the artifact.
 
@@ -142,7 +139,7 @@ If the tag is missing, unsupported, or ambiguous, ask for exactly one of [신혼
 
 ## Expected Result
 
-Claude should call `render_pretotype_scenario`, receive a full `<!DOCTYPE html>...` string, and open it as an HTML Artifact.
+Claude should call `render_pretotype_scenario`, receive a `ui://pretotype/stage0/{context}.html` embedded resource with `mimeType: text/html;profile=mcp-app`, and open that HTML as an Artifact.
 
 Expected route mapping:
 
@@ -159,7 +156,7 @@ Unsupported or multiple tags should produce a short disclosure instead of a fabr
 After building, verify the server contract through the test suite:
 
 ```bash
-pnpm --filter @mcp-gen-ui-gateway/mcp-server test
+pnpm --filter pretotype-mcp-gen-ui-gateway test
 ```
 
 You can also run the dedicated pretotype server manually:
@@ -177,3 +174,14 @@ pnpm pretotype:http
 ```
 
 That command starts a Streamable HTTP MCP server. The connector URL is `/mcp` on the server origin.
+
+
+## Troubleshooting: Connector Visible But No Artifact
+
+If the connector is enabled but Claude writes a new checklist or dashboard in chat, verify the invocation path before changing the HTML payload:
+
+1. Confirm the Desktop config points at the current checkout's built `packages/pretotype-server/dist/pretotype-index.js`, not an older clone.
+2. Restart Claude Desktop after changing the config or rebuilding.
+3. Inspect `~/Library/Logs/Claude/mcp.log` or `mcp-server-pretotype-mcp-gen-ui-gateway.log`. A healthy run shows `initialize`, `tools/list`, and then `tools/call` for `render_pretotype_scenario`.
+4. If there is no `tools/call`, Claude never received the prepared HTML. Strengthen the chat/project instruction to call the Stage 0 tool for exact tags.
+5. If `tools/call` exists but the Artifact does not open, inspect the result shape: the first content block should be the `text/html;profile=mcp-app` embedded resource.

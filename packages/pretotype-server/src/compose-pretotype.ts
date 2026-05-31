@@ -40,7 +40,31 @@ export type PretotypeScenario = {
   boundaries: string[];
 };
 
+export const pretotypeHtmlResourceMimeType = "text/html;profile=mcp-app";
+
+export type PretotypeArtifactDelivery =
+  | {
+      status: "ok";
+      context: PretotypeContext;
+      tag: string;
+      routePolicy: "exact-tag-only";
+      artifactMode: "self-contained-html";
+      uri: string;
+      mimeType: typeof pretotypeHtmlResourceMimeType;
+      html: string;
+    }
+  | {
+      status: "error";
+      message: string;
+    };
+
 export async function composeGenuiArtifactText({ utterance }: { utterance: string }) {
+  const delivery = await composeGenuiArtifactDelivery({ utterance });
+
+  return delivery.status === "ok" ? delivery.html : delivery.message;
+}
+
+export async function composeGenuiArtifactDelivery({ utterance }: { utterance: string }): Promise<PretotypeArtifactDelivery> {
   let scenarios: PretotypeScenario[];
 
   try {
@@ -48,35 +72,55 @@ export async function composeGenuiArtifactText({ utterance }: { utterance: strin
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
-    return [
-      "Pretotype scenario metadata is not available yet.",
-      `Expected files: ${pretotypeScenarioFiles.map((fileName) => resolvePretotypeFilePath(path.join("scenarios", fileName))).join(", ")}`,
-      `Read error: ${message}`
-    ].join("\n");
+    return {
+      status: "error",
+      message: [
+        "Pretotype scenario metadata is not available yet.",
+        `Expected files: ${pretotypeScenarioFiles.map((fileName) => resolvePretotypeFilePath(path.join("scenarios", fileName))).join(", ")}`,
+        `Read error: ${message}`
+      ].join("\n")
+    };
   }
 
   const route = resolvePretotypeRoute(utterance, scenarios);
 
   if (route.status !== "ok") {
-    return [
-      route.message,
-      `Supported tags: ${scenarios.map(({ tag }) => tag).join(", ")}.`,
-      "Pretotype only routes fixed staged prompts by exact tag.",
-      "No scenario was fabricated."
-    ].join("\n");
+    return {
+      status: "error",
+      message: [
+        route.message,
+        `Supported tags: ${scenarios.map(({ tag }) => tag).join(", ")}.`,
+        "Pretotype only routes fixed staged prompts by exact tag.",
+        "No scenario was fabricated."
+      ].join("\n")
+    };
   }
 
   try {
-    return await readFile(resolvePretotypeFilePath(route.scenario.artifact.html), "utf8");
+    const html = await readFile(resolvePretotypeFilePath(route.scenario.artifact.html), "utf8");
+
+    return {
+      status: "ok",
+      context: route.scenario.id,
+      tag: route.tag,
+      routePolicy: route.scenario.routePolicy,
+      artifactMode: route.scenario.artifact.mode,
+      uri: `ui://pretotype/stage0/${route.scenario.id}.html`,
+      mimeType: pretotypeHtmlResourceMimeType,
+      html
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
-    return [
-      `Pretotype HTML for tag "${route.tag}" is not available yet.`,
-      `Expected file: ${resolvePretotypeFilePath(route.scenario.artifact.html)}`,
-      "Ensure the pretotype-server package ships the self-contained HTML under assets/embedded.",
-      `Read error: ${message}`
-    ].join("\n");
+    return {
+      status: "error",
+      message: [
+        `Pretotype HTML for tag "${route.tag}" is not available yet.`,
+        `Expected file: ${resolvePretotypeFilePath(route.scenario.artifact.html)}`,
+        "Ensure the pretotype-server package ships the self-contained HTML under assets/embedded.",
+        `Read error: ${message}`
+      ].join("\n")
+    };
   }
 }
 
