@@ -75,8 +75,6 @@ chore: update build metadata
 
 The commit body should explain **why** the change was made and **how** you verified it. Reference issues with `Closes #N`.
 
-**Attribution policy:** Do not add AI assistant attribution lines (e.g., `Co-Authored-By: Claude ...`, `🤖 Generated with [Claude Code]`, or similar) to commit messages, PR descriptions, or issue comments. Use of AI tools is fine; we just keep attribution to human contributors only.
-
 ## Code Style
 
 - TypeScript strict mode throughout. Avoid `any`; if unavoidable, justify with a comment.
