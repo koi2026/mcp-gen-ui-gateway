@@ -6,3 +6,6 @@ contact_links:
   - name: Contributing guide
     url: https://github.com/koi2026/mcp-gen-ui-gateway/blob/main/CONTRIBUTING.md
     about: Read this before opening your first issue or PR.
+  - name: 한국어 기여 가이드
+    url: https://github.com/koi2026/mcp-gen-ui-gateway/blob/main/CONTRIBUTING.ko.md
+    about: 한국어로 기여 방법을 확인하세요.
