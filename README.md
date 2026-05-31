@@ -29,6 +29,19 @@ In team architecture, this role sits after the MCP backend and AI orchestration 
 
 Out of scope: Government24 login automation, identity verification, automatic form submission, resident registration numbers, passwords, certificates, auth tokens, definitive eligibility decisions, scheduled crawling, and production-hosted multi-tenant gateway operations.
 
+## Version Ladder
+
+The product grows one capability per version. Versions 0.5 and 0.6 share the same GenUI renderer — only the data source changes. Full roadmap and task board live in [docs/STATUS.md](docs/STATUS.md); the domain glossary is [CONTEXT.md](CONTEXT.md).
+
+| Version | New capability | Orchestration | Connectors | Track |
+|---------|----------------|---------------|------------|-------|
+| **0** | Fixed public-service Artifacts (3 context tags) | — | pretotype | pretotype (frozen) |
+| **0.5** | korean-law `action_plan` 5-step killer UX as a GenUI Artifact | Claude as glue (host; contract B: `kind` + markdown) | korean-law + pretotype-genui (2) | pretotype expansion |
+| **0.6** | Federation — the gateway becomes an MCP client to korean-law-mcp | inside the gateway | gateway (1) | gateway track |
+| **G-1–4** | Ranking Pipeline scoring, multi-source, deploy | gateway | 1 | gateway track (ADR-0003) |
+
+"Frozen" means the Stage 0 artifacts themselves are immutable (regression baseline); the pretotype *family* still grows additively (0.5, 0.6). **Federation** is what earns the "Gateway" name: one connector reuses downstream MCP servers (korean-law-mcp first) instead of re-implementing their APIs. It overcomes the host limitation that sibling connectors cannot call one another.
+
 ## Contribution Workflow
 
 Branch naming, atomic commits, Conventional Commits, and PR review rules are documented in [docs/git-workflow.md](docs/git-workflow.md).
